@@ -21,6 +21,7 @@ Main page styles
     background-size: contain;
   }
 }
+
 .row {
   display: flex;
   justify-content: center;
@@ -32,19 +33,19 @@ Main page styles
   }
 
   img {
-    max-width: 200px;
+    max-width: 45vh;
     margin-bottom: 20px;
   }
 
   h2 {
-    font-size: 2em;
+    font-size: 5vh;
     text-transform: uppercase;
     color: red;
     margin-bottom: 10px;
   }
 
   p {
-    font-size: 1.5rem;
+    font-size: 4vh;
     margin-bottom: 20px;
   }
 

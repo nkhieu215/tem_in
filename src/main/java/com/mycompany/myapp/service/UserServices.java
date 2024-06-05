@@ -64,6 +64,9 @@ public class UserServices {
     @Autowired
     private NhomSanPhamRepository nhomSanPhamRepository;
 
+    @Autowired
+    private scanDetailCheckRepository scanDetailCheckRepository;
+
     //☺ Template login - Chức năng xác thực tài khoản
     //    public ResponseMessage loginAuth(UserPostRequest request) {
     //        UserEntity entity = userRepository.getByUserName(request.getUserName());
@@ -812,5 +815,109 @@ public class UserServices {
         List<String> nhomSanPhams = this.nhomSanPhamRepository.getAllNhomSanPham();
         System.out.println("thanh cong :                 " + nhomSanPhams);
         return nhomSanPhams;
+    }
+
+    // * -------------------------------- scan service ------------------------------------------------------------
+    // ? Quản lý thiết bị
+    // ?Lấy danh sách thiết bị theo nhóm thiết bị
+    public List<scanMachines> listMachines(Long groupId) {
+        List<scanMachines> scanMachinesList = this.scanDetailCheckRepository.listMachines(groupId);
+        return scanMachinesList;
+    }
+
+    //?Thêm mới list thiết bị theo nhóm thiết bị
+    public void insertScanMachines(List<scanMachines> scanMachinesList) {
+        for (scanMachines scanMachines : scanMachinesList) {
+            this.scanDetailCheckRepository.postListMachines(scanMachines.getMachineName(), scanMachines.getGroupId());
+        }
+    }
+
+    //?Chỉnh sửa thông tin thiết bị theo nhóm thiết bị
+    public void putListMachines(List<scanMachines> scanMachinesList) {
+        for (scanMachines scanMachines : scanMachinesList) {
+            this.scanDetailCheckRepository.putListMachines(
+                    scanMachines.getMachineName(),
+                    scanMachines.getGroupId(),
+                    scanMachines.getGroupId()
+                );
+        }
+    }
+
+    //?Lấy danh sách nhóm thiết bị
+    public List<scanGroupMachines> groupMachinesList() {
+        List<scanGroupMachines> scanGroupMachinesList = this.scanDetailCheckRepository.groupMachinesList();
+        return scanGroupMachinesList;
+    }
+
+    //?Thêm mới nhóm thiết bị
+    public void insertGroupMachines(scanGroupMachines scanGroupMachines) {
+        this.scanDetailCheckRepository.insertGroupMachines(
+                scanGroupMachines.getGroupName(),
+                scanGroupMachines.getCreateAt(),
+                scanGroupMachines.getUsername(),
+                scanGroupMachines.getGroupStatus()
+            );
+    }
+
+    //?Chỉnh sửa thông tin nhóm thiết bị
+    public void putGroupMachines(scanGroupMachines scanGroupMachines) {
+        this.scanDetailCheckRepository.putGroupMachines(
+                scanGroupMachines.getGroupName(),
+                scanGroupMachines.getUpdateAt(),
+                scanGroupMachines.getUsername(),
+                scanGroupMachines.getGroupStatus(),
+                scanGroupMachines.getGroupId()
+            );
+    }
+
+    //?Lấy danh sách sản phẩm
+    public List<scanProduct> listProduct() {
+        List<scanProduct> scanProducts = this.scanDetailCheckRepository.listProduct();
+        return scanProducts;
+    }
+
+    //? Lấy danh sách machine
+    public List<scanMachines> listAllMachines() {
+        List<scanMachines> scanMachinesList = this.scanDetailCheckRepository.listAllMachines();
+        return scanMachinesList;
+    }
+
+    //?Lấy danh sách tiêu chí đã khai báo theo sản phẩm
+    public List<ScanPprofileCheck> listProfileCheckByProduct(Long productId) {
+        List<ScanPprofileCheck> scanPprofileChecks = this.scanDetailCheckRepository.listProfileCheckByProduct(productId);
+        return scanPprofileChecks;
+    }
+
+    //?Thêm mới thông tin tiêu chí khai báo cho sản phẩm
+    public void insertScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
+        for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
+            this.scanDetailCheckRepository.insertScanProfileCheck(
+                    scanPprofileCheck.getProductId(),
+                    scanPprofileCheck.getCheckName(),
+                    scanPprofileCheck.getCheckValue(),
+                    scanPprofileCheck.getCheckStatus(),
+                    scanPprofileCheck.getPosition(),
+                    scanPprofileCheck.getVersionId(),
+                    scanPprofileCheck.getMachineId(),
+                    scanPprofileCheck.getGroupId()
+                );
+        }
+    }
+
+    //? chỉnh sửa thông tin tiêu chí khai báo cho sản phẩm
+    public void updateScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
+        for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
+            this.scanDetailCheckRepository.updateScanProfileCheck(
+                    scanPprofileCheck.getProductId(),
+                    scanPprofileCheck.getCheckName(),
+                    scanPprofileCheck.getCheckValue(),
+                    scanPprofileCheck.getCheckStatus(),
+                    scanPprofileCheck.getPosition(),
+                    scanPprofileCheck.getVersionId(),
+                    scanPprofileCheck.getMachineId(),
+                    scanPprofileCheck.getGroupId(),
+                    scanPprofileCheck.getProfileId()
+                );
+        }
     }
 }

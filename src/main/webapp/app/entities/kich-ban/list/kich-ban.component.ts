@@ -382,7 +382,7 @@ export class KichBanComponent implements OnInit {
       }
       // cập nhật thông số kịch bản
       this.http.put<any>(this.putChiTietKichBanUrl, this.chiTietKichBans).subscribe(() => {
-        console.log('cap nhat', this.chiTietKichBans);
+        console.log('cap nhat');
       });
       // change signal SXHN
       const change = { maKichBan: this.chiTietKichBans[0].maKichBan, signal: 2 };

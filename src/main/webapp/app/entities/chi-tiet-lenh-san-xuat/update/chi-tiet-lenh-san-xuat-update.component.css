@@ -38,6 +38,10 @@ select {
   border-radius: 4px;
 }
 
+input[type='checkbox'] {
+  zoom: 2.5;
+}
+
 .input-table {
   width: 100%;
   padding: 4px;
@@ -47,7 +51,7 @@ select {
 
 .btn {
   float: right;
-  margin: 1rem;
+  margin: 1vh;
 }
 
 .btn-info {
@@ -260,4 +264,13 @@ select {
 
 .height-table {
   max-height: 60vh;
+}
+
+.btn-flex {
+  display: flex;
+}
+
+.btn-success {
+  color: #ffffff;
+  width: 7vw;
 }

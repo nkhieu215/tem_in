@@ -12,7 +12,6 @@ import { ILenhSanXuat } from '../lenh-san-xuat.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { LenhSanXuatService } from '../service/lenh-san-xuat.service';
 import { LenhSanXuatDeleteDialogComponent } from '../delete/lenh-san-xuat-delete-dialog.component';
-import { result } from 'cypress/types/lodash';
 
 @Component({
   selector: 'jhi-lenh-san-xuat',
@@ -83,7 +82,7 @@ export class LenhSanXuatComponent implements OnInit {
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
     protected formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
@@ -93,6 +92,7 @@ export class LenhSanXuatComponent implements OnInit {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
+        sort: this.sort(),
       })
       .subscribe({
         next: (res: HttpResponse<ILenhSanXuat[]>) => {
@@ -134,7 +134,7 @@ export class LenhSanXuatComponent implements OnInit {
             return (
               a.trangThai.localeCompare(b.trangThai) ||
               <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY HH:mm:ss')) -
-              <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
+                <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
             );
           }
           return 0;
@@ -207,7 +207,7 @@ export class LenhSanXuatComponent implements OnInit {
       this.lenhSanXuats = this.lenhSanXuatGoc;
       if (this.lenhSanXuats) {
         this.lenhSanXuats = this.lenhSanXuats.filter(a => {
-          console.log({ a: a.maLenhSanXuat, b: this.maLenhSanXuat });
+          // console.log({ a: a.maLenhSanXuat, b: this.maLenhSanXuat });
           if (a.maLenhSanXuat) {
             //Tìm cùng ngày intem và ngày cập nhật
             if (this.entryTime !== '') {
@@ -464,8 +464,8 @@ export class LenhSanXuatComponent implements OnInit {
       });
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   formatNgbDateUpdate(): void {
@@ -536,24 +536,24 @@ export class LenhSanXuatComponent implements OnInit {
       });
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
       // window.location.reload();
     }
   }
-  // sort(): string[] {
-  //   const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
-  //   if (this.predicate !== 'id') {
-  //     result.push('id');
-  //   }
-  //   return result;
-  // }
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
+    if (this.predicate !== 'id') {
+      result.push('id');
+    }
+    return result;
+  }
   // pop up thông báo
   alertTimeout(mymsg: string, mymsecs: number): void {
     const myelement = document.createElement('div');
     myelement.setAttribute(
       'style',
-      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:14px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
+      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:16px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
     );
     myelement.innerHTML = mymsg;
     setTimeout(function () {

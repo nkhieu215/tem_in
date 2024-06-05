@@ -131,8 +131,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
           ) {
             return (
               a.trangThai.localeCompare(b.trangThai) ||
-              <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY hh:mm:ss')) -
-                <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY hh:mm:ss'))
+              <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY HH:mm:ss')) -
+                <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
             );
           }
           return 0;
@@ -195,7 +195,7 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       this.lenhSanXuats = this.lenhSanXuatGoc;
       if (this.lenhSanXuats) {
         this.lenhSanXuats = this.lenhSanXuats.filter(a => {
-          console.log({ a: a.maLenhSanXuat, b: this.maLenhSanXuat });
+          // console.log({ a: a.maLenhSanXuat, b: this.maLenhSanXuat });
           if (a.maLenhSanXuat) {
             //Tìm cùng ngày intem và ngày cập nhật
             if (this.entryTime !== '') {
@@ -234,8 +234,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo sap code
@@ -261,8 +261,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo sap name
@@ -288,8 +288,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo workordercode
@@ -321,8 +321,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo Version
@@ -348,8 +348,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo trường storage code
@@ -380,8 +380,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   //tim kiem theo trường create by
@@ -409,8 +409,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
   // Tìm kiếm theo entry time
@@ -480,8 +480,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       });
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
     }
   }
 
@@ -554,8 +554,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       });
     }
     if (this.lenhSanXuats?.length === 0) {
-      this.alertTimeout('Không tìm thấy lệnh sản xuất', 2000);
-      setTimeout(() => window.location.reload(), 2000);
+      this.alertTimeout('Không tìm thấy lệnh sản xuất', 5000);
+      setTimeout(() => window.location.reload(), 5000);
       // window.location.reload();
     }
   }
@@ -571,7 +571,7 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     const myelement = document.createElement('div');
     myelement.setAttribute(
       'style',
-      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:14px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
+      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:16px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
     );
     myelement.innerHTML = mymsg;
     setTimeout(function () {

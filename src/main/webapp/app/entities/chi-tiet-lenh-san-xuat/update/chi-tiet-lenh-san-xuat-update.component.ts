@@ -50,9 +50,8 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     id: number;
     totalQuantity: string;
     timeUpdate: dayjs.Dayjs;
-    createBy?: string | null,
     trangThai: string;
-  } = { id: 0, totalQuantity: '', timeUpdate: dayjs().startOf('second'), createBy: '', trangThai: '' };
+  } = { id: 0, totalQuantity: '', timeUpdate: dayjs().startOf('second'), trangThai: '' };
 
   chiTietLenhSanXuats: IChiTietLenhSanXuat[] = [];
   //tạo danh sách lệnh sản xuất ở trạng thái active
@@ -131,20 +130,19 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient,
     protected accountService: AccountService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
       this.account = account;
-      this.changeStatus.createBy = this.account?.login
     });
     // bắt sự kiện scan
     this.scanResult.valueChanges.subscribe(data => {
-      console.log('data: ', data.length);
+      console.log('data: ');
     });
 
     this.activatedRoute.data.subscribe(({ lenhSanXuat }) => {
-      // console.log('test: ', lenhSanXuat);
+      console.log('test: ');
 
       const today = dayjs().startOf('second');
       lenhSanXuat.timeUpdate = today;
@@ -154,7 +152,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       // console.log(this.changeStatus);
       this.http.get<any>(`${this.resourceUrl}/${lenhSanXuat.id as number}`).subscribe(res => {
         this.chiTietLenhSanXuats = res;
-        console.log('chi tiet: ', this.chiTietLenhSanXuats);
+        // console.log('chi tiet: ', this.chiTietLenhSanXuats);
         //lấy danh sách chi tiết lsx ở trạng thái active
         this.chiTietLenhSanXuatActive = this.chiTietLenhSanXuats.filter(a => a.trangThai === 'Active');
         this.itemPerPage = this.chiTietLenhSanXuatActive.length;
@@ -172,14 +170,22 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       // this.loadRelationshipsOptions();
     });
   }
-  // thay doi toan bo ma kho panacim
+  //cập nhật từng mã kho panacim
+  test(test: string): void {
+    test = '';
+    console.log('test:', test);
+  }
+  //Cập nhật tất cả mã kho panacim
   changeAllStorageUnit(): void {
+    this.storageUnit = this.storageUnit.slice(2);
+    // console.log("test: ", this.storageUnit)
     for (let i = 0; i < this.chiTietLenhSanXuats.length; i++) {
       const item = this.storageUnit;
       this.chiTietLenhSanXuats[i].storageUnit = item;
     }
     this.storageUnit = '';
   }
+
   onCheckUnCheckSelectAll(): void {
     if (this.selectedAllResult === true) {
       this.selectedAll = 1;
@@ -196,18 +202,46 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
         this.chiTietLenhSanXuatActive[i].checked = this.selectedAll;
       }
     }
+    // // duyet qua mang chiTietLenhSanXuatActive va cap nhat checked cua moi ptu trong mang checkedList dua tren onSelected()
+    // for (let i = 0; i < this.chiTietLenhSanXuatActive.length; i++) {
+    //   this.chiTietLenhSanXuatActive[i].checked = this.selectedAll;
+    // }
+    // sau khi cap nhat checkedList goi ham getCheckItemList
+    // this.getCheckItemList();
   }
 
-  onSelected(id: number, checker: number): void {
+  onCheckAll(): void {
+    this.selectedAll = 1;
+    for (let i = 0; i < this.chiTietLenhSanXuatActive.length; i++) {
+      if (this.chiTietLenhSanXuatActive[i].trangThai === 'Active') {
+        this.chiTietLenhSanXuatActive[i].checked = this.selectedAll;
+      } else {
+        this.chiTietLenhSanXuatActive[i].checked = 0;
+      }
+    }
+  }
+
+  onUnCheckAll(): void {
+    this.selectedAll = 0;
+    for (let i = 0; i < this.chiTietLenhSanXuatActive.length; i++) {
+      this.chiTietLenhSanXuatActive[i].checked = this.selectedAll;
+    }
+  }
+  // check tung tem 1
+  onSelected(id: number, checker: boolean): void {
     //gán giá trị cho các phần tử đã chọn
     for (let i = 0; i < this.chiTietLenhSanXuatActive.length; i++) {
       if (i === id) {
-        this.chiTietLenhSanXuatActive[i].checked = 1;
+        if (checker === true) {
+          this.chiTietLenhSanXuatActive[i].checked = 1;
+        } else {
+          this.chiTietLenhSanXuatActive[i].checked = 0;
+        }
       }
     }
-    console.log('id: ', id)
-    console.log('check: ', checker)
-    console.log(this.chiTietLenhSanXuats)
+    console.log('id: ', id);
+    console.log('check: ', checker);
+    console.log(this.chiTietLenhSanXuats);
   }
 
   // cap nhat vao mang checkedList cac ptu chiTietLenhSanXuatActive co thuoc tinh checked
@@ -239,16 +273,15 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       totalQuantity: this.sum,
     });
   }
+
   // ================================  các button ======================================================
   pheDuyetTem(): void {
     this.editForm.patchValue({
       trangThai: 'Đã phê duyệt',
-    })
+    });
     const lenhSanXuat = this.createFromForm();
     this.lenhSanXuatService.update(lenhSanXuat).subscribe(() => {
-      this.http
-        .put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats)
-        .subscribe();
+      this.http.put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats).subscribe();
       alert('Phê duyệt thành công');
       this.previousState();
     });
@@ -257,12 +290,10 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   khoHuyStatus(): void {
     this.editForm.patchValue({
       trangThai: 'Kho hủy',
-    })
+    });
     const lenhSanXuat = this.createFromForm();
     this.lenhSanXuatService.update(lenhSanXuat).subscribe(() => {
-      this.http
-        .put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats)
-        .subscribe();
+      this.http.put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats).subscribe();
       alert('Kho hủy thành công');
       this.previousState();
     });
@@ -271,21 +302,20 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   khoTuChoiStatus(): void {
     this.editForm.patchValue({
       trangThai: 'Từ chối',
-    })
+    });
     const lenhSanXuat = this.createFromForm();
     this.lenhSanXuatService.update(lenhSanXuat).subscribe(() => {
-      this.http
-        .put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats)
-        .subscribe();
+      this.http.put<any>(`${this.resourceUrlUpdate}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats).subscribe();
       alert('Từ chối thành công');
       this.previousState();
     });
   }
   //================================ chức năng scan mã kho panacim =========================================
-  // setStorageUnit(): void {
-  //   this.storageUnit = this.storageUnit.slice(2);
-  //   console.log("test: ", this.storageUnit)
-  // }
+  setStorageUnit(storageUnit: string): void {
+    storageUnit = storageUnit.slice(2);
+    console.log('test: ', storageUnit);
+  }
+
   save(): void {
     this.isSaving = true;
     const lenhSanXuat = this.createFromForm();
@@ -418,7 +448,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
 
         this.tienDoScan = (this.countScan / this.chiTietLenhSanXuatActive.length) * 100;
         this.resultScanPerCent = this.tienDoScan.toFixed(0);
-        this.alertTimeout('Đã tìm thấy tem trong danh sách lệnh', 2000);
+        this.alertTimeout('Đã tìm thấy tem trong danh sách lệnh', 5000);
         // alert('đã tìm thấy tem trong danh sách');
         break;
       }
@@ -426,14 +456,14 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       if (this.scanValue.reelID === this.chiTietLenhSanXuats[i].reelID && this.chiTietLenhSanXuats[i].trangThai === 'Inactive') {
         this.isExisted = true;
         this.chiTietLenhSanXuats[i].checked = 1;
-        this.alertTimeout('Tem đang ở trạng thái Inactive', 2000);
+        this.alertTimeout('Tem đang ở trạng thái Inactive', 5000);
         // alert('Tem đang ở trạng thái Inactive');
         break;
       }
       if (this.scanValue.reelID === this.chiTietLenhSanXuats[i].reelID && this.chiTietLenhSanXuats[i].trangThai === 'not list') {
         this.isExisted = true;
         this.chiTietLenhSanXuats[i].checked = 1;
-        this.alertTimeout('Tem đang ở trạng thái not list', 2000);
+        this.alertTimeout('Tem đang ở trạng thái not list', 5000);
         // alert('Tem đang ở trạng thái not list');
         break;
       }
@@ -476,7 +506,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
         lenhSanXuat: this.createFromForm(),
       };
       this.chiTietLenhSanXuats.push(item);
-      this.alertTimeout('Tem không nằm trong danh sách', 2000);
+      this.alertTimeout('Tem không nằm trong danh sách', 5000);
     }
     //cập nhật lại danh sách chi tiết lsx ở trạng thái active
     this.chiTietLenhSanXuatActive = this.chiTietLenhSanXuats.filter(a => a.trangThai === 'Active');
@@ -500,7 +530,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     const myelement = document.createElement('div');
     myelement.setAttribute(
       'style',
-      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:14px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
+      'background-color:white;color:Black; width: 300px;height: 70px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 1px solid black;font-family:arial;font-size:16px;display: flex; align-items: center; justify-content: center; text-align: center;border-radius:10px'
     );
     myelement.innerHTML = mymsg;
     setTimeout(function () {

@@ -31,54 +31,101 @@
 
             <th scope="col" jhiSortBy="reelID">
               <span>Mã lệnh sản xuất</span>
-              <input #searchInput type="text" [(ngModel)]="maLenhSanXuat" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="maLenhSanXuat" style="width: 8rem" (change)="timKiemTheoMaLenhSanXuat()" />
-              <datalist id="maLenhSanXuat">
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="maLenhSanXuat"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="maLenhSanXuat"
+                style="width: 8rem"
+                (change)="timKiemTheoMaLenhSanXuat()"
+              />
+              <!-- <datalist id="maLenhSanXuat">
                 <option *ngFor="let data of listOfMaLenhSanXuat">{{ data }}</option>
-              </datalist>
+              </datalist> -->
             </th>
 
             <th scope="col" jhiSortBy="partNumber">
               <span>Mã SAP</span>
-              <input #searchInput type="text" [(ngModel)]="sapCode" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="sapCode" style="width: 5rem" (change)="timKiemTheoSapCode()" />
-              <datalist id="sapCode">
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="sapCode"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="sapCode"
+                style="width: 5rem"
+                (change)="timKiemTheoSapCode()"
+              />
+              <!-- <datalist id="sapCode">
                 <option *ngFor="let data of listOfSapCode">{{ data }}</option>
-              </datalist>
+              </datalist> -->
             </th>
 
             <th scope="col" jhiSortBy="sapName">
               <span>Tên hàng hoá</span>
-              <input #searchInput type="text" [(ngModel)]="sapName" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="sapName" (change)="timKiemTheoSapName()" />
-              <datalist id="sapName">
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="sapName"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="sapName"
+                (change)="timKiemTheoSapName()"
+              />
+              <!-- <datalist id="sapName">
                 <option *ngFor="let data of listOfSapName">{{ data }}</option>
-              </datalist>
+              </datalist> -->
             </th>
 
             <th scope="col" jhiSortBy="workOrderCode">
               <span>Mã WO</span>
-              <input #searchInput type="text" [(ngModel)]="workOrderCode" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="workOrderCode" style="width: 5rem" (change)="timKiemTheoWorkOrderCode()"
-                (change)="timKiemTheoStorageCode()" />
-              <datalist id="workOrderCode">
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="workOrderCode"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="workOrderCode"
+                style="width: 5rem"
+                (change)="timKiemTheoWorkOrderCode()"
+                (change)="timKiemTheoStorageCode()"
+              />
+              <!-- <datalist id="workOrderCode">
                 <option *ngFor="let data of listOfWorkOrderCode">{{ data }}</option>
-              </datalist>
+              </datalist> -->
             </th>
 
             <th scope="col" jhiSortBy="version">
               <span>Version</span>
-              <input #searchInput type="text" [(ngModel)]="version" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="version" style="width: 5rem" (change)="timKiemTheoVersion()" />
-              <datalist id="version">
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="version"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="version"
+                style="width: 5rem"
+                (change)="timKiemTheoVersion()"
+              />
+              <!-- <datalist id="version">
                 <option *ngFor="let data of listOfVersion">{{ data }}</option>
-              </datalist>
+              </datalist> -->
             </th>
 
             <th scope="col" jhiSortBy="storageCode">
               <span>Mã kho nhập</span>
-              <input #searchInput type="text" [(ngModel)]="storageCode" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="storageCode" style="width: 6rem" (change)="timKiemTheoStorageCode()" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="storageCode"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="storageCode"
+                style="width: 6rem"
+                (change)="timKiemTheoStorageCode()"
+              />
               <datalist id="storageCode">
                 <option value="01">Kho linh kiện điện tử</option>
                 <option value="02">Kho vật tư LED</option>
@@ -108,20 +155,40 @@
 
             <th scope="col" jhiSortBy="createBy">
               <span>Cập nhật bởi</span>
-              <input #searchInput type="text" [(ngModel)]="createBy" [ngModelOptions]="{ standalone: true }"
-                placeholder="search" list="createBy" style="width: 6rem" (change)="timKiemTheoCreateBy()" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="createBy"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="search"
+                list="createBy"
+                style="width: 6rem"
+                (change)="timKiemTheoCreateBy()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="entryTime">
               <span>Thời gian tạo tem</span>
-              <input type="date" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="entryTime"
-                [ngModelOptions]="{ standalone: true }" (change)="searchEntryTime()" />
+              <input
+                type="date"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                [(ngModel)]="entryTime"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="searchEntryTime()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="timeUpdate">
               <span>Thời gian cập nhật</span>
-              <input type="date" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="timeUpdate"
-                [ngModelOptions]="{ standalone: true }" (change)="searchTimeUpdate()" />
+              <input
+                type="date"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                [(ngModel)]="timeUpdate"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="searchTimeUpdate()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="trangThai">
@@ -147,11 +214,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="
+          <tr
+            *ngFor="
               let lenhSanXuat of lenhSanXuats | filter: trangThai | paginate: { itemsPerPage: itemPerPage, currentPage: page };
               let i = index;
               trackBy: trackId
-            " data-cy="entityTable">
+            "
+            data-cy="entityTable"
+          >
             <!-- <td><input type="checkbox" /></td> -->
             <td>
               <a>{{ i + 1 }}</a>
@@ -170,17 +240,25 @@
             <td>{{ lenhSanXuat.comment }}</td>
 
             <td class="text-end">
-              <div class="btn-group" *jhiHasAnyAuthority="'ROLE_ADMIN_TEM','ROLE_ADMIN_TEM'">
-                <button *jhiHasAnyAuthority="'ROLE_USER_TEM'" type="submit"
-                  [routerLink]="['/chi-tiet-lenh-san-xuat', lenhSanXuat.id, 'view']" class="btn btn-info btn-sm"
-                  data-cy="entityDetailsButton">
+              <div class="btn-group" *jhiHasAnyAuthority="'ROLE_ADMIN_QUAN_LY_PHE_DUYET'">
+                <button
+                  *jhiHasAnyAuthority="'ROLE_USER_QUAN_LY_PHE_DUYET'"
+                  type="submit"
+                  [routerLink]="['/chi-tiet-lenh-san-xuat', lenhSanXuat.id, 'view']"
+                  class="btn btn-info btn-sm"
+                  data-cy="entityDetailsButton"
+                >
                   <fa-icon icon="eye"></fa-icon>
                   <!-- <span class="d-none d-md-inline">View</span> -->
                 </button>
 
-                <button *ngIf="lenhSanXuat.trangThai === 'Chờ duyệt'|| lenhSanXuat.trangThai === 'Đã phê duyệt'"
-                  type="submit" [routerLink]="['/chi-tiet-lenh-san-xuat', lenhSanXuat.id, 'edit']"
-                  class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <button
+                  *ngIf="lenhSanXuat.trangThai === 'Chờ duyệt' || lenhSanXuat.trangThai === 'Đã phê duyệt'"
+                  type="submit"
+                  [routerLink]="['/chi-tiet-lenh-san-xuat', lenhSanXuat.id, 'edit']"
+                  class="btn btn-primary btn-sm"
+                  data-cy="entityEditButton"
+                >
                   <fa-icon icon="pencil-alt"></fa-icon>
                 </button>
               </div>

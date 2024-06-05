@@ -103,8 +103,15 @@
         </div>
         <form [formGroup]="scanResult" [ngClass]="{ 'show-input-scan': showScanInput }">
           <button class="btn-scan" role="button" (click)="setInputValue()">Scan tem</button>
-          <input class="input-scan" type="text" id="scan" [(ngModel)]="scanResults"
-            [ngModelOptions]="{ standalone: true }" style="border: none" (keydown.enter)="catchScanEvent()" />
+          <input
+            class="input-scan"
+            type="text"
+            id="scan"
+            [(ngModel)]="scanResults"
+            [ngModelOptions]="{ standalone: true }"
+            style="border: none"
+            (keydown.enter)="catchScanEvent()"
+          />
           <button class="btn-scan" *ngIf="scanResults !== ''" (click)="catchScanEvent()">Kiểm tra</button>
         </form>
 
@@ -115,14 +122,23 @@
 
         <div class="search-all">
           <!-- danh sách tems có trong lệnh sản xuất -->
-          <h3 id="jhi-lenh-san-xuat-heading" data-cy="LenhSanXuatCreateUpdateHeading">Danh sách tem có trong lệnh</h3>
-          <input #searchInput type="text" [(ngModel)]="reelID" [ngModelOptions]="{ standalone: true }"
-            placeholder="Tìm kiếm" list="reelID" style="width: 15rem" />
+          <h3 id="jhi-lenh-san-xuat-heading" data-cy="LenhSanXuatCreateUpdateHeading">
+            Danh sách tem có trong lệnh
+            <p>Số lượng thùng: {{ chiTietLenhSanXuatActive.length }}</p>
+          </h3>
+          <input
+            #searchInput
+            type="text"
+            [(ngModel)]="reelID"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="Tìm kiếm"
+            list="reelID"
+            style="width: 15rem"
+          />
         </div>
 
         <div class="table-scroll height-table">
-          <!-- ngăn chặn button enter -->
-          <table class="table table-striped" aria-describedby="page-heading" onkeypress="return event.key != 'Enter';">
+          <table class="table table-striped" aria-describedby="page-heading">
             <thead>
               <tr>
                 <th scope="col">STT</th>
@@ -150,8 +166,7 @@
                 <th scope="col">
                   <span class="custom-width">Storage Unit</span>
                   <div class="custom-search">
-                    <input class="inp-replace" type="text" [(ngModel)]="storageUnit"
-                      [ngModelOptions]="{ standalone: true }" />
+                    <input class="inp-replace" type="text" [(ngModel)]="storageUnit" [ngModelOptions]="{ standalone: true }" />
                     <button class="btn-replace" (click)="changeAllStorageUnit()">
                       <fa-icon icon="eye"></fa-icon>
                     </button>
@@ -165,18 +180,24 @@
                 <th scope="col">Sap Code</th>
                 <th scope="col"><span class="custom-width">Status</span></th>
                 <th scope="col">
-                  Checked<input type="checkbox" (change)="onCheckUnCheckSelectAll()" [(ngModel)]="selectedAllResult"
-                    [ngModelOptions]="{ standalone: true }" />
+                  Checked
+                  <div class="btn-flex">
+                    <button class="btn btn-success" (click)="onCheckAll()">Chọn tất cả</button>
+                    <button class="btn btn-danger" (click)="onUnCheckAll()">Bỏ chọn tất cả</button>
+                  </div>
                 </th>
                 <!-- <th scope="col" jhiSortBy=""></th> -->
               </tr>
             </thead>
 
-            <tr *ngFor="
+            <tr
+              *ngFor="
                 let data of chiTietLenhSanXuatActive | filter: reelID | paginate: { itemsPerPage: itemPerPage, currentPage: page };
                 let i = index;
                 trackBy: trackId
-              " class="editable-row">
+              "
+              class="editable-row"
+            >
               <td>
                 <span>{{ i + 1 }}</span>
               </td>
@@ -201,7 +222,7 @@
                 <span>{{ data.userData2 }}</span>
               </td>
               <td>
-                <span>{{ data.userData3 }}</span>
+                <span style="display: block; width: 15vw">{{ data.userData3 }}</span>
               </td>
               <td>
                 <span>{{ data.userData4 }}</span>
@@ -210,8 +231,14 @@
                 <span>{{ data.userData5 }}</span>
               </td>
               <td>
-                <input class="input-table" type="text" list="initialQuantity" [(ngModel)]="data.initialQuantity"
-                  [ngModelOptions]="{ standalone: true }" (change)="changeQuantity()" />
+                <input
+                  class="input-table"
+                  type="text"
+                  list="initialQuantity"
+                  [(ngModel)]="data.initialQuantity"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="changeQuantity()"
+                />
               </td>
               <td>
                 <span>{{ data.msdLevel }}</span>
@@ -247,8 +274,15 @@
                 <span>{{ data.warmupTime }}</span>
               </td>
               <td>
-                <input class="input-table" type="text" list="storageUnit" [(ngModel)]="data.storageUnit"
-                  [ngModelOptions]="{ standalone: true }" />
+                <input
+                  class="input-table"
+                  type="text"
+                  list="storageUnit"
+                  [(ngModel)]="data.storageUnit"
+                  [ngModelOptions]="{ standalone: true }"
+                  onkeypress="return event.key != 'Enter';"
+                  (change)="setStorageUnit(data.storageUnit)"
+                />
               </td>
               <td>
                 <span>{{ data.subStorageUnit }}</span>
@@ -269,8 +303,13 @@
                 <span>{{ data.sapCode }}</span>
               </td>
               <td>
-                <select class="form-control form-select" [(ngModel)]="data.trangThai"
-                  [ngModelOptions]="{ standalone: true }" (change)="changeQuantity()" style="width: 6rem">
+                <select
+                  class="form-control form-select"
+                  [(ngModel)]="data.trangThai"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="changeQuantity()"
+                  style="width: 6rem"
+                >
                   <option [ngValue]="" hidden>{{ data.trangThai }}</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
@@ -278,16 +317,25 @@
                 </select>
               </td>
               <td>
-                <input type="checkbox" [(ngModel)]="data.checked" [ngModelOptions]="{ standalone: true }"
-                  (change)="onSelected(i,data.checked)" />
+                <input
+                  type="checkbox"
+                  [(ngModel)]="data.checked"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="onSelected(i, data.checked)"
+                />
               </td>
             </tr>
           </table>
         </div>
         <div *ngIf="chiTietLenhSanXuatActive && chiTietLenhSanXuatActive.length > 0">
           <div>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage"
-              [ngModelOptions]="{ standalone: true }" style="width: 5rem; margin-top: 1rem">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="itemPerPage"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 5rem; margin-top: 1rem"
+            >
               <option value="{{ chiTietLenhSanXuatActive.length }}">All</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -342,11 +390,14 @@
               </tr>
             </thead>
 
-            <tr *ngFor="
+            <tr
+              *ngFor="
                 let data of chiTietLenhSanXuatNotList | paginate: { itemsPerPage: itemPerPage2, currentPage: page2 };
                 let i = index;
                 trackBy: trackId
-              " class="editable-row">
+              "
+              class="editable-row"
+            >
               <td>
                 <span>{{ i + 1 }}</span>
               </td>
@@ -371,7 +422,7 @@
                 <span>{{ data.userData2 }}</span>
               </td>
               <td>
-                <span>{{ data.userData3 }}</span>
+                <span style="display: block; width: 15vw">{{ data.userData3 }}</span>
               </td>
               <td>
                 <span>{{ data.userData4 }}</span>
@@ -380,8 +431,14 @@
                 <span>{{ data.userData5 }}</span>
               </td>
               <td>
-                <input class="input-table" type="text" list="initialQuantity" [(ngModel)]="data.initialQuantity"
-                  [ngModelOptions]="{ standalone: true }" (change)="changeQuantity()" />
+                <input
+                  class="input-table"
+                  type="text"
+                  list="initialQuantity"
+                  [(ngModel)]="data.initialQuantity"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="changeQuantity()"
+                />
               </td>
               <td>
                 <span>{{ data.msdLevel }}</span>
@@ -417,8 +474,13 @@
                 <span>{{ data.warmupTime }}</span>
               </td>
               <td>
-                <input class="input-table" type="text" list="storageUnit" [(ngModel)]="data.storageUnit"
-                  [ngModelOptions]="{ standalone: true }" />
+                <input
+                  class="input-table"
+                  type="text"
+                  list="storageUnit"
+                  [(ngModel)]="data.storageUnit"
+                  [ngModelOptions]="{ standalone: true }"
+                />
               </td>
               <td>
                 <span>{{ data.subStorageUnit }}</span>
@@ -451,8 +513,12 @@
         </div>
         <div *ngIf="chiTietLenhSanXuatNotList && chiTietLenhSanXuatNotList.length > 0">
           <div>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage"
-              [ngModelOptions]="{ standalone: true }">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="itemPerPage"
+              [ngModelOptions]="{ standalone: true }"
+            >
               <option value="{{ chiTietLenhSanXuatNotList.length }}">All</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -468,8 +534,14 @@
           <fa-icon icon="check"></fa-icon>&nbsp;<span>Phê duyệt</span>
         </button>
 
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving" class="btn btn-primary" (click)="save()">
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+          (click)="save()"
+        >
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
 
@@ -481,8 +553,7 @@
           <fa-icon icon="cancel"></fa-icon>&nbsp;<span>Từ chối</span>
         </button>
 
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-info"
-          (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-info" (click)="previousState()">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Trở lại</span>
         </button>
       </div>

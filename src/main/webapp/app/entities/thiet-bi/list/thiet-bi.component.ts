@@ -93,47 +93,7 @@ export class ThietBiComponent implements OnInit {
     this.formSearch.valueChanges.subscribe(data => {
       this.timKiemThietBi(data);
     });
-
-    //--------------- test --------------
-    this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' },
-    ];
-    console.log(this.dropdownList);
-
-    this.selectedItems = [];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-    };
-
-    this.dropdownSettings1 = {
-      singleSelection: false,
-      textField: 'loaiThietBi',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-    };
-
-    //-----------------------------------
   }
-  //---------- test --------------
-  onItemSelect(item: any): void {
-    console.log(item);
-  }
-  onSelectAll(items: any): void {
-    console.log(items);
-  }
-  //----------------------------
   // được gọi mỗi khi có sự kiện nhập trong ô tìm kiếm, kiểm tra nếu từ khóa tìm kiếm trống thì showSuggestions là false
   onSearchInput(): void {
     if (this.searchKeyword.trim() === '') {

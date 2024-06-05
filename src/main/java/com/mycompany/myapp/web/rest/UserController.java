@@ -442,4 +442,66 @@ public class UserController {
         List<String> nhomSanPhams = this.userServices.getAllNhomSanPham();
         return nhomSanPhams;
     }
+
+    // * ------------------------------------------ check scan -----------------------------
+    // ? Quản lý thiết bị
+    @GetMapping("scan-machines/{groupId}")
+    public List<scanMachines> listMachines(@PathVariable Long groupId) {
+        List<scanMachines> scanMachinesList = this.userServices.listMachines(groupId);
+        return scanMachinesList;
+    }
+
+    @PostMapping("scan-machines")
+    public void insertScanMachines(@RequestBody List<scanMachines> scanMachines) {
+        this.userServices.insertScanMachines(scanMachines);
+    }
+
+    @PutMapping("scan-machines")
+    public void putListMachines(@RequestBody List<scanMachines> scanMachines) {
+        this.userServices.putListMachines(scanMachines);
+    }
+
+    @GetMapping("scan-group-machines")
+    public List<scanGroupMachines> groupMachinesList() {
+        List<scanGroupMachines> scanGroupMachinesList = this.userServices.groupMachinesList();
+        return scanGroupMachinesList;
+    }
+
+    @PostMapping("scan-group-machines")
+    public void insertGroupMachines(@RequestBody scanGroupMachines scanGroupMachines) {
+        this.userServices.insertGroupMachines(scanGroupMachines);
+    }
+
+    @PutMapping("scan-group-machines")
+    public void putGroupMachines(@RequestBody scanGroupMachines scanGroupMachines) {
+        this.userServices.putGroupMachines(scanGroupMachines);
+    }
+
+    @GetMapping("scan-profile-check")
+    public List<scanProduct> listProduct() {
+        List<scanProduct> scanProducts = this.userServices.listProduct();
+        return scanProducts;
+    }
+
+    @GetMapping("scan-profile-check/machine")
+    public List<scanMachines> listAllMachines() {
+        List<scanMachines> scanMachinesList = this.userServices.listAllMachines();
+        return scanMachinesList;
+    }
+
+    @GetMapping("scan-profile-check/{productId}")
+    public List<ScanPprofileCheck> listProfileCheckByProduct(@PathVariable Long productId) {
+        List<ScanPprofileCheck> scanPprofileChecks = this.userServices.listProfileCheckByProduct(productId);
+        return scanPprofileChecks;
+    }
+
+    @PostMapping("scan-profile-check")
+    public void insertScanProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
+        this.userServices.insertScanProfileCheck(scanPprofileChecks);
+    }
+
+    @PutMapping("scan-profile-check")
+    public void updateScanProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
+        this.userServices.insertScanProfileCheck(scanPprofileChecks);
+    }
 }

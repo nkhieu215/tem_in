@@ -165,7 +165,7 @@ spring:
           oidc:
             client-id: profile_productions
             client-secret: profile_productions
-            scope: openid, profile, email, offline_access # last one for refresh tokens
+            scope: openid, profile, email,jhipster,roles # last one for refresh tokens
 
 server:
   servlet:
