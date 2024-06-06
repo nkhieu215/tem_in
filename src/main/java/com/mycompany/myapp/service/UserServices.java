@@ -920,4 +920,41 @@ public class UserServices {
                 );
         }
     }
+
+    //?Lưu thông tin kết quả scan theo chu kỳ ( 10 kết quả) theo id lệnh sản xuất (OrderID)
+    public void insertDetailCheck(List<scanDetailCheck> scanDetailChecks) {
+        for (scanDetailCheck scanDetailCheck : scanDetailChecks) {
+            this.scanDetailCheckRepository.insertDetailCheck(
+                    scanDetailCheck.getOrderId(),
+                    scanDetailCheck.getRecordValue(),
+                    scanDetailCheck.getResult(),
+                    scanDetailCheck.getPosition(),
+                    scanDetailCheck.getUsername(),
+                    scanDetailCheck.getCreateAt()
+                );
+        }
+    }
+
+    //?Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
+    public List<scanLoginHistory> listLoginByWorkOrder(Long orderId) {
+        List<scanLoginHistory> scanLoginHistories = this.scanDetailCheckRepository.listLoginByWorkOrder(orderId);
+        return scanLoginHistories;
+    }
+
+    //?Lấy thông tin chi tiết scan sản phẩm theo lệnh sản xuất
+    public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId) {
+        List<scanDetailCheck> scanDetailChecks = this.scanDetailCheckRepository.listDetailCheckByWorkOrder(orderId);
+        return scanDetailChecks;
+    }
+
+    //?Lấy thông tin lệnh sản xuất theo group máy
+    public List<scanWorkorder> listWorkOrderByGroup() {
+        List<scanWorkorder> scanWorkorders = this.scanDetailCheckRepository.listWorkOrderByGroup();
+        return scanWorkorders;
+    }
+
+    //?Cập nhật trạng thái lệnh sản xuất
+    public void updateWorkingWorkOrder(scanWorkorder scanWorkorder) {
+        this.scanDetailCheckRepository.updateWorkingWorkOrder(scanWorkorder.getWorking(), scanWorkorder.getOrderId());
+    }
 }

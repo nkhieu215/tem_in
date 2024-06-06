@@ -504,4 +504,32 @@ public class UserController {
     public void updateScanProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
         this.userServices.insertScanProfileCheck(scanPprofileChecks);
     }
+
+    @PostMapping("scan-work-order/detail")
+    public void insertDetailCheck(@RequestBody List<scanDetailCheck> scanDetailChecks) {
+        this.userServices.insertDetailCheck(scanDetailChecks);
+    }
+
+    @GetMapping("user-login-history/{orderId}")
+    public List<scanLoginHistory> listLoginByWorkOrder(@PathVariable Long orderId) {
+        List<scanLoginHistory> scanLoginHistories = this.userServices.listLoginByWorkOrder(orderId);
+        return scanLoginHistories;
+    }
+
+    @GetMapping("scan-work-order/detail/{orderId}")
+    public List<scanDetailCheck> listDetailCheckByWorkOrder(@PathVariable Long orderId) {
+        List<scanDetailCheck> scanDetailChecks = this.userServices.listDetailCheckByWorkOrder(orderId);
+        return scanDetailChecks;
+    }
+
+    @GetMapping("scan-work-order/groupId")
+    public List<scanWorkorder> listWorkOrderByGroup() {
+        List<scanWorkorder> scanWorkorders = this.userServices.listWorkOrderByGroup();
+        return scanWorkorders;
+    }
+
+    @PostMapping("scan-work-order/orderId")
+    public void updateWorkingWorkOrder(@RequestBody scanWorkorder scanWorkorder) {
+        this.userServices.updateWorkingWorkOrder(scanWorkorder);
+    }
 }

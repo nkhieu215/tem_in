@@ -68,4 +68,29 @@ public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck
         Integer groupId,
         Long profileId
     );
+
+    @Query(value = "select * from `Scan_loginHistory` where orderId =?1 ;", nativeQuery = true)
+    public List<scanLoginHistory> listLoginByWorkOrder(Long orderId);
+
+    @Query(value = "select * from `Scan_detailCheck` where orderId=?1;", nativeQuery = true)
+    public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId);
+
+    @Query(value = "select * from `Scan_workOrder`; ", nativeQuery = true)
+    public List<scanWorkorder> listWorkOrderByGroup();
+
+    @Query(
+        value = "insert into `Scan_detailCheck` (orderId,recordValue,result,position,username,createAt) values(?1,?2,?3,?4,?5,?6) ",
+        nativeQuery = true
+    )
+    public void insertDetailCheck(
+        Long orderId,
+        String recordValue,
+        String result,
+        Integer position,
+        String username,
+        ZonedDateTime createAt
+    );
+
+    @Query(value = "update `Scan_workOrder` set working=?1 where orderId=?2;", nativeQuery = true)
+    public void updateWorkingWorkOrder(Integer working, Long orderId);
 }
