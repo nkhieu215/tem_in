@@ -9,28 +9,28 @@ public class scanProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "productCode")
+    @Column(name = "product_code")
     private String productCode;
 
-    @Column(name = "productName")
+    @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "productVersion")
+    @Column(name = "product_version")
     private String productVersion;
 
-    @Column(name = "createAt")
+    @Column(name = "created_at")
     private ZonedDateTime createAt;
 
-    @Column(name = "updateAt")
+    @Column(name = "update_at")
     private ZonedDateTime updateAt;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name = "productStatus")
+    @Column(name = "product_status")
     private Integer productStatus;
 
     public scanProduct(

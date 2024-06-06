@@ -11,7 +11,7 @@ public class scanLoginHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "loginId")
+    @Column(name = "login_id")
     private Long loginId;
 
     @Column(name = "username")
@@ -20,7 +20,7 @@ public class scanLoginHistory {
     @Column(name = "time_login")
     private String timeLogin;
 
-    @Column(name = "orderId")
+    @Column(name = "order_id")
     private Long orderId;
 
     public scanLoginHistory() {}

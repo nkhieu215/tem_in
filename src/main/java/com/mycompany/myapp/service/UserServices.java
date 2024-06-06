@@ -67,6 +67,24 @@ public class UserServices {
     @Autowired
     private scanDetailCheckRepository scanDetailCheckRepository;
 
+    @Autowired
+    private scanGroupMachinesRepository scanGroupMachinesRepository;
+
+    @Autowired
+    private scanLoginHistoryRepository scanLoginHistoryRepository;
+
+    @Autowired
+    private scanMachinesRepository scanMachinesRepository;
+
+    @Autowired
+    private scanProductRepository scanProductRepository;
+
+    @Autowired
+    private scanprofileCheckRepository scanprofileCheckRepository;
+
+    @Autowired
+    private scanWorkOrderRepository scanWorkOrderRepository;
+
     //☺ Template login - Chức năng xác thực tài khoản
     //    public ResponseMessage loginAuth(UserPostRequest request) {
     //        UserEntity entity = userRepository.getByUserName(request.getUserName());
@@ -821,21 +839,21 @@ public class UserServices {
     // ? Quản lý thiết bị
     // ?Lấy danh sách thiết bị theo nhóm thiết bị
     public List<scanMachines> listMachines(Long groupId) {
-        List<scanMachines> scanMachinesList = this.scanDetailCheckRepository.listMachines(groupId);
+        List<scanMachines> scanMachinesList = this.scanMachinesRepository.listMachines(groupId);
         return scanMachinesList;
     }
 
     //?Thêm mới list thiết bị theo nhóm thiết bị
     public void insertScanMachines(List<scanMachines> scanMachinesList) {
         for (scanMachines scanMachines : scanMachinesList) {
-            this.scanDetailCheckRepository.postListMachines(scanMachines.getMachineName(), scanMachines.getGroupId());
+            this.scanMachinesRepository.postListMachines(scanMachines.getMachineName(), scanMachines.getGroupId());
         }
     }
 
     //?Chỉnh sửa thông tin thiết bị theo nhóm thiết bị
     public void putListMachines(List<scanMachines> scanMachinesList) {
         for (scanMachines scanMachines : scanMachinesList) {
-            this.scanDetailCheckRepository.putListMachines(
+            this.scanMachinesRepository.putListMachines(
                     scanMachines.getMachineName(),
                     scanMachines.getGroupId(),
                     scanMachines.getGroupId()
@@ -845,13 +863,13 @@ public class UserServices {
 
     //?Lấy danh sách nhóm thiết bị
     public List<scanGroupMachines> groupMachinesList() {
-        List<scanGroupMachines> scanGroupMachinesList = this.scanDetailCheckRepository.groupMachinesList();
+        List<scanGroupMachines> scanGroupMachinesList = this.scanGroupMachinesRepository.groupMachinesList();
         return scanGroupMachinesList;
     }
 
     //?Thêm mới nhóm thiết bị
     public void insertGroupMachines(scanGroupMachines scanGroupMachines) {
-        this.scanDetailCheckRepository.insertGroupMachines(
+        this.scanGroupMachinesRepository.insertGroupMachines(
                 scanGroupMachines.getGroupName(),
                 scanGroupMachines.getCreateAt(),
                 scanGroupMachines.getUsername(),
@@ -861,7 +879,7 @@ public class UserServices {
 
     //?Chỉnh sửa thông tin nhóm thiết bị
     public void putGroupMachines(scanGroupMachines scanGroupMachines) {
-        this.scanDetailCheckRepository.putGroupMachines(
+        this.scanGroupMachinesRepository.putGroupMachines(
                 scanGroupMachines.getGroupName(),
                 scanGroupMachines.getUpdateAt(),
                 scanGroupMachines.getUsername(),
@@ -872,26 +890,26 @@ public class UserServices {
 
     //?Lấy danh sách sản phẩm
     public List<scanProduct> listProduct() {
-        List<scanProduct> scanProducts = this.scanDetailCheckRepository.listProduct();
+        List<scanProduct> scanProducts = this.scanProductRepository.listProduct();
         return scanProducts;
     }
 
     //? Lấy danh sách machine
     public List<scanMachines> listAllMachines() {
-        List<scanMachines> scanMachinesList = this.scanDetailCheckRepository.listAllMachines();
+        List<scanMachines> scanMachinesList = this.scanMachinesRepository.listAllMachines();
         return scanMachinesList;
     }
 
     //?Lấy danh sách tiêu chí đã khai báo theo sản phẩm
     public List<ScanPprofileCheck> listProfileCheckByProduct(Long productId) {
-        List<ScanPprofileCheck> scanPprofileChecks = this.scanDetailCheckRepository.listProfileCheckByProduct(productId);
+        List<ScanPprofileCheck> scanPprofileChecks = this.scanprofileCheckRepository.listProfileCheckByProduct(productId);
         return scanPprofileChecks;
     }
 
     //?Thêm mới thông tin tiêu chí khai báo cho sản phẩm
     public void insertScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
         for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
-            this.scanDetailCheckRepository.insertScanProfileCheck(
+            this.scanprofileCheckRepository.insertScanProfileCheck(
                     scanPprofileCheck.getProductId(),
                     scanPprofileCheck.getCheckName(),
                     scanPprofileCheck.getCheckValue(),
@@ -907,7 +925,7 @@ public class UserServices {
     //? chỉnh sửa thông tin tiêu chí khai báo cho sản phẩm
     public void updateScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
         for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
-            this.scanDetailCheckRepository.updateScanProfileCheck(
+            this.scanprofileCheckRepository.updateScanProfileCheck(
                     scanPprofileCheck.getProductId(),
                     scanPprofileCheck.getCheckName(),
                     scanPprofileCheck.getCheckValue(),
@@ -930,14 +948,15 @@ public class UserServices {
                     scanDetailCheck.getResult(),
                     scanDetailCheck.getPosition(),
                     scanDetailCheck.getUsername(),
-                    scanDetailCheck.getCreateAt()
+                    scanDetailCheck.getCreateAt(),
+                    scanDetailCheck.getRecordName()
                 );
         }
     }
 
     //?Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
     public List<scanLoginHistory> listLoginByWorkOrder(Long orderId) {
-        List<scanLoginHistory> scanLoginHistories = this.scanDetailCheckRepository.listLoginByWorkOrder(orderId);
+        List<scanLoginHistory> scanLoginHistories = this.scanLoginHistoryRepository.listLoginByWorkOrder(orderId);
         return scanLoginHistories;
     }
 
@@ -948,13 +967,19 @@ public class UserServices {
     }
 
     //?Lấy thông tin lệnh sản xuất theo group máy
-    public List<scanWorkorder> listWorkOrderByGroup() {
-        List<scanWorkorder> scanWorkorders = this.scanDetailCheckRepository.listWorkOrderByGroup();
+    public List<workOrderInfo> listWorkOrderByGroup() {
+        List<workOrderInfo> scanWorkorders = this.scanWorkOrderRepository.listWorkOrderByGroup();
         return scanWorkorders;
     }
 
     //?Cập nhật trạng thái lệnh sản xuất
     public void updateWorkingWorkOrder(scanWorkorder scanWorkorder) {
-        this.scanDetailCheckRepository.updateWorkingWorkOrder(scanWorkorder.getWorking(), scanWorkorder.getOrderId());
+        this.scanWorkOrderRepository.updateWorkingWorkOrder(scanWorkorder.getWorking(), scanWorkorder.getOrderId());
+    }
+
+    //?Lấy thông tin lệnh sản xuất theo orderId
+    public workOrderInfo listWorkOrderByGroupById(Long orderId) {
+        workOrderInfo workOrderInfo = this.scanWorkOrderRepository.listWorkOrderByGroupById(orderId);
+        return workOrderInfo;
     }
 }

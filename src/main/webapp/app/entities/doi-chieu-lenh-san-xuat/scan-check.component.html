@@ -1,4 +1,7 @@
 <div class="main-container">
+  <button type="button" class="btn btn-secondary" (click)="previousState()">
+    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+  </button>
   <div class="main-dashboard">
     <h1>Thông tin giám sát sản xuất</h1>
     <div class="btn-actions">
@@ -6,7 +9,7 @@
       <button type="button" class="btn btn-warning" (click)="btnPause()">Pause</button>
       <button type="button" class="btn btn-primary" (click)="btnFinish()">Finish</button>
       <button type="button" class="btn btn-secondary">Export</button>
-      <button type="button" class="btn btn-info">View Detail Data</button>
+      <button type="button" class="btn btn-info" (click)="openPopupChiTietThongTinScan()">View Detail Data</button>
     </div>
   </div>
   <div class="product-info">
@@ -29,8 +32,8 @@
           <td>{{ element.productName }}</td>
           <td>{{ element.lot }}</td>
 
-          <td>{{ element.status }}</td>
-          <td>0</td>
+          <td>{{ element.trangThai }}</td>
+          <td>{{ elapsedTime }}</td>
         </tr>
       </tbody>
     </table>
@@ -47,7 +50,7 @@
             </tr>
           </thead>
           <tbody>
-            <td>{{ dataWorkOrder[0].numberOfplan }}</td>
+            <td>{{ dataWorkOrder[0].sanLuong }}</td>
             <td>{{ totalScans }}</td>
             <td>{{ rateCompleted }}%</td>
           </tbody>
@@ -74,11 +77,12 @@
         <H3>Tổng hợp dữ liệu kiểm tra</H3>
         <div class="div-input">
           <input
+            id="scanCheck"
             [(ngModel)]="scanValue"
             (keyup.enter)="onScan()"
             placeholder="Scan here"
             autofocus
-            disabled="{{ ['Waiting', 'Pause', 'Finish'].includes(dataWorkOrder[0].status) }}"
+            disabled="{{ ['Waiting', 'Pause', 'Finish'].includes(dataWorkOrder[0].trangThai) }}"
           />
         </div>
       </div>
@@ -144,6 +148,123 @@
           </select>
 
           <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup chi tiết thông tin scan -->
+<div class="table-responsive popup-background" role="dialog" *ngIf="popupChiTietThongTinScan === true">
+  <div>
+    <span class="close-btn" (click)="closePopupChiTietThongTinScan()">&times;</span>
+    <div>
+      <div>
+        <h2>Chi tiết thông tin scan</h2>
+        <div class="table-container">
+          <div class="table-header">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                  <th scope="col">WorkOder</th>
+                  <th scope="col">Lot</th>
+                  <th scope="col">Mã sản phẩm</th>
+                  <th scope="col">Tên sản phẩm</th>
+                  <th scope="col">Nhóm máy</th>
+                  <th scope="col">Version</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Kế hoạch</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                <tr *ngFor="let element of dataWorkOrder">
+                  <td>{{ element.workOrder }}</td>
+                  <td>{{ element.lot }}</td>
+                  <td>{{ element.productCode }}</td>
+                  <td>{{ element.productName }}</td>
+                  <td>{{ element.groupName }}</td>
+                  <td></td>
+
+                  <td>{{ element.trangThai }}</td>
+                  <td>{{ element.sanLuong }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-body">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                  <th scope="col"><span>Mã máy</span></th>
+                  <th scope="col">
+                    <span>Vị trí</span>
+                    <input #searchInput type="text" [(ngModel)]="position" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+                  </th>
+                  <th scope="col"><span>Giá trị</span></th>
+                  <th scope="col"><span>Thông tin check</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                  <th scope="col"><span>STT</span></th>
+                  <th scope="col">
+                    <span>Mã máy</span>
+                    <input
+                      #searchInput
+                      type="text"
+                      [(ngModel)]="machineId"
+                      [ngModelOptions]="{ standalone: true }"
+                      placeholder="Tìm kiếm"
+                    />
+                  </th>
+                  <th scope="col"><span>Serial</span></th>
+                  <th scope="col">
+                    <span>Thông tin check</span>
+                    <input
+                      #searchInput
+                      type="text"
+                      [(ngModel)]="checkValue"
+                      [ngModelOptions]="{ standalone: true }"
+                      placeholder="Tìm kiếm"
+                    />
+                  </th>
+                  <th scope="col"><span>Giá tị</span></th>
+                  <th scope="col"><span>Vị trí</span></th>
+                  <th scope="col"><span>Result</span></th>
+                </tr>
+              </thead>
+            </table>
+            <div class="paginate">
+              <div class="paginate-container">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="50">50</option>
+                </select>
+
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          </button>
+          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+          </button>
         </div>
       </div>
     </div>

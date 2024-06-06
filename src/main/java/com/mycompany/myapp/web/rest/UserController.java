@@ -523,13 +523,19 @@ public class UserController {
     }
 
     @GetMapping("scan-work-order/groupId")
-    public List<scanWorkorder> listWorkOrderByGroup() {
-        List<scanWorkorder> scanWorkorders = this.userServices.listWorkOrderByGroup();
+    public List<workOrderInfo> listWorkOrderByGroup() {
+        List<workOrderInfo> scanWorkorders = this.userServices.listWorkOrderByGroup();
         return scanWorkorders;
     }
 
     @PostMapping("scan-work-order/orderId")
     public void updateWorkingWorkOrder(@RequestBody scanWorkorder scanWorkorder) {
         this.userServices.updateWorkingWorkOrder(scanWorkorder);
+    }
+
+    @GetMapping("scan-work-order/{orderId}")
+    public workOrderInfo listWorkOrderByGroupById(@PathVariable Long orderId) {
+        workOrderInfo workOrderInfo = this.userServices.listWorkOrderByGroupById(orderId);
+        return workOrderInfo;
     }
 }

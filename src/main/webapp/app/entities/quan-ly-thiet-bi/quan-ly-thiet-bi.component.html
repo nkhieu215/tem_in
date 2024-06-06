@@ -49,13 +49,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr *ngFor="let item of listOfGroupMachine; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.groupName }}</td>
+            <td>{{ item.createdAt }}</td>
+            <td>{{ item.updatedAt }}</td>
+            <td>{{ item.username }}</td>
+            <td>{{ item.groupStatus }}</td>
             <td class="text-end">
               <div class="btn-group">
                 <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi()">

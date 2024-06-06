@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +12,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 })
 export class DoiChieuLenhSanXuatComponent implements OnInit {
   doiChieuLenhSanXuatUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/groupId');
+  WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');
   predicate!: string;
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -28,12 +30,14 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   @Input() createdAt = '';
   @Input() position = '';
   @Input() checkValue = '';
-
+  //list lenh san xuat
+  listOfLenhSanXuat: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
-    protected applicationConfigService: ApplicationConfigService
+    protected applicationConfigService: ApplicationConfigService,
+    protected http: HttpClient
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -57,9 +61,10 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      console.log('ressss');
-    }, 1000);
+    this.http.get<any>(this.doiChieuLenhSanXuatUrl).subscribe(res => {
+      this.listOfLenhSanXuat = res;
+      console.log('lsx', res);
+    });
   }
 
   openPopupChiTietThongTinScan(): void {
@@ -68,5 +73,8 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
 
   closePopupChiTietThongTinScan(): void {
     this.popupChiTietThongTinScan = false;
+  }
+  getWorkOrderDetail(id: any): any {
+    sessionStorage.setItem('orderId', id);
   }
 }

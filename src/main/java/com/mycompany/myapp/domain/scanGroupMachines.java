@@ -1,5 +1,6 @@
 package com.mycompany.myapp.domain;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 
@@ -9,28 +10,28 @@ public class scanGroupMachines {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "groupId")
-    private Integer groupId;
+    @Column(name = "group_id")
+    private Long groupId;
 
-    @Column(name = "groupName")
+    @Column(name = "group_name")
     private String groupName;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private ZonedDateTime createAt;
 
-    @Column(name = "updateAt")
+    @Column(name = "update_at")
     private ZonedDateTime updateAt;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name = "groupStatus")
+    @Column(name = "group_status")
     private Integer groupStatus;
 
     public scanGroupMachines() {}
 
     public scanGroupMachines(
-        Integer groupId,
+        Long groupId,
         String groupName,
         ZonedDateTime createAt,
         ZonedDateTime updateAt,
@@ -45,11 +46,11 @@ public class scanGroupMachines {
         this.groupStatus = groupStatus;
     }
 
-    public Integer getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 

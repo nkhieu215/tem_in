@@ -9,28 +9,28 @@ public class scanWorkorder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderId")
+    @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "workOrder")
+    @Column(name = "work_order")
     private String workOrder;
 
     @Column(name = "lot")
     private String lot;
 
-    @Column(name = "numberOfPlan")
+    @Column(name = "number_of_plan")
     private String numberOfPlan;
 
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "groupId")
+    @Column(name = "group_id")
     private Integer groupId;
 
     @Column(name = "working")
     private Integer working;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private Date createAt;
 
     public scanWorkorder() {}

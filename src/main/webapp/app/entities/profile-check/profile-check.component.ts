@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 @Component({
   selector: 'jhi-profile-check',
@@ -9,6 +11,7 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
   styleUrls: ['./profile-check.component.scss'],
 })
 export class ProfileCheckComponent implements OnInit {
+  listOfProDuctURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check');
   predicate!: string;
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -20,10 +23,17 @@ export class ProfileCheckComponent implements OnInit {
   @Input() updatedAt = '';
   @Input() username = '';
   @Input() productStatus = '';
-
+  // list product
+  listOfProduct: any[] = [];
   popupKhaiBaoProfile = false;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected modalService: NgbModal,
+    protected applicationConfigService: ApplicationConfigService,
+    protected http: HttpClient
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
@@ -46,9 +56,10 @@ export class ProfileCheckComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      console.log('ressss');
-    }, 1000);
+    this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
+      this.listOfProduct = res;
+      console.log(res);
+    });
   }
 
   openPopupKhaiBaoProfile(): void {

@@ -9,19 +9,19 @@ public class scanProductVersions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "versionId")
+    @Column(name = "version_id")
     private Long versionId;
 
     @Column(name = "version")
     private String version;
 
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Long prodcucId;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private ZonedDateTime create;
 
-    @Column(name = "updateAt")
+    @Column(name = "update_at")
     private ZonedDateTime updateAt;
 
     public scanProductVersions() {}

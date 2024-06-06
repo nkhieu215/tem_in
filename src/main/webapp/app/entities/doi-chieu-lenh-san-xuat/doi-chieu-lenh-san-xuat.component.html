@@ -60,16 +60,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr [routerLink]="['/doi-chieu-lenh-san-xuat', 'scan-check']">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr
+            *ngFor="let item of listOfLenhSanXuat; let i = index"
+            [routerLink]="['/doi-chieu-lenh-san-xuat', 'scan-check']"
+            (click)="getWorkOrderDetail(item.orderId)"
+          >
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.workOrder }}</td>
+            <td>{{ item.lot }}</td>
+            <td>{{ item.groupName }}</td>
+            <td>{{ item.productCode }}</td>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.trangThai }}</td>
+            <td>{{ item.createdAt }}</td>
+            <td>{{ item.sanLuong }}</td>
             <td></td>
             <td></td>
           </tr>

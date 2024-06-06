@@ -8,13 +8,13 @@ public class scanMachines {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "machineId")
+    @Column(name = "machine_id")
     private Integer machineId;
 
-    @Column(name = "machineName")
+    @Column(name = "machine_name")
     private String machineName;
 
-    @Column(name = "groupId")
+    @Column(name = "group_id")
     private Integer groupId;
 
     public scanMachines() {}

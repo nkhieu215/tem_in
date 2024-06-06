@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 @Component({
   selector: 'jhi-quan-ly-thiet-bi',
@@ -10,6 +12,8 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
   styleUrls: ['./quan-ly-thiet-bi.component.scss'],
 })
 export class QuanLyThietBiComponent implements OnInit {
+  listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
+
   predicate!: string;
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -32,12 +36,15 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() groupStatus = '';
   @Input() machineId = '';
   @Input() machineName = '';
-
+  // quản lý thiết bị
+  listOfGroupMachine: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected http: HttpClient,
+    protected applicationConfigService: ApplicationConfigService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -61,9 +68,10 @@ export class QuanLyThietBiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      console.log('ressss');
-    }, 1000);
+    this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
+      this.listOfGroupMachine = res;
+      console.log('TB', res);
+    });
   }
 
   openPopupNhomThietBi(): void {

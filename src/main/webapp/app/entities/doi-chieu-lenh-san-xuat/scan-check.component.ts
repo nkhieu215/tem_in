@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { DoiChieuLenhSanXuatComponent } from './doi-chieu-lenh-san-xuat.component';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { HttpClient } from '@angular/common/http';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-scan-check',
@@ -10,33 +14,34 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
   styleUrls: ['./scan-check.component.scss'],
 })
 export class ScanCheckComponent implements OnInit {
+  WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');
+  DetaiChecklUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/detail');
+  userLoginlUrl = this.applicationConfigService.getEndpointFor('api/user-login-history');
+  //btn
+  start = true;
+  pause = true;
+  predicate!: string;
+  ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
 
   title = 'ScanSystem';
 
-  dataWorkOrder = [
-    {
-      productCode: '00047261',
-      productName: 'Bộ đèn LED M66 1200/60W 6500K',
-      workOrder: 'WO-88409-1',
-      lot: '240601130006A',
-      machineCode: 'LR-XK01',
-      status: 'Waiting',
-      runTime: '45324',
-      numberOfplan: 2000,
-    },
-  ];
+  dataWorkOrder: any[] = [{}];
   checkValue = 'N14662';
   scanValue = '';
-
-  scanHistory: { value: string; status: string; stationName: 'BG XK04'; valueCheck: 'productName' }[] = [];
   totalScans = 0;
   totalPass = 0;
   totalFail = 0;
-  rateCompleted = 0;
+  rateCompleted = '';
   runTime = 0;
   stopTime = 0;
+  timer: any;
+  elapsedTime = 0;
+  running = false;
+  numberPlan = this.dataWorkOrder[0].sanLuong;
+  scanHistory: { value: string; status: string; stationName: 'BG XK04'; valueCheck: 'productName' }[] = [];
+
   public lastTime = Date.now();
   public lastCmd = null;
   public pieChartLabels = ['NG', 'PASS'];
@@ -47,17 +52,21 @@ export class ScanCheckComponent implements OnInit {
   ];
   public pieChartLegend = true;
   public pieChartPlugins = [];
-  dataUser = [
-    { username: 'RD002043', timeLogin: '2024-06-05 10:00' },
-    { username: 'RD002044', timeLogin: '2024-06-05 11:00' },
-    { username: 'RD002045', timeLogin: '2024-06-05 14:00' },
-  ];
 
+  popupChiTietThongTinScan = false;
+  @Input() machineId = '';
+  @Input() position = '';
+  dataUser = [{ username: '', timeLogin: '' }];
+  // acount
+  account: any;
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected applicationConfigService: ApplicationConfigService,
+    protected http: HttpClient,
+    protected accountService: AccountService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -81,39 +90,65 @@ export class ScanCheckComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      console.log('ressss');
-    }, 1000);
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      console.log('acc', this.account);
+    });
+    const item = sessionStorage.getItem('orderId');
+    this.http.get<any>(`${this.WorkOrderDetailUrl}/${item as string}`).subscribe(res => {
+      this.dataWorkOrder[0] = res;
+      this.numberPlan = this.dataWorkOrder[0].sanLuong;
+      if (this.dataWorkOrder[0].trangThai === 0) {
+        this.dataWorkOrder[0].trangThai = 'waiting';
+      }
+      console.log('detail', this.dataWorkOrder[0]);
+    });
+    this.http.get<any>(`${this.userLoginlUrl}/${item as string}`).subscribe(res => {
+      this.dataUser = res;
+      console.log('login', res);
+    });
   }
 
   async onScan(): Promise<any> {
+    console.log({ ttscan: this.totalScans, number: this.numberPlan });
     if (this.scanValue.trim()) {
       this.totalScans++;
       const status = this.scanValue === this.checkValue ? 'Pass' : 'Fail';
       this.scanHistory.push({ value: this.scanValue, status, stationName: 'BG XK04', valueCheck: 'productName' });
-      this.rateCompleted = this.totalScans / this.dataWorkOrder[0].numberOfplan;
+
+      this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
       if (status === 'Pass') {
         this.totalPass++;
       } else {
-        this.totalFail++;
         await this.playAlertSound();
-        setTimeout(() => {
-          alert(this.scanValue + 'không chính xác vui lòng kiểm tra lại!!!');
-        }, 0);
-
-        //this.warningNG(this.scanValue);
+        // setTimeout(() => {
+        //   alert(this.scanValue + 'không chính xác vui lòng kiểm tra lại!!!');
+        // }, 0);
+        this.totalFail++;
+        this.warningNG(this.scanValue);
       }
       this.pieChartDatasets = [
         {
           data: [this.totalFail, this.totalPass],
         },
       ];
+
       this.scanValue = ''; // Xóa dữ liệu trong ô input
+      if (this.totalScans % 10 === 0) {
+        // this.http.post<any>(this.DetaiChecklUrl,this.scanHistory).subscribe(()=>{
+        //   console.log("luu thanh cong");
+        // })
+        this.scanHistory = [];
+      }
+
+      if (this.totalScans % 10 === 0) {
+        // this.postData();
+      }
     }
   }
 
   warningNG(stringA: string): void {
-    alert(stringA + ' sai vui lòng kiểm tra lại!');
+    alert(stringA + ' không chính xác vui lòng kiểm tra lại!!!');
   }
   playAlertSound(): any {
     return new Promise<void>(resolve => {
@@ -128,12 +163,35 @@ export class ScanCheckComponent implements OnInit {
   }
 
   btnStart(): void {
-    this.dataWorkOrder[0].status = 'Running';
+    document.getElementById('scanCheck')?.focus();
+    this.dataWorkOrder[0].trangThai = 'Running';
+    this.running = true;
+    this.timer = setInterval(() => {
+      this.elapsedTime++;
+    }, 1000);
+    const currentTime = new Date().toLocaleString();
+    this.dataUser.push({ username: this.account.login, timeLogin: currentTime });
   }
   btnPause(): void {
-    this.dataWorkOrder[0].status = 'Pause';
+    this.dataWorkOrder[0].trangThai = 'Pause';
+    this.running = false;
+    clearInterval(this.timer);
   }
   btnFinish(): void {
-    this.dataWorkOrder[0].status = 'Finish';
+    this.dataWorkOrder[0].trangThai = 'Finish';
+    this.running = false;
+    clearInterval(this.timer);
+  }
+
+  openPopupChiTietThongTinScan(): void {
+    this.popupChiTietThongTinScan = true;
+  }
+
+  closePopupChiTietThongTinScan(): void {
+    this.popupChiTietThongTinScan = false;
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 }

@@ -1,21 +1,22 @@
 package com.mycompany.myapp.domain;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Scan_detailCheck")
-public class scanDetailCheck {
+public class scanDetailCheck implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recordId")
+    @Column(name = "record_id")
     private Long recordId;
 
-    @Column(name = "orderId")
+    @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "recordValue")
+    @Column(name = "record_value")
     private String recordValue;
 
     @Column(name = "result")
@@ -27,8 +28,19 @@ public class scanDetailCheck {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private ZonedDateTime createAt;
+
+    @Column(name = "record_name")
+    private String recordName;
+
+    public String getRecordName() {
+        return recordName;
+    }
+
+    public void setRecordName(String recordName) {
+        this.recordName = recordName;
+    }
 
     public scanDetailCheck() {}
 

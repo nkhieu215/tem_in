@@ -8,32 +8,32 @@ import org.apache.commons.math3.analysis.function.Identity;
 public class ScanPprofileCheck {
 
     @Id
-    @Column(name = "profileId")
+    @Column(name = "profile_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
 
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "checkName")
+    @Column(name = "check_name")
     private String checkName;
 
-    @Column(name = "checkValue")
+    @Column(name = "check_value")
     private String checkValue;
 
-    @Column(name = "checkStatus")
+    @Column(name = "check_status")
     private String checkStatus;
 
     @Column(name = "position")
     private Integer position;
 
-    @Column(name = "versionId")
+    @Column(name = "version_id")
     private Long versionId;
 
-    @Column(name = "groupId")
+    @Column(name = "group_id")
     private Integer groupId;
 
-    @Column(name = "machineId")
+    @Column(name = "machine_id")
     private Integer machineId;
 
     public ScanPprofileCheck() {}
