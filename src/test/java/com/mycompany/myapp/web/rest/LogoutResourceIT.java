@@ -64,7 +64,7 @@ class LogoutResourceIT {
 
     @Test
     void getLogoutInformation() throws Exception {
-        final String ORIGIN_URL = "http://localhost:8085";
+        final String ORIGIN_URL = "http://localhost:8088";
         String logoutUrl =
             this.registrations.findByRegistrationId("oidc")
                 .getProviderDetails()
@@ -73,7 +73,7 @@ class LogoutResourceIT {
                 .toString();
         logoutUrl = logoutUrl + "?id_token_hint=" + ID_TOKEN + "&post_logout_redirect_uri=" + ORIGIN_URL;
         restLogoutMockMvc
-            .perform(post("http://localhost:8085/api/logout").header(HttpHeaders.ORIGIN, ORIGIN_URL))
+            .perform(post("http://localhost:8088/api/logout").header(HttpHeaders.ORIGIN, ORIGIN_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.logoutUrl").value(logoutUrl));

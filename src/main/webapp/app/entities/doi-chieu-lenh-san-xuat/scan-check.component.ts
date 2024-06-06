@@ -17,6 +17,9 @@ export class ScanCheckComponent implements OnInit {
   WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');
   DetaiChecklUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/detail');
   userLoginlUrl = this.applicationConfigService.getEndpointFor('api/user-login-history');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  tongHopURL = this.applicationConfigService.getEndpointFor('api/tong-hop');
+
   //btn
   start = true;
   pause = true;
@@ -61,6 +64,8 @@ export class ScanCheckComponent implements OnInit {
   dataUser = [{ username: '', timeLogin: '' }];
   // acount
   account: any;
+  // Thiet bi
+  listOfMachines: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -108,6 +113,10 @@ export class ScanCheckComponent implements OnInit {
     this.http.get<any>(`${this.userLoginlUrl}/${item as string}`).subscribe(res => {
       this.dataUser = res;
       console.log('login', res);
+    });
+    this.http.get<any>(`${this.tongHopURL}/${item as string}`).subscribe(res => {
+      this.dataUser = res;
+      console.log('tonghop', res);
     });
   }
 
@@ -186,6 +195,11 @@ export class ScanCheckComponent implements OnInit {
   }
 
   openPopupChiTietThongTinScan(): void {
+    const groupId = sessionStorage.getItem('groupId');
+    this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
+      this.listOfMachines = res;
+      console.log('machinessss:', res);
+    });
     this.popupChiTietThongTinScan = true;
   }
 

@@ -67,7 +67,7 @@
           <tr
             *ngFor="let item of listOfLenhSanXuat; let i = index"
             [routerLink]="['/doi-chieu-lenh-san-xuat', 'scan-check']"
-            (click)="getWorkOrderDetail(item.orderId)"
+            (click)="getWorkOrderDetail(item.orderId, item.groupId)"
           >
             <td>{{ i + 1 }}</td>
             <td>{{ item.workOrder }}</td>

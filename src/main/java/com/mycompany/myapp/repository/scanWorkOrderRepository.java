@@ -19,7 +19,8 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         " pd.product_code as productCode,\n" +
         " pd.product_name as productName,\n" +
         " wo.create_at as createAt,\n" +
-        " gm.group_name as groupName" +
+        " gm.group_name as groupName, " +
+        "wo.group_id as groupId " +
         " from Scan_workOrder as wo\n" +
         "  inner join Scan_products as pd on pd.product_id = wo.product_id\n" +
         "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id ; ",

@@ -10,4 +10,5 @@ public interface workOrderInfo {
     String getProductName();
     String getCreateAt();
     String getGroupName();
+    Long getGroupId();
 }

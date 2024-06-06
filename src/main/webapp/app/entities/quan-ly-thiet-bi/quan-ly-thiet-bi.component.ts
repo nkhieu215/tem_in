@@ -13,6 +13,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 })
 export class QuanLyThietBiComponent implements OnInit {
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
 
   predicate!: string;
   ascending!: boolean;
@@ -42,6 +43,9 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() machineName = '';
   // quản lý thiết bị
   listOfGroupMachine: any[] = [];
+  groupMachine: any;
+  // Thiet bi
+  listOfMachines: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -78,8 +82,13 @@ export class QuanLyThietBiComponent implements OnInit {
     });
   }
 
-  openPopupNhomThietBi(): void {
+  openPopupNhomThietBi(index: any, id: any): void {
     this.popupNhomThietBi = true;
+    this.groupMachine = this.listOfGroupMachine[index];
+    this.http.get<any>(`${this.listOfMachineURL}/${id as string}`).subscribe(res => {
+      this.listOfMachines = res;
+      console.log('machine:', res);
+    });
   }
 
   closePopupNhomThietBi(): void {

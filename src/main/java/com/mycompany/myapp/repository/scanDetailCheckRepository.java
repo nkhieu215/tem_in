@@ -27,4 +27,13 @@ public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck
         ZonedDateTime createAt,
         String recordName
     );
+
+    @Query(
+        value = "SELECT \n" +
+        "\t\tresult as result\n" +
+        "\t  ,count(record_value) as recordValue\n" +
+        "  FROM [ProfileProductions].[dbo].[Scan_detailCheck] where order_id = ?1 group by result ",
+        nativeQuery = true
+    )
+    public List<TongHopResponse> tongHop(Long orderId);
 }

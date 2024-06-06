@@ -538,4 +538,10 @@ public class UserController {
         workOrderInfo workOrderInfo = this.userServices.listWorkOrderByGroupById(orderId);
         return workOrderInfo;
     }
+
+    @GetMapping("tong-hop/{orderId}")
+    public List<TongHopResponse> tongHop(@PathVariable Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.userServices.tongHop(orderId);
+        return tongHopResponses;
+    }
 }

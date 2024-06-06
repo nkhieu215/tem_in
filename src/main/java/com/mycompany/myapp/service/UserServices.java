@@ -982,4 +982,9 @@ public class UserServices {
         workOrderInfo workOrderInfo = this.scanWorkOrderRepository.listWorkOrderByGroupById(orderId);
         return workOrderInfo;
     }
+
+    public List<TongHopResponse> tongHop(Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.scanDetailCheckRepository.tongHop(orderId);
+        return tongHopResponses;
+    }
 }
