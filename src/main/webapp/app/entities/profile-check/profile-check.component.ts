@@ -26,6 +26,7 @@ export class ProfileCheckComponent implements OnInit {
   // list product
   listOfProduct: any[] = [];
   popupKhaiBaoProfile = false;
+  popupConfirmSave = false;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -68,5 +69,13 @@ export class ProfileCheckComponent implements OnInit {
 
   closePopupKhaiBaoProfile(): void {
     this.popupKhaiBaoProfile = false;
+  }
+
+  openPopupConfirmSave(): void {
+    this.popupConfirmSave = true;
+  }
+
+  closePopupConfirmSave(): void {
+    this.popupConfirmSave = false;
   }
 }

@@ -10,6 +10,16 @@
       <button type="button" class="btn btn-primary" (click)="btnFinish()">Finish</button>
       <button type="button" class="btn btn-secondary">Export</button>
       <button type="button" class="btn btn-info" (click)="openPopupChiTietThongTinScan()">View Detail Data</button>
+      <div class="div-input">
+        <input
+          id="scanCheck"
+          [(ngModel)]="scanValue"
+          (keyup.enter)="onScan()"
+          placeholder="Scan here"
+          autofocus
+          disabled="{{ ['Waiting', 'Pause', 'Finish'].includes(dataWorkOrder[0].trangThai) }}"
+        />
+      </div>
     </div>
   </div>
   <div class="product-info">
@@ -75,16 +85,6 @@
     <div class="inspection-stations">
       <div class="group-input">
         <H3>Tổng hợp dữ liệu kiểm tra</H3>
-        <div class="div-input">
-          <input
-            id="scanCheck"
-            [(ngModel)]="scanValue"
-            (keyup.enter)="onScan()"
-            placeholder="Scan here"
-            autofocus
-            disabled="{{ ['Waiting', 'Pause', 'Finish'].includes(dataWorkOrder[0].trangThai) }}"
-          />
-        </div>
       </div>
 
       <table class="table-inspection">
@@ -159,7 +159,7 @@
   <div>
     <span class="close-btn" (click)="closePopupChiTietThongTinScan()">&times;</span>
     <div>
-      <div>
+      <div class="popup-chi-tiet-scan">
         <h2>Chi tiết thông tin scan</h2>
         <div class="table-container">
           <div class="table-header">
@@ -259,14 +259,30 @@
               </div>
             </div>
           </div>
-          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary">
-            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-          </button>
-          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
-            <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-          </button>
         </div>
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary"
+          (click)="closePopupChiTietThongTinScan()"
+        >
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+        </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
     </div>
   </div>
 </div>

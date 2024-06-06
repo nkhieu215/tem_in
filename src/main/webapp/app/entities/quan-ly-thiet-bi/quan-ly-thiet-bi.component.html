@@ -16,6 +16,7 @@
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
             <th scope="col" jhiSortBy="STT">
               <span>STT</span>
+              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
             </th>
 
             <th scope="col" jhiSortBy="groupName">
@@ -45,6 +46,7 @@
 
             <th scope="col">
               <span>Options</span>
+              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
             </th>
           </tr>
         </thead>
@@ -85,12 +87,12 @@
   </div>
 </div>
 
-<!-- popup thêm mới nhóm thiết bị -->
+<!-- popup chi tiết nhóm thiết bị -->
 <div class="table-responsive popup-background" role="dialog" *ngIf="popupNhomThietBi === true">
   <div>
     <span class="close-btn" (click)="closePopupNhomThietBi()">&times;</span>
     <div>
-      <div>
+      <div class="popup-chi-tiet-nhom-thiet-bi">
         <h2>Chi tiết nhóm thiết bị</h2>
 
         <table class="table table-striped" aria-describedby="page-heading">
@@ -113,7 +115,7 @@
             <td><span></span></td>
           </tbody>
         </table>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
 
@@ -165,7 +167,7 @@
         >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave2()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
       </div>
@@ -178,13 +180,13 @@
   <div>
     <span class="close-btn" (click)="closePopupThemMoiThietBi()">&times;</span>
     <div>
-      <div>
+      <div class="popup-them-moi-ma-thiet-bi">
         <h2>Thêm mới thiết bị</h2>
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-              <th scope="col"><span>Chọn</span></th>
-              <th scope="col"><span>STT</span></th>
+              <th scope="col"><span>Chọn</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
+              <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
               <th scope="col" jhiSortBy="machineId">
                 <span>Mã thiết bị</span>
                 <input #searchInput type="text" [(ngModel)]="machineId" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
@@ -193,7 +195,7 @@
                 <span>Tên thiết bị</span>
                 <input #searchInput type="text" [(ngModel)]="machineName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
               </th>
-              <th scope="col"><span>Trạng thái</span></th>
+              <th scope="col"><span>Trạng thái</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
             </tr>
           </thead>
           <tbody>
@@ -206,7 +208,49 @@
             </tr>
           </tbody>
         </table>
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary"
+          (click)="closePopupThemMoiThietBi()"
+        >
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave3()">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+        </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info2" role="dialog" *ngIf="popupConfirmSave2 === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave2()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave2()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info3" role="dialog" *ngIf="popupConfirmSave3 === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave3()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave3()">Hủy</button>
     </div>
   </div>
 </div>

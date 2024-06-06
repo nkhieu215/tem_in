@@ -21,6 +21,10 @@ export class QuanLyThietBiComponent implements OnInit {
 
   popupNhomThietBi = false;
   popupThemMoiThietBi = false;
+  popupConfirmSave = false;
+  popupConfirmSave2 = false;
+  popupConfirmSave3 = false;
+
   // formSearch = this.formBuilder.group({
   //   groupName: '',
   //   createedAt: '',
@@ -88,5 +92,29 @@ export class QuanLyThietBiComponent implements OnInit {
 
   closePopupThemMoiThietBi(): void {
     this.popupThemMoiThietBi = false;
+  }
+
+  openPopupConfirmSave(): void {
+    this.popupConfirmSave = true;
+  }
+
+  closePopupConfirmSave(): void {
+    this.popupConfirmSave = false;
+  }
+
+  openPopupConfirmSave2(): void {
+    this.popupConfirmSave2 = true;
+  }
+
+  closePopupConfirmSave2(): void {
+    this.popupConfirmSave2 = false;
+  }
+
+  openPopupConfirmSave3(): void {
+    this.popupConfirmSave2 = true;
+  }
+
+  closePopupConfirmSave3(): void {
+    this.popupConfirmSave2 = false;
   }
 }

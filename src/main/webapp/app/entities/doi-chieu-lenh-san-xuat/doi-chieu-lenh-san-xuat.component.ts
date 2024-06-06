@@ -20,6 +20,7 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   doiChieuLenhSanXuats?: any[];
 
   popupChiTietThongTinScan = false;
+  popupConfirmSave = false;
 
   @Input() workOrder = '';
   @Input() lot = '';
@@ -76,5 +77,13 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   }
   getWorkOrderDetail(id: any): any {
     sessionStorage.setItem('orderId', id);
+  }
+
+  openPopupConfirmSave(): void {
+    this.popupConfirmSave = true;
+  }
+
+  closePopupConfirmSave(): void {
+    this.popupConfirmSave = false;
   }
 }

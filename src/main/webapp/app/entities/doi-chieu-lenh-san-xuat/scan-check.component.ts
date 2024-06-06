@@ -54,6 +54,8 @@ export class ScanCheckComponent implements OnInit {
   public pieChartPlugins = [];
 
   popupChiTietThongTinScan = false;
+  popupConfirmSave = false;
+
   @Input() machineId = '';
   @Input() position = '';
   dataUser = [{ username: '', timeLogin: '' }];
@@ -193,5 +195,13 @@ export class ScanCheckComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  openPopupConfirmSave(): void {
+    this.popupConfirmSave = true;
+  }
+
+  closePopupConfirmSave(): void {
+    this.popupConfirmSave = false;
   }
 }

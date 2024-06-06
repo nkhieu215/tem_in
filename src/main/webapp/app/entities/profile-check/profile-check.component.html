@@ -10,6 +10,7 @@
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
             <th scope="col" jhiSortBy="STT">
               <span>STT</span>
+              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
             </th>
             <th scope="col" jhiSortBy="productCode">
               <span>Mã sản phẩm</span>
@@ -37,6 +38,7 @@
             </th>
             <th scope="col" jhiSortBy="">
               <span>Options</span>
+              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
             </th>
           </tr>
         </thead>
@@ -83,7 +85,7 @@
   <div>
     <span class="close-btn" (click)="closePopupKhaiBaoProfile()">&times;</span>
     <div>
-      <div>
+      <div class="popup-khai-bao-profile">
         <h2>Khai báo Profile</h2>
         <div class="table-container">
           <div class="table-header">
@@ -205,10 +207,20 @@
         >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
     </div>
   </div>
 </div>

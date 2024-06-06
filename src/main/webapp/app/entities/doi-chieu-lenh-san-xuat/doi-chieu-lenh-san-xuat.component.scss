@@ -44,9 +44,12 @@ $checkmark-size: 1.2;
       padding: 12px 15px;
       cursor: pointer;
       position: relative;
+      background-color: #309acf;
+      color: #ffffff;
+      border: 0.8px solid #000;
 
       &:hover {
-        background-color: #e0e0e0;
+        background-color: #2d80aa;
       }
 
       span {
@@ -84,6 +87,7 @@ $checkmark-size: 1.2;
     td {
       padding: 12px 15px;
       border-bottom: 1px solid #ddd;
+      border: 0.8px solid #000;
 
       &:last-child {
         text-align: center;
@@ -276,6 +280,16 @@ th[scope='col'].sorted-desc::after {
     overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
+    .popup-chi-tiet-thong-tin-scan {
+      width: 87vw;
+      height: 80vh;
+
+      .table-container {
+        width: 87vw;
+        height: 70vh;
+      }
+    }
+
     .close-btn {
       font-size: 1.5rem;
       cursor: pointer;
@@ -310,6 +324,7 @@ th[scope='col'].sorted-desc::after {
           font-weight: bold;
           text-align: left;
           border-bottom: 1px solid #ddd;
+          border: 0.8px solid #000;
         }
       }
 
@@ -322,6 +337,7 @@ th[scope='col'].sorted-desc::after {
           td {
             padding: 10px;
             border-bottom: 1px solid #ddd;
+            border: 0.8px solid #000;
 
             &:last-child {
               text-align: right;
@@ -468,4 +484,40 @@ th[scope='col'].sorted-desc::after {
   transition: none;
   box-shadow: none;
   opacity: 1;
+}
+
+.popup-save-info {
+  p {
+    font-size: 32px;
+  }
+
+  .btn-group-save {
+    display: flex;
+    justify-content: center;
+    padding-top: 3rem;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .confirm-btn {
+      background-color: #4caf50;
+      color: #fff;
+      margin-right: 3rem;
+    }
+
+    .cancel-btn {
+      background-color: #ff0000;
+      color: #fff;
+    }
+  }
 }
