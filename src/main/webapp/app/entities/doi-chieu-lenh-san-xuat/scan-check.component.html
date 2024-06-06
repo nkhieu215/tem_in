@@ -1,0 +1,151 @@
+<div class="main-container">
+  <div class="main-dashboard">
+    <h1>Thông tin giám sát sản xuất</h1>
+    <div class="btn-actions">
+      <button type="button" class="btn btn-success" (click)="btnStart()">Start</button>
+      <button type="button" class="btn btn-warning" (click)="btnPause()">Pause</button>
+      <button type="button" class="btn btn-primary" (click)="btnFinish()">Finish</button>
+      <button type="button" class="btn btn-secondary">Export</button>
+      <button type="button" class="btn btn-info">View Detail Data</button>
+    </div>
+  </div>
+  <div class="product-info">
+    <table class="table-info">
+      <thead>
+        <tr>
+          <th>WorkOrder</th>
+          <th>Mã sản phẩm</th>
+          <th>Tên sản phẩm</th>
+          <th>Số lô</th>
+
+          <th>Trạng thái</th>
+          <th>Thời gian chạy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of dataWorkOrder">
+          <td>{{ element.workOrder }}</td>
+          <td>{{ element.productCode }}</td>
+          <td>{{ element.productName }}</td>
+          <td>{{ element.lot }}</td>
+
+          <td>{{ element.status }}</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container-1">
+    <div class="check-summary">
+      <div>
+        <table class="table-check">
+          <thead>
+            <tr>
+              <th>Sản lượng kế hoạch</th>
+              <th>Tổng kiểm tra</th>
+              <th>Tỉ lệ hoàn thành</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td>{{ dataWorkOrder[0].numberOfplan }}</td>
+            <td>{{ totalScans }}</td>
+            <td>{{ rateCompleted }}%</td>
+          </tbody>
+        </table>
+      </div>
+      <div class="group-pie">
+        <div style="display: block" class="group-canvas">
+          <canvas
+            baseChart
+            [type]="'pie'"
+            [datasets]="pieChartDatasets"
+            [plugins]="pieChartPlugins"
+            [labels]="pieChartLabels"
+            [legend]="pieChartLegend"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="group-station-user container-1">
+    <div class="inspection-stations">
+      <div class="group-input">
+        <H3>Tổng hợp dữ liệu kiểm tra</H3>
+        <div class="div-input">
+          <input
+            [(ngModel)]="scanValue"
+            (keyup.enter)="onScan()"
+            placeholder="Scan here"
+            autofocus
+            disabled="{{ ['Waiting', 'Pause', 'Finish'].includes(dataWorkOrder[0].status) }}"
+          />
+        </div>
+      </div>
+
+      <table class="table-inspection">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tên trạm</th>
+            <th>Thông tin kiểm tra</th>
+            <th>Giá trị nhận được</th>
+            <th>Tổng lượt Scan</th>
+            <th>Tổng Pass</th>
+            <th>Tổng NG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let scan of scanHistory; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ scan.stationName }}</td>
+            <td>{{ scan.valueCheck }}</td>
+            <td>{{ scan.value }}</td>
+            <td>{{ totalScans }}</td>
+            <td>{{ totalPass }}</td>
+            <td>{{ totalFail }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="paginate">
+        <div class="paginate-container">
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <div class="user-access">
+      <H3>Thông tin người truy cập</H3>
+      <table class="table-user">
+        <thead>
+          <tr>
+            <th>Tên người dùng</th>
+            <th>Thời gian đăng nhập</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of dataUser">
+            <td>{{ element.username }}</td>
+            <td>{{ element.timeLogin }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="paginate">
+        <div class="paginate-container">
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

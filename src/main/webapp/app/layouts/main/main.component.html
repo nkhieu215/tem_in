@@ -1,12 +1,9 @@
-<div class="form-layout">
-  <div>
-    <router-outlet name="header"></router-outlet>
-  </div>
-  <div>
+<div class="main-container">
+  <div class="sidebar">
     <router-outlet name="navbar"></router-outlet>
   </div>
 
-  <div>
+  <div id="main" class="container-fluid">
     <div class="card jh-card">
       <router-outlet></router-outlet>
     </div>

@@ -1,159 +1,199 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/functions';
+// @import '~bootswatch/dist/zephyr/variables';
+// @import '~bootstrap/scss/variables';
+
+$sidebar-background-color: #333;
+$sidebar-text-color: #fff;
+$sidebar-width: 250px;
 
 /* ==========================================================================
 Navbar
 ========================================================================== */
 
-.navbar-version {
-  font-size: 0.65em;
-  color: $navbar-dark-color;
-}
+// .navbar-version {
+//   font-size: 0.65em;
+//   color: $navbar-dark-color;
+// }
 
-.profile-image {
-  height: 1.75em;
-  width: 1.75em;
-}
+// .profile-image {
+//   height: 1.75em;
+//   width: 1.75em;
+// }
 
-.navbar {
-  height: 4rem;
-  padding: 0.2rem 1rem;
+// .navbar {
+//   height: 4rem;
+//   padding: 0.2rem 1rem;
 
-  a.nav-link {
-    font-weight: 400;
-  }
-}
+//   a.nav-link {
+//     font-weight: 400;
+//   }
+// }
 
-.active-nav-link {
-  background-color: #007bff;
-  color: #fff;
-}
+// .active-nav-link {
+//   background-color: #007bff;
+//   color: #fff;
+// }
 
 /* ==========================================================================
 Logo styles
 ========================================================================== */
-.logo-img {
-  background-size: 100%;
-  height: 45px;
-  width: 16vw;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../../../content/images/logo.webp') no-repeat center center;
-  background-size: contain;
-  margin-bottom: 4vh;
-}
+// .logo-img {
+//   background-size: 100%;
+//   height: 45px;
+//   width: 16vw;
+//   display: inline-block;
+//   vertical-align: middle;
+//   background: url('../../../content/images/logo.webp') no-repeat center center;
+//   background-size: contain;
+//   margin-bottom: 4vh;
+// }
 
-#sidebar {
+.sidebar {
+  width: 250px;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
-  width: 18.8vw;
+  background-color: #333;
   padding-top: 20px;
-  background-color: #001529;
   color: #fff;
+  overflow-x: hidden;
   overflow-y: auto;
+  transition: width 0.5s;
+  z-index: 10;
+  scrollbar-width: thin;
 
-  .navbar-brand .logo {
-    text-align: center;
-    padding: 10px;
-    background-color: #222;
-    border-bottom: 1px solid #555;
-  }
-
-  .nav.flex-column .nav-item {
-    margin-bottom: 10px;
-  }
-
-  .nav-link {
-    height: 7.5vh;
-    width: 45vw;
+  .sidebar-brand {
+    display: block;
+    // padding:20px;
+    // text-align: center;
+    // padding: 10px 0;
     color: #fff;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s;
-    // border-radius: 15px;
-    margin-left: -2em;
-    margin-top: 1vh;
-    padding-left: 2rem;
-
-    &:hover,
-    &:focus {
-      background-color: #1677ff;
-      border: 1px solid #1677ff;
-    }
-
-    .fa-icon {
-      margin-right: 10px;
-    }
-
-    .chevron-down {
-      margin-left: auto;
-    }
+    font-weight: bold;
+    font-size: 20px;
   }
 
-  .nav-item.active .nav-link {
-    @extend .active-nav-link;
-  }
+  .navbar-nav {
+    margin-top: 20px;
 
-  .icon-navbar {
-    padding-right: 1rem;
-  }
+    a {
+      display: block;
+      padding: 10px 20px;
+      color: #fff;
+      text-decoration: none;
+      transition: background-color 0.3s;
 
-  .nav-item.dropdown {
-    position: relative;
+      &:hover {
+        color: #333;
+        background-color: #e9ecef;
+      }
 
-    .dropdown-toggle {
-      cursor: pointer;
-    }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1000;
-      min-width: 10rem;
-      padding: 0.5rem 0;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e1e5eb;
-      // border-radius: 0.25rem;
-
-      .dropdown-item {
-        display: block;
-        padding: 0.5rem 1rem;
+      &:active {
+        background-color: #007bff;
         color: #fff;
-        text-decoration: none;
-        transition: background-color 0.2s;
+      }
+    }
+  }
+}
 
-        &:hover {
-          background-color: unset;
-        }
+.sidebar-collapse-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 4px;
+  width: 30px;
+  height: 30px;
+  background-color: #333;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
 
-        &:focus {
-          background-color: #007bff;
-          color: #fff;
-        }
+  &:hover {
+    background-color: #555;
+  }
 
-        &.logout {
-          color: #dc3545;
+  &:before {
+    font-weight: 900;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.sidebar-collapsed {
+  width: 50px;
+  background-image: '../../../content/images/logo-rang-dong.webp';
+
+  .sidebar-brand {
+    display: none;
+  }
+
+  .navbar-nav {
+    .nav-item {
+      a {
+        .dropdown-item {
+          span {
+            display: none;
+
+            .dropdown-item-span {
+              margin-left: 10px;
+            }
+          }
         }
       }
     }
-
-    &.show .dropdown-menu {
-      display: block;
-    }
   }
+}
 
-  .profile-image {
-    width: 24px;
-    height: 24px;
-    margin-right: 0.5rem;
-    // border-radius: 50%;
-  }
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 10px;
+}
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+  transition: margin-left 0.5s;
+}
+
+.sidebar-toggle {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sidebar-content {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.sidebar-open .sidebar-content {
+  padding-left: $sidebar-width;
+}
+
+.sidebar-open .sidebar-toggle {
+  display: block;
+}
+
+.sidebar-img {
+  max-width: 10rem;
+  padding-top: 20px;
+  margin-left: 5px;
+  height: auto;
 }
 
 li > ul {
@@ -169,7 +209,8 @@ li > ul {
 
       &:hover,
       &:focus {
-        background-color: initial;
+        color: #333;
+        background-color: #e9ecef;
         border: none;
       }
     }

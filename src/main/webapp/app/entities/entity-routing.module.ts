@@ -59,6 +59,28 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'Chi tiết lệnh sản xuất' },
         loadChildren: () => import('./chi-tiet-lenh-san-xuat/chi-tiet-lenh-san-xuat.module').then(m => m.ChiTietLenhSanXuatModule),
       },
+
+      {
+        path: 'quan-ly-thiet-bi',
+        data: { pageTitle: 'Quản lý thiết bị' },
+        loadChildren: () => import('./quan-ly-thiet-bi/quan-ly-thiet-bi.module').then(m => m.QuanLyThietBiModule),
+      },
+
+      {
+        path: 'doi-chieu-lenh-san-xuat',
+        data: { pageTitle: 'Giám sát - đối chiếu lệnh sản xuất' },
+        loadChildren: () => import('./doi-chieu-lenh-san-xuat/doi-chieu-lenh-san-xuat.module').then(m => m.DoiChieuLenhSanXuatModule),
+      },
+      {
+        path: 'profile-check',
+        data: { pageTitle: 'Profile check' },
+        loadChildren: () => import('./profile-check/profile-check.module').then(m => m.ProfileCheckModule),
+      },
+      // {
+      //   path: 'scan-check',
+      //   data: { pageTitle: 'Scan check' },
+      //   loadChildren: () => import('./scan-check/scan-check.module').then(m => m.ScanCheckModule)
+      // }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

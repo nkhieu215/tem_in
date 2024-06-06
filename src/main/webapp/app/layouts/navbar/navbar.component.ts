@@ -7,6 +7,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import { MainComponent } from '../main/main.component';
 
 @Component({
   selector: 'jhi-navbar',
@@ -21,12 +22,14 @@ export class NavbarComponent implements OnInit {
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
   isOpenMenu = false;
+  showLogo = 'false';
 
   constructor(
     private loginService: LoginService,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private mainComponent: MainComponent
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -78,6 +81,17 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  toggleDropDownStamp2(): void {
+    const ul = document.querySelector('.nav-item-stamp2.dropdown ul') as HTMLElement;
+
+    const displayValue = ul.style.display;
+    if (displayValue === 'block') {
+      ul.style.display = 'none';
+    } else {
+      ul.style.display = 'block';
+    }
+  }
+
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
   }
@@ -92,7 +106,20 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  toggleNavbar(): void {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  toggleSidebar(): void {
+    const isSidebarCollapsed = sessionStorage.getItem('toggleSidebar');
+    this.showLogo = sessionStorage.getItem('showLogo')!;
+    if (isSidebarCollapsed === 'open') {
+      this.mainComponent.closeNav();
+      document.getElementById('sidebar-id')!.style.width = '50px';
+      sessionStorage.setItem('showLogo', 'hide');
+      sessionStorage.setItem('toggleSidebar', 'close');
+    }
+    if (isSidebarCollapsed === 'close') {
+      this.mainComponent.openNav();
+      document.getElementById('sidebar-id')!.style.width = '250px';
+      sessionStorage.setItem('showLogo', 'show');
+      sessionStorage.setItem('toggleSidebar', 'open');
+    }
   }
 }
