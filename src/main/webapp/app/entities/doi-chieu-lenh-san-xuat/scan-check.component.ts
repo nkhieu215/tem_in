@@ -17,6 +17,10 @@ export class ScanCheckComponent implements OnInit {
   WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');
   DetaiChecklUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/detail');
   userLoginlUrl = this.applicationConfigService.getEndpointFor('api/user-login-history');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  tongHopURL = this.applicationConfigService.getEndpointFor('api/tong-hop');
+  profileURL = this.applicationConfigService.getEndpointFor('api/profile-check');
+
   //btn
   start = true;
   pause = true;
@@ -26,7 +30,7 @@ export class ScanCheckComponent implements OnInit {
   page?: number;
 
   title = 'ScanSystem';
-
+  result = '';
   dataWorkOrder: any[] = [{}];
   checkValue = 'N14662';
   scanValue = '';
@@ -40,7 +44,7 @@ export class ScanCheckComponent implements OnInit {
   elapsedTime = 0;
   running = false;
   numberPlan = this.dataWorkOrder[0].sanLuong;
-  scanHistory: { value: string; status: string; stationName: 'BG XK04'; valueCheck: 'productName' }[] = [];
+  scanHistory: { value: string; status: string; stationName: 'BG XK04'; valueCheck: 'productName'; result: string }[] = [];
 
   public lastTime = Date.now();
   public lastCmd = null;
@@ -61,6 +65,8 @@ export class ScanCheckComponent implements OnInit {
   dataUser = [{ username: '', timeLogin: '' }];
   // acount
   account: any;
+  // Thiet bi
+  listOfMachines: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -109,6 +115,13 @@ export class ScanCheckComponent implements OnInit {
       this.dataUser = res;
       console.log('login', res);
     });
+    this.http.get<any>(`${this.tongHopURL}/${item as string}`).subscribe(res => {
+      console.log('tonghop', res);
+    });
+    this.http.get<any>(this.profileURL).subscribe(res => {
+      this.checkValue = res.checkValue;
+      console.log('profile', res);
+    });
   }
 
   async onScan(): Promise<any> {
@@ -116,7 +129,7 @@ export class ScanCheckComponent implements OnInit {
     if (this.scanValue.trim()) {
       this.totalScans++;
       const status = this.scanValue === this.checkValue ? 'Pass' : 'Fail';
-      this.scanHistory.push({ value: this.scanValue, status, stationName: 'BG XK04', valueCheck: 'productName' });
+      this.scanHistory = [{ value: this.scanValue, status, stationName: 'BG XK04', valueCheck: 'productName', result: this.result }];
 
       this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
       if (status === 'Pass') {
@@ -148,7 +161,15 @@ export class ScanCheckComponent implements OnInit {
       }
     }
   }
-
+  getFormattedElapsedTime(): any {
+    const hours = Math.floor(this.elapsedTime / 3600);
+    const minutes = Math.floor((this.elapsedTime % 3600) / 60);
+    const seconds = this.elapsedTime % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+  pad(num: number): string {
+    return num.toString().padStart(2, '0');
+  }
   warningNG(stringA: string): void {
     alert(stringA + ' không chính xác vui lòng kiểm tra lại!!!');
   }
@@ -186,6 +207,11 @@ export class ScanCheckComponent implements OnInit {
   }
 
   openPopupChiTietThongTinScan(): void {
+    const groupId = sessionStorage.getItem('groupId');
+    this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
+      this.listOfMachines = res;
+      console.log('machinessss:', res);
+    });
     this.popupChiTietThongTinScan = true;
   }
 

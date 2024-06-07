@@ -30,9 +30,6 @@ public class ScanPprofileCheck {
     @Column(name = "version_id")
     private Long versionId;
 
-    @Column(name = "group_id")
-    private Integer groupId;
-
     @Column(name = "machine_id")
     private Integer machineId;
 
@@ -45,8 +42,7 @@ public class ScanPprofileCheck {
         String checkValue,
         String checkStatus,
         Integer position,
-        Long versionId,
-        Integer groupId
+        Long versionId
     ) {
         this.profileId = profileId;
         this.productId = productId;
@@ -55,7 +51,6 @@ public class ScanPprofileCheck {
         this.checkStatus = checkStatus;
         this.position = position;
         this.versionId = versionId;
-        this.groupId = groupId;
     }
 
     public Integer getMachineId() {
@@ -120,13 +115,5 @@ public class ScanPprofileCheck {
 
     public void setVersionId(Long versionId) {
         this.versionId = versionId;
-    }
-
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
     }
 }

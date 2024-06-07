@@ -538,4 +538,10 @@ public class UserController {
         workOrderInfo workOrderInfo = this.userServices.listWorkOrderByGroupById(orderId);
         return workOrderInfo;
     }
+
+    @GetMapping("profile-check")
+    public ScanPprofileCheck listProfileCheck() {
+        ScanPprofileCheck scanPprofileCheck = this.userServices.listProfileCheck();
+        return scanPprofileCheck;
+    }
 }

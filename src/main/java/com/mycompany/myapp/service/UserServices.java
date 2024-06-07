@@ -916,8 +916,7 @@ public class UserServices {
                     scanPprofileCheck.getCheckStatus(),
                     scanPprofileCheck.getPosition(),
                     scanPprofileCheck.getVersionId(),
-                    scanPprofileCheck.getMachineId(),
-                    scanPprofileCheck.getGroupId()
+                    scanPprofileCheck.getMachineId()
                 );
         }
     }
@@ -933,7 +932,6 @@ public class UserServices {
                     scanPprofileCheck.getPosition(),
                     scanPprofileCheck.getVersionId(),
                     scanPprofileCheck.getMachineId(),
-                    scanPprofileCheck.getGroupId(),
                     scanPprofileCheck.getProfileId()
                 );
         }
@@ -981,5 +979,11 @@ public class UserServices {
     public workOrderInfo listWorkOrderByGroupById(Long orderId) {
         workOrderInfo workOrderInfo = this.scanWorkOrderRepository.listWorkOrderByGroupById(orderId);
         return workOrderInfo;
+    }
+
+    //? lấy thông tin profile check
+    public ScanPprofileCheck listProfileCheck() {
+        ScanPprofileCheck scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck();
+        return scanPprofileCheck;
     }
 }

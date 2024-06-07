@@ -5,8 +5,8 @@
   <div class="main-dashboard">
     <h1>Thông tin giám sát sản xuất</h1>
     <div class="btn-actions">
-      <button type="button" class="btn btn-success" (click)="btnStart()">Start</button>
-      <button type="button" class="btn btn-warning" (click)="btnPause()">Pause</button>
+      <button type="button" class="btn btn-success" (click)="btnStart()" [disabled]="running">Start</button>
+      <button type="button" class="btn btn-warning" (click)="btnPause()" [disabled]="!running">Pause</button>
       <button type="button" class="btn btn-primary" (click)="btnFinish()">Finish</button>
       <button type="button" class="btn btn-secondary">Export</button>
       <button type="button" class="btn btn-info" (click)="openPopupChiTietThongTinScan()">View Detail Data</button>
@@ -43,7 +43,7 @@
           <td>{{ element.lot }}</td>
 
           <td>{{ element.trangThai }}</td>
-          <td>{{ elapsedTime }}</td>
+          <td>{{ getFormattedElapsedTime() }}</td>
         </tr>
       </tbody>
     </table>
