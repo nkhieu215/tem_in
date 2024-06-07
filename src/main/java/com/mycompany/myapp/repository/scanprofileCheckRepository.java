@@ -12,8 +12,8 @@ public interface scanprofileCheckRepository extends JpaRepository<ScanPprofileCh
     @Query(value = "select * from Scan_profileCheck where product_id =?1 ", nativeQuery = true)
     public List<ScanPprofileCheck> listProfileCheckByProduct(Long productId);
 
-    @Query(value = "select * from Scan_profileCheck ", nativeQuery = true)
-    public ScanPprofileCheck listProfileCheck();
+    @Query(value = "select * from Scan_profileCheck  " + "where product_id=?1 ", nativeQuery = true)
+    public ScanPprofileCheck listProfileCheck(Long productId);
 
     @Query(
         value = "insert into Scan_profileCheck (product_id,check_name,check_value,check_status,position,version_id,machine_id) values(?1,?2,?3,?4,?5,?6,?7) ;",

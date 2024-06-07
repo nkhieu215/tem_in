@@ -938,18 +938,13 @@ public class UserServices {
     }
 
     //?Lưu thông tin kết quả scan theo chu kỳ ( 10 kết quả) theo id lệnh sản xuất (OrderID)
-    public void insertDetailCheck(List<scanDetailCheck> scanDetailChecks) {
-        for (scanDetailCheck scanDetailCheck : scanDetailChecks) {
-            this.scanDetailCheckRepository.insertDetailCheck(
-                    scanDetailCheck.getOrderId(),
-                    scanDetailCheck.getRecordValue(),
-                    scanDetailCheck.getResult(),
-                    scanDetailCheck.getPosition(),
-                    scanDetailCheck.getUsername(),
-                    scanDetailCheck.getCreateAt(),
-                    scanDetailCheck.getRecordName()
-                );
+    public List<scanDetailCheck> insertDetailCheck(List<scanDetailCheck> scanDetailChecks) {
+        List<scanDetailCheck> scanDetailChecks1 = new ArrayList<>();
+        for (scanDetailCheck scanDetailCheck1 : scanDetailChecks) {
+            this.scanDetailCheckRepository.save(scanDetailCheck1);
+            scanDetailChecks1.add(scanDetailCheck1);
         }
+        return scanDetailChecks1;
     }
 
     //?Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
@@ -982,8 +977,13 @@ public class UserServices {
     }
 
     //? lấy thông tin profile check
-    public ScanPprofileCheck listProfileCheck() {
-        ScanPprofileCheck scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck();
+    public ScanPprofileCheck listProfileCheck(Long productId) {
+        ScanPprofileCheck scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck(productId);
         return scanPprofileCheck;
+    }
+
+    public List<TongHopResponse> tongHop(Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.scanDetailCheckRepository.tongHop(orderId);
+        return tongHopResponses;
     }
 }

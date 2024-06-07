@@ -11,20 +11,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Repository
 public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck, Long> {
-    @Query(value = "select * from Scan_detailCheck  where order_id=?1;", nativeQuery = true)
+    @Query(value = "select * from scan_detail_check  where order_id=?1;", nativeQuery = true)
     public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId);
 
+    @Modifying
     @Query(
-        value = "insert into Scan_detailCheck (order_id,record_value,result,position,username,create_at,record_name) values(?1,?2,?3,?4,?5,?6,?7) ",
+        value = "insert into scan_detail_check (order_id,record_value,result,position,username,machine_id,record_name) values(?1,?2,?3,?4,?5,?6,?7) ",
         nativeQuery = true
     )
-    public void insertDetailCheck(
+    public scanDetailCheck insertDetailCheck(
         Long orderId,
         String recordValue,
         String result,
         Integer position,
         String username,
-        ZonedDateTime createAt,
+        Long machineId,
         String recordName
     );
+
+    @Query(
+        value = "SELECT \n" +
+        "\t\tresult as result\n" +
+        "\t  ,count(record_value) as recordValue\n" +
+        "  FROM [ProfileProductions].[dbo].[scan_detail_check] where order_id = ?1 group by result ",
+        nativeQuery = true
+    )
+    public List<TongHopResponse> tongHop(Long orderId);
 }

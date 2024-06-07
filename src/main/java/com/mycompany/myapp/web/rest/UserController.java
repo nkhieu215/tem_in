@@ -506,8 +506,9 @@ public class UserController {
     }
 
     @PostMapping("scan-work-order/detail")
-    public void insertDetailCheck(@RequestBody List<scanDetailCheck> scanDetailChecks) {
-        this.userServices.insertDetailCheck(scanDetailChecks);
+    public List<scanDetailCheck> insertDetailCheck(@RequestBody List<scanDetailCheck> scanDetailChecks) {
+        List<scanDetailCheck> scanDetailChecks1 = this.userServices.insertDetailCheck(scanDetailChecks);
+        return scanDetailChecks1;
     }
 
     @GetMapping("user-login-history/{orderId}")
@@ -539,9 +540,15 @@ public class UserController {
         return workOrderInfo;
     }
 
-    @GetMapping("profile-check")
-    public ScanPprofileCheck listProfileCheck() {
-        ScanPprofileCheck scanPprofileCheck = this.userServices.listProfileCheck();
+    @GetMapping("profile-check/{productId}")
+    public ScanPprofileCheck listProfileCheck(@PathVariable Long productId) {
+        ScanPprofileCheck scanPprofileCheck = this.userServices.listProfileCheck(productId);
         return scanPprofileCheck;
+    }
+
+    @GetMapping("tong-hop/{orderId}")
+    public List<TongHopResponse> tongHop(@PathVariable Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.userServices.tongHop(orderId);
+        return tongHopResponses;
     }
 }

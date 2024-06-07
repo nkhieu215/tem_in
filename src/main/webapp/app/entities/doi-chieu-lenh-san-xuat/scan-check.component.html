@@ -93,18 +93,16 @@
             <th>STT</th>
             <th>Tên trạm</th>
             <th>Thông tin kiểm tra</th>
-            <th>Giá trị nhận được</th>
             <th>Tổng lượt Scan</th>
             <th>Tổng Pass</th>
             <th>Tổng NG</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let scan of scanHistory; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ scan.stationName }}</td>
-            <td>{{ scan.valueCheck }}</td>
-            <td>{{ scan.value }}</td>
+          <tr>
+            <td>{{ 1 }}</td>
+            <td>{{ stationName }}</td>
+            <td>{{ checkName }}</td>
             <td>{{ totalScans }}</td>
             <td>{{ totalPass }}</td>
             <td>{{ totalFail }}</td>

@@ -15,12 +15,10 @@
       "NODE_VERSION": "lts/*"
     }
   },
-
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "java.home": "/docker-java-home"
   },
-
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "angular.ng-template",
@@ -32,13 +30,15 @@
     "pivotal.vscode-boot-dev-pack",
     "esbenp.prettier-vscode"
   ],
-
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [4200, 3001, 9000, 8085],
-
+  "forwardPorts": [
+    4200,
+    3001,
+    9000,
+    8085
+  ],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "java -version",
-
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "vscode",
   "features": {

@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Scan_detailCheck")
+@Table(name = "scan_detail_check")
 public class scanDetailCheck implements Serializable {
 
     @Id
@@ -33,6 +33,28 @@ public class scanDetailCheck implements Serializable {
 
     @Column(name = "record_name")
     private String recordName;
+
+    @Column(name = "machine_id")
+    private Long machineId;
+
+    @Column(name = "time_recorded")
+    private String timeRecorded;
+
+    public String getTimeRecorded() {
+        return timeRecorded;
+    }
+
+    public void setTimeRecorded(String timeRecorded) {
+        this.timeRecorded = timeRecorded;
+    }
+
+    public Long getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(Long machineId) {
+        this.machineId = machineId;
+    }
 
     public String getRecordName() {
         return recordName;

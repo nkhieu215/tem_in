@@ -75,8 +75,10 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   closePopupChiTietThongTinScan(): void {
     this.popupChiTietThongTinScan = false;
   }
-  getWorkOrderDetail(id: any): any {
+  getWorkOrderDetail(id: any, groupId: any): any {
+    console.log({ index: id, idgroup: groupId });
     sessionStorage.setItem('orderId', id);
+    sessionStorage.setItem('groupId', groupId);
   }
 
   openPopupConfirmSave(): void {
