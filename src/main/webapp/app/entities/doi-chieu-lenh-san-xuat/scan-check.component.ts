@@ -75,6 +75,7 @@ export class ScanCheckComponent implements OnInit {
 
   @Input() machineId = '';
   @Input() position = '';
+  @Input() itemPerPage = 5;
   dataUser = [{ username: '', timeLogin: '' }];
   // acount
   account: any;
@@ -133,18 +134,18 @@ export class ScanCheckComponent implements OnInit {
             this.totalFail = Number(res2[0].recordValue);
             this.totalPass = 0;
             this.totalScans = this.totalFail + this.totalPass;
-            this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
+            this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
           } else {
             this.totalFail = 0;
             this.totalPass = Number(res2[0].recordValue);
             this.totalScans = this.totalFail + this.totalPass;
-            this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
+            this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
           }
         } else {
           this.totalFail = Number(res2[0].recordValue);
           this.totalPass = Number(res2[1].recordValue);
           this.totalScans = this.totalFail + this.totalPass;
-          this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
+          this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
         }
         console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
       });
@@ -176,7 +177,7 @@ export class ScanCheckComponent implements OnInit {
         },
       ];
 
-      this.rateCompleted = (this.totalScans / Number(this.numberPlan)).toFixed(3);
+      this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
       if (status === 'PASS') {
         this.totalPass++;
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
@@ -242,11 +243,13 @@ export class ScanCheckComponent implements OnInit {
     const currentTime = new Date().toLocaleString();
     this.dataUser.push({ username: this.account.login, timeLogin: currentTime });
   }
+
   btnPause(): void {
     this.dataWorkOrder[0].trangThai = 'Pause';
     this.running = false;
     clearInterval(this.timer);
   }
+
   btnFinish(): void {
     this.dataWorkOrder[0].trangThai = 'Finish';
     this.running = false;

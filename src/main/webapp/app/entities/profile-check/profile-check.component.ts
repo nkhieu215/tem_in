@@ -23,6 +23,8 @@ export class ProfileCheckComponent implements OnInit {
   @Input() updatedAt = '';
   @Input() username = '';
   @Input() productStatus = '';
+  @Input() itemPerPage = 10;
+
   // list product
   listOfProduct: any[] = [];
   popupKhaiBaoProfile = false;

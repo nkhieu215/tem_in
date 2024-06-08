@@ -3,7 +3,7 @@
     <span>Quản lý nhóm thiết bị</span>
   </h2>
   <div class="d-flex justify-content-end">
-    <button class="btn btn-info me-2">
+    <button class="btn btn-info me-2" (click)="openPopupThemMoiNhomThietBi()">
       <fa-icon icon="add"></fa-icon>
       <span>Thêm mới</span>
     </button>
@@ -51,7 +51,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of listOfGroupMachine; let i = index">
+          <tr *ngFor="let item of listOfGroupMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ item.groupName }}</td>
             <td>{{ item.createdAt }}</td>
@@ -74,15 +74,109 @@
       </table>
     </form>
   </div>
-  <div class="paginate">
+  <div class="paginate" *ngIf="listOfGroupMachine && listOfGroupMachine.length > 0">
     <div class="paginate-container">
-      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
-        <option value="20">20</option>
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
+        <option value="10">10</option>
         <option value="30">30</option>
         <option value="50">50</option>
+        <option value="{{ listOfGroupMachine.length }}">All</option>
       </select>
-
       <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- popup thêm mới nhóm thiết bị -->
+<div class="table-responsive popup-background" role="dialog" *ngIf="popupThemMoiNhomThietBi === true">
+  <div>
+    <span class="close-btn" (click)="closePopupThemMoiNhomThietBi()">&times;</span>
+    <div>
+      <div class="popup-chi-tiet-nhom-thiet-bi">
+        <h2>Chi tiết nhóm thiết bị</h2>
+
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+              <th scope="col"><span>Nhóm thiết bị</span></th>
+              <th scope="col"><span>Ngày tạo</span></th>
+              <th scope="col"><span>Thời gian cập nhật</span></th>
+              <th scope="col"><span>Người cập nhật</span></th>
+              <th scope="col"><span>Trạng thái</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <td>
+              <span><input type="text" /></span>
+            </td>
+            <td>
+              <span></span>
+            </td>
+            <td>
+              <span></span>
+            </td>
+            <td>
+              <span></span>
+            </td>
+            <td>
+              <span></span>
+            </td>
+          </tbody>
+        </table>
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave4()">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+        </button>
+
+        <br /><br /><br /><br />
+        <h2>Thiết bị</h2>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-info me-2" (click)="openPopupThemMoiThietBi()">
+            <fa-icon icon="add"></fa-icon>
+            <span>Thêm mới</span>
+          </button>
+        </div>
+        <hr />
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+              <th scope="col">STT</th>
+              <th scope="col">Mã thiết bị</th>
+              <th scope="col">Tên thiết bị</th>
+              <th scope="col">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i = index">
+              <td>{{ i + 1 }}</td>
+              <td></td>
+              <td></td>
+              <td>
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-info btn-sm">
+                    <fa-icon icon="pencil"></fa-icon>
+                  </button>
+
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary"
+          (click)="closePopupThemMoiThietBi()"
+        >
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave4()">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -257,6 +351,16 @@
     <div class="btn-group-save">
       <button class="confirm-btn" (click)="closePopupConfirmSave3()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave3()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info3" role="dialog" *ngIf="popupConfirmSave4 === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave4()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave4()">Hủy</button>
     </div>
   </div>
 </div>

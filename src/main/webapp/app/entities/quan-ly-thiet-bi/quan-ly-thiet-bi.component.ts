@@ -20,11 +20,13 @@ export class QuanLyThietBiComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
 
+  popupThemMoiNhomThietBi = false;
   popupNhomThietBi = false;
   popupThemMoiThietBi = false;
   popupConfirmSave = false;
   popupConfirmSave2 = false;
   popupConfirmSave3 = false;
+  popupConfirmSave4 = false;
 
   // formSearch = this.formBuilder.group({
   //   groupName: '',
@@ -41,6 +43,7 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() groupStatus = '';
   @Input() machineId = '';
   @Input() machineName = '';
+  @Input() itemPerPage = 10;
   // quản lý thiết bị
   listOfGroupMachine: any[] = [];
   groupMachine: any;
@@ -82,6 +85,14 @@ export class QuanLyThietBiComponent implements OnInit {
     });
   }
 
+  openPopupThemMoiNhomThietBi(): void {
+    this.popupThemMoiNhomThietBi = true;
+  }
+
+  closePopupThemMoiNhomThietBi(): void {
+    this.popupThemMoiNhomThietBi = false;
+  }
+
   openPopupNhomThietBi(index: any, id: any): void {
     this.popupNhomThietBi = true;
     this.groupMachine = this.listOfGroupMachine[index];
@@ -120,10 +131,18 @@ export class QuanLyThietBiComponent implements OnInit {
   }
 
   openPopupConfirmSave3(): void {
-    this.popupConfirmSave2 = true;
+    this.popupConfirmSave3 = true;
   }
 
   closePopupConfirmSave3(): void {
-    this.popupConfirmSave2 = false;
+    this.popupConfirmSave3 = false;
+  }
+
+  openPopupConfirmSave4(): void {
+    this.popupConfirmSave4 = true;
+  }
+
+  closePopupConfirmSave4(): void {
+    this.popupConfirmSave4 = false;
   }
 }

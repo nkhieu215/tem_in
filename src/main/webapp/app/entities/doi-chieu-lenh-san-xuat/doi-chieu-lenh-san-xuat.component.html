@@ -65,7 +65,7 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let item of listOfLenhSanXuat; let i = index"
+            *ngFor="let item of listOfLenhSanXuat | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index"
             [routerLink]="['/doi-chieu-lenh-san-xuat', 'scan-check']"
             (click)="getWorkOrderDetail(item.orderId, item.groupId)"
           >
@@ -87,8 +87,8 @@
   </div>
   <div class="paginate">
     <div class="paginate-container">
-      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
-        <option value="20">20</option>
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
+        <option value="10">10</option>
         <option value="30">30</option>
         <option value="50">50</option>
       </select>
@@ -193,7 +193,7 @@
             </table>
             <div class="paginate">
               <div class="paginate-container">
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
                   <option value="20">20</option>
                   <option value="30">30</option>
                   <option value="50">50</option>

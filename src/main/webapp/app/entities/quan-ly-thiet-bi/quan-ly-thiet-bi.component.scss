@@ -37,7 +37,7 @@ $checkmark-size: 1.2;
   thead {
     tr {
       background-color: #f2f2f2;
-      border-bottom: 2px solid #ddd;
+      // border-bottom: 2px solid #ddd;
     }
 
     th {
@@ -46,7 +46,7 @@ $checkmark-size: 1.2;
       position: relative;
       background-color: #309acf;
       color: #ffffff;
-      border: 0.8px solid #000;
+      border: 0.5px solid #000;
 
       &:hover {
         background-color: #2d80aa;
@@ -87,7 +87,9 @@ $checkmark-size: 1.2;
     td {
       padding: 12px 15px;
       border-bottom: 1px solid #ddd;
-      border: 0.8px solid #000;
+      border: 0.5px solid #000;
+      font-size: 16px;
+      font-weight: 400;
 
       &:last-child {
         text-align: center;
@@ -320,7 +322,7 @@ th[scope='col'].sorted-desc::after {
           font-weight: bold;
           text-align: left;
           border-bottom: 1px solid #ddd;
-          border: 0.8px solid #000;
+          border: 0.5px solid #000;
         }
       }
 
@@ -333,7 +335,7 @@ th[scope='col'].sorted-desc::after {
           td {
             padding: 10px;
             border-bottom: 1px solid #ddd;
-            border: 0.8px solid #000;
+            border: 0.5px solid #000;
 
             &:last-child {
               text-align: right;

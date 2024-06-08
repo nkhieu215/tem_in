@@ -5,8 +5,8 @@
   <div class="main-dashboard">
     <h1>Thông tin giám sát sản xuất</h1>
     <div class="btn-actions">
-      <button type="button" class="btn btn-success" (click)="btnStart()" [disabled]="running">Start</button>
-      <button type="button" class="btn btn-warning" (click)="btnPause()" [disabled]="!running">Pause</button>
+      <button type="button" class="btn btn-success" (click)="btnStart()">Start</button>
+      <button type="button" class="btn btn-warning" (click)="btnPause()">Pause</button>
       <button type="button" class="btn btn-primary" (click)="btnFinish()">Finish</button>
       <button type="button" class="btn btn-secondary">Export</button>
       <button type="button" class="btn btn-info" (click)="openPopupChiTietThongTinScan()">View Detail Data</button>
@@ -43,7 +43,7 @@
           <td>{{ element.lot }}</td>
 
           <td>{{ element.trangThai }}</td>
-          <td>{{ getFormattedElapsedTime() }}</td>
+          <td>{{ elapsedTime }}</td>
         </tr>
       </tbody>
     </table>
@@ -112,8 +112,8 @@
       <div class="paginate">
         <div class="paginate-container">
           <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
+            <option value="10">10</option>
             <option value="20">20</option>
-            <option value="30">30</option>
             <option value="50">50</option>
           </select>
 
@@ -131,17 +131,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let element of dataUser">
+          <tr *ngFor="let element of dataUser | paginate: { itemsPerPage: itemPerPage, currentPage: page }">
             <td>{{ element.username }}</td>
             <td>{{ element.timeLogin }}</td>
           </tr>
         </tbody>
       </table>
-      <div class="paginate">
+      <div class="paginate" *ngIf="dataUser && dataUser.length > 0">
         <div class="paginate-container">
           <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
-            <option value="20">20</option>
-            <option value="30">30</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
             <option value="50">50</option>
           </select>
 
@@ -278,7 +278,7 @@
 </div>
 
 <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
-  <div>
+  <div class="form-popup-alert">
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
       <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>

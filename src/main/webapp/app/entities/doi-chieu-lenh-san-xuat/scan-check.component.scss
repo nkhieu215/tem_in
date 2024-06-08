@@ -1,11 +1,3 @@
-body,
-html {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
 .popup-save-info {
   p {
     font-size: 32px;
@@ -108,7 +100,7 @@ html {
   thead {
     tr {
       background-color: #f2f2f2;
-      border-bottom: 2px solid #ddd;
+      // border-bottom: 2px solid #ddd;
     }
 
     th {
@@ -179,7 +171,7 @@ html {
   thead {
     tr {
       background-color: #f2f2f2;
-      border-bottom: 2px solid #ddd;
+      // border-bottom: 2px solid #ddd;
     }
 
     th {
@@ -259,7 +251,7 @@ html {
     thead {
       tr {
         background-color: #f2f2f2;
-        border-bottom: 2px solid #ddd;
+        // border-bottom: 2px solid #ddd;
       }
 
       th {
@@ -316,7 +308,7 @@ html {
     thead {
       tr {
         background-color: #f2f2f2;
-        border-bottom: 2px solid #ddd;
+        // border-bottom: 2px solid #ddd;
       }
 
       th {
@@ -552,7 +544,7 @@ html {
 
         tr {
           background-color: #f2f2f2;
-          border-bottom: 2px solid #ddd;
+          // border-bottom: 2px solid #ddd;
         }
 
         th {
@@ -561,6 +553,7 @@ html {
           position: relative;
           background-color: #309acf;
           color: #ffffff;
+          border: 0.5px solid #000;
 
           &:hover {
             background-color: #2d80aa;
@@ -596,6 +589,9 @@ html {
           td {
             padding: 10px;
             border-bottom: 1px solid #ddd;
+            border: 0.5px solid #000;
+            font-size: 16px;
+            font-weight: 400;
 
             &:last-child {
               text-align: right;

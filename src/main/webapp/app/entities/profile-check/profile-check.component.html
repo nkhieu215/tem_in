@@ -1,6 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="ProfileCheckHeading">
-    <span>Quản lý Profile</span>
+    <span>Quản lý trạm thông tin kiểm tra</span>
   </h2>
 
   <div class="table-responsive">
@@ -43,7 +43,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of listOfProduct; let i = index">
+          <tr *ngFor="let item of listOfProduct | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ item.productCode }}</td>
             <td>{{ item.productName }}</td>
@@ -67,10 +67,10 @@
       </table>
     </form>
   </div>
-  <div class="paginate">
+  <div class="paginate" *ngIf="listOfProduct && listOfProduct.length > 0">
     <div class="paginate-container">
-      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
-        <option value="20">20</option>
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
+        <option value="10">10</option>
         <option value="30">30</option>
         <option value="50">50</option>
       </select>
@@ -130,7 +130,7 @@
                     <tr>
                       <td><input type="text" /></td>
                       <td>
-                        <select>
+                        <select class="form-select">
                           <option value="">Chọn 1</option>
                           <option value="">Chọn 2</option>
                           <option value="">Chọn 3</option>

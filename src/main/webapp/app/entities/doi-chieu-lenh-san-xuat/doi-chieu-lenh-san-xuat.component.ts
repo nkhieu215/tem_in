@@ -31,6 +31,8 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   @Input() createdAt = '';
   @Input() position = '';
   @Input() checkValue = '';
+  @Input() itemPerPage = 10;
+
   //list lenh san xuat
   listOfLenhSanXuat: any[] = [];
   constructor(
