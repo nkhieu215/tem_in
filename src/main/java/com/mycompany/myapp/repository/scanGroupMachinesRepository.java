@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface scanGroupMachinesRepository extends JpaRepository<scanGroupMachines, Long> {
-    @Query(value = " select * from [ProfileProductions].[dbo].[scan_group_machines] as a ;", nativeQuery = true)
+    @Query(value = " select * from [ProfileProductions].[dbo].[Scan_groupMachines] as a ;", nativeQuery = true)
     public List<scanGroupMachines> groupMachinesList();
 
     @Query(value = "insert into Scan_groupMachines (group_name,create_at,username,group_status) values(?1,?2,?3,?4) ", nativeQuery = true)
