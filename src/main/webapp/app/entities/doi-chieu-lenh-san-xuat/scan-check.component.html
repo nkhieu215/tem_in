@@ -68,15 +68,10 @@
       </div>
       <div class="group-pie">
         <div style="display: block" class="group-canvas">
-          <canvas
-            baseChart
-            [type]="'pie'"
-            [datasets]="pieChartDatasets"
-            [plugins]="pieChartPlugins"
-            [labels]="pieChartLabels"
-            [legend]="pieChartLegend"
-          >
-          </canvas>
+          <google-chart [data]="pieChart"></google-chart>
+          <!-- <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [plugins]="pieChartPlugins"
+            [labels]="pieChartLabels" [legend]="pieChartLegend" [options]="lineChartOptions">
+          </canvas> -->
         </div>
       </div>
     </div>

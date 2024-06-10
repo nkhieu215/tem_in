@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface scanLoginHistoryRepository extends JpaRepository<scanLoginHistory, Long> {
-    @Query(value = "select * from Scan_loginHistory where order_id =?1 ;", nativeQuery = true)
+    @Query(value = "select * from scan_login_history where order_id =?1 ;", nativeQuery = true)
     public List<scanLoginHistory> listLoginByWorkOrder(Long orderId);
 }

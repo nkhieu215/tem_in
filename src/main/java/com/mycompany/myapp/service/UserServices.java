@@ -2,7 +2,9 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
+import com.mycompany.myapp.service.dto.TemInDTO;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -765,9 +767,129 @@ public class UserServices {
         return entities;
     }
 
-    public List<LenhSanXuat> timKiemQuanLyPheDuyet() {
-        List<LenhSanXuat> entities = this.lenhSanXuatRepository.timKiemQuanLyPheDuyet();
+    //☺ Tìm kiếm lệnh sản xuất đi kèm với phân trang
+    public List<LenhSanXuat> timKiemQuanLyPheDuyet(TemInDTO temInDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        String timeUpdate1 = firstDay.toString() + " 00:00:00.000";
+        String timeUpdate2 = date.toString() + " 23:59:59.000";
+        if (temInDTO.getEntryTime() != null) {
+            entryTime1 = temInDTO.getEntryTime() + " 00:00:00.000";
+            entryTime2 = temInDTO.getEntryTime() + " 23:59:59.000";
+        }
+        if (temInDTO.getTimeUpdate() != null) {
+            timeUpdate1 = temInDTO.getTimeUpdate() + " 00:00:00.000";
+            timeUpdate2 = temInDTO.getTimeUpdate() + " 23:59:59.000";
+        }
+        List<LenhSanXuat> entities =
+            this.lenhSanXuatRepository.timKiemQuanLyPheDuyet(
+                    "%".concat(temInDTO.getMaLenhSanXuat()).concat("%"),
+                    "%".concat(temInDTO.getSapCode()).concat("%"),
+                    "%".concat(temInDTO.getSapName()).concat("%"),
+                    "%".concat(temInDTO.getWorkOrderCode()).concat("%"),
+                    "%".concat(temInDTO.getVersion()).concat("%"),
+                    "%".concat(temInDTO.getStorageCode()).concat("%"),
+                    "%".concat(temInDTO.getCreateBy()).concat("%"),
+                    entryTime1,
+                    entryTime2,
+                    timeUpdate1,
+                    timeUpdate2,
+                    "%".concat(temInDTO.getTrangThai()).concat("%"),
+                    (temInDTO.getPageNumber() - 1) * temInDTO.getItemPerPage(),
+                    temInDTO.getItemPerPage()
+                );
         return entities;
+    }
+
+    //? Lấy thông tin tổng dữ liệu
+    public Integer totalData(TemInDTO temInDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        String timeUpdate1 = firstDay.toString() + " 00:00:00.000";
+        String timeUpdate2 = date.toString() + " 23:59:59.000";
+        if (temInDTO.getEntryTime() != null) {
+            entryTime1 = temInDTO.getEntryTime() + " 00:00:00.000";
+            entryTime2 = temInDTO.getEntryTime() + " 23:59:59.000";
+        }
+        if (temInDTO.getTimeUpdate() != null) {
+            timeUpdate1 = temInDTO.getTimeUpdate() + " 00:00:00.000";
+            timeUpdate2 = temInDTO.getTimeUpdate() + " 23:59:59.000";
+        }
+        Integer totalData =
+            this.lenhSanXuatRepository.totalData(
+                    "%".concat(temInDTO.getMaLenhSanXuat()).concat("%"),
+                    "%".concat(temInDTO.getSapCode()).concat("%"),
+                    "%".concat(temInDTO.getSapName()).concat("%"),
+                    "%".concat(temInDTO.getWorkOrderCode()).concat("%"),
+                    "%".concat(temInDTO.getVersion()).concat("%"),
+                    "%".concat(temInDTO.getStorageCode()).concat("%"),
+                    "%".concat(temInDTO.getCreateBy()).concat("%"),
+                    entryTime1,
+                    entryTime2,
+                    timeUpdate1,
+                    timeUpdate2,
+                    "%".concat(temInDTO.getTrangThai()).concat("%")
+                );
+        return totalData;
+    }
+
+    //? Tìm kiếm thông tin tem sản xuất đi kèm với phân trang
+    public List<LenhSanXuat> timKiemThongTinTemSanXuat(TemInDTO temInDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        if (temInDTO.getEntryTime() != null) {
+            entryTime1 = temInDTO.getEntryTime() + " 00:00:00.000";
+            entryTime2 = temInDTO.getEntryTime() + " 23:59:59.000";
+        }
+        List<LenhSanXuat> entities =
+            this.lenhSanXuatRepository.timKiemThongTinTemSanXuat(
+                    "%".concat(temInDTO.getMaLenhSanXuat()).concat("%"),
+                    "%".concat(temInDTO.getSapCode()).concat("%"),
+                    "%".concat(temInDTO.getSapName()).concat("%"),
+                    "%".concat(temInDTO.getWorkOrderCode()).concat("%"),
+                    "%".concat(temInDTO.getVersion()).concat("%"),
+                    "%".concat(temInDTO.getStorageCode()).concat("%"),
+                    "%".concat(temInDTO.getCreateBy()).concat("%"),
+                    entryTime1,
+                    entryTime2,
+                    "%".concat(temInDTO.getTrangThai()).concat("%"),
+                    (temInDTO.getPageNumber() - 1) * temInDTO.getItemPerPage(),
+                    temInDTO.getItemPerPage()
+                );
+        return entities;
+    }
+
+    //? Lấy thông tin tổng dữ liệu
+    public Integer totalDataThongTinTemSanXuat(TemInDTO temInDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+
+        if (temInDTO.getEntryTime() != null) {
+            entryTime1 = temInDTO.getEntryTime() + " 00:00:00.000";
+            entryTime2 = temInDTO.getEntryTime() + " 23:59:59.000";
+        }
+        Integer totalData =
+            this.lenhSanXuatRepository.totalDataThongTinTemSanXuat(
+                    "%".concat(temInDTO.getMaLenhSanXuat()).concat("%"),
+                    "%".concat(temInDTO.getSapCode()).concat("%"),
+                    "%".concat(temInDTO.getSapName()).concat("%"),
+                    "%".concat(temInDTO.getWorkOrderCode()).concat("%"),
+                    "%".concat(temInDTO.getVersion()).concat("%"),
+                    "%".concat(temInDTO.getStorageCode()).concat("%"),
+                    "%".concat(temInDTO.getCreateBy()).concat("%"),
+                    entryTime1,
+                    entryTime2,
+                    "%".concat(temInDTO.getTrangThai()).concat("%")
+                );
+        return totalData;
     }
 
     //☺ xem chi tiet lenh san xuat theo ma lenh san xuat id

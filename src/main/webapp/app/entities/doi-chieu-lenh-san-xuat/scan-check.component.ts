@@ -7,7 +7,9 @@ import { DoiChieuLenhSanXuatComponent } from './doi-chieu-lenh-san-xuat.componen
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { HttpClient } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
-
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { ChartOptions } from 'chart.js';
+import { GoogleChartInterface, GoogleChartType } from 'ng2-google-charts';
 @Component({
   selector: 'jhi-scan-check',
   templateUrl: './scan-check.component.html',
@@ -59,16 +61,57 @@ export class ScanCheckComponent implements OnInit {
     orderId: number;
     timeRecorded: string;
   }[] = [];
+  public pieChart: GoogleChartInterface = {
+    chartType: GoogleChartType.PieChart,
+    dataTable: [
+      ['Parameters', 'Count'],
+      ['PASS', 1],
+      ['NG', 0],
+    ],
+    //firstRowIsData: true,
+    options: {
+      title: 'Biểu đồ thống kê',
+      width: '900',
+      height: '900',
+    },
+  };
   public lastTime = Date.now();
   public lastCmd = null;
-  public pieChartLabels = ['NG', 'PASS'];
-  public pieChartDatasets = [
-    {
-      data: [0, 1],
-    },
-  ];
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
+  // public pieChartLabels = ['NG', 'PASS',];
+  // public pieChartDatasets = [
+  //   {
+  //     data: [0, 1],
+
+  //   },
+  // ];
+  // public lineChartOptions: ChartOptions<'pie'> = {
+  //   responsive: false,
+  //   maintainAspectRatio: true,
+  //   plugins: {
+  //     datalabels: {
+  //       display: true,
+  //       align: 'center',
+  //       anchor: 'center',
+  //       formatter: (value: any, context: any) => {
+  //         const data: any[] = context.chart.data.datasets[0].data
+  //         //Khởi tạo biến chứa kết quả tính tổng
+  //         let total = 0;
+  //         data.forEach((element: any) => {
+  //           total += element.value
+  //         });
+  //         // console.log(total)
+  //         //Khởi tạo biến chứa kết quả tính toán %
+  //         const percenTageValue = (value.value / total * 100).toFixed(2)
+  //         return `${percenTageValue}%`
+  //       },
+  //       font: {
+  //         size: 20
+  //       }
+  //     }
+  //   }
+  // };
+  // public pieChartLegend = true;
+  // public pieChartPlugins = [pluginDataLabels];
 
   popupChiTietThongTinScan = false;
   popupConfirmSave = false;
@@ -192,11 +235,16 @@ export class ScanCheckComponent implements OnInit {
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
         console.log('luu NG thanh cong');
       }
-      this.pieChartDatasets = [
-        {
-          data: [this.totalFail, this.totalPass],
-        },
+      this.pieChart.dataTable = [
+        ['Parameters', 'Count'],
+        ['PASS', this.totalPass],
+        ['NG', this.totalFail],
       ];
+      // this.pieChartDatasets = [
+      //   {
+      //     data: [this.totalFail, this.totalPass],
+      //   },
+      // ];
 
       this.scanValue = ''; // Xóa dữ liệu trong ô input
       if (this.totalScans % 10 === 0) {

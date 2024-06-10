@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Scan_productVersions")
+@Table(name = "scan_productVersions")
 public class scanProductVersions {
 
     @Id

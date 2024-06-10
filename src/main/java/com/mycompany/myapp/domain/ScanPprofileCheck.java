@@ -4,7 +4,7 @@ import javax.persistence.*;
 import org.apache.commons.math3.analysis.function.Identity;
 
 @Entity
-@Table(name = "Scan_profileCheck")
+@Table(name = "scan_profile_check")
 public class ScanPprofileCheck {
 
     @Id

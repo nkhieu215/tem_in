@@ -6,6 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { DoiChieuLenhSanXuatComponent } from './doi-chieu-lenh-san-xuat.component';
 import { ScanCheckComponent } from './scan-check.component';
 import { NgChartsModule } from 'ng2-charts';
+import { GoogleChartComponent, Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 const doiChieuLenhSanXuatRoute: Routes = [
   {
@@ -19,7 +20,14 @@ const doiChieuLenhSanXuatRoute: Routes = [
 ];
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(doiChieuLenhSanXuatRoute), NgxPaginationModule, FormsModule, NgChartsModule],
+  imports: [
+    SharedModule,
+    RouterModule.forChild(doiChieuLenhSanXuatRoute),
+    NgxPaginationModule,
+    FormsModule,
+    NgChartsModule,
+    Ng2GoogleChartsModule,
+  ],
   declarations: [DoiChieuLenhSanXuatComponent, ScanCheckComponent],
   exports: [RouterModule],
 })

@@ -109,11 +109,12 @@
     "no-new": ["off"],
     "no-new-wrappers": "error",
     "object-shorthand": [
-      "error",
-      "always",
-      {
-        "avoidExplicitReturnArrows": true
-      }
+      "off"
+      // "error",
+      // "always",
+      // {
+      //   "avoidExplicitReturnArrows": true
+      // }
     ],
     "radix": "error",
     "spaced-comment": "off"

@@ -28,6 +28,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     NgSelectModule,
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule,
+    Ng2GoogleChartsModule,
   ],
   providers: [
     Title,

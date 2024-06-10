@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.UserServices;
+import com.mycompany.myapp.service.dto.TemInDTO;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -375,22 +376,29 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/lenh-san-xuat")
-    public List<LenhSanXuat> getAllLenhSanXuat() {
-        List<LenhSanXuat> responseList = this.userServices.getAllLenhSanXuat();
+    @PostMapping("/lenh-san-xuat/totalData")
+    public Integer getAllLenhSanXuat(@RequestBody TemInDTO request) {
+        Integer responseList = this.userServices.totalDataThongTinTemSanXuat(request);
         return responseList;
     }
 
     @PostMapping("/lenh-san-xuat")
-    public List<LenhSanXuat> timKiemLenhSanXuat(@RequestBody LenhSanXuat request) {
-        List<LenhSanXuat> responseList = this.userServices.timKiemLenhSanXuat(request);
+    public List<LenhSanXuat> timKiemLenhSanXuat(@RequestBody TemInDTO request) {
+        List<LenhSanXuat> responseList = this.userServices.timKiemThongTinTemSanXuat(request);
         return responseList;
     }
 
-    @GetMapping("/quan-ly-phe-duyet")
-    public List<LenhSanXuat> timKiemQuanLyPheDuyet() {
-        List<LenhSanXuat> responseList = this.userServices.timKiemQuanLyPheDuyet();
+    @PostMapping("/quan-ly-phe-duyet")
+    public List<LenhSanXuat> timKiemQuanLyPheDuyet(@RequestBody TemInDTO temInDTO) {
+        List<LenhSanXuat> responseList = this.userServices.timKiemQuanLyPheDuyet(temInDTO);
         return responseList;
+    }
+
+    //? Lấy thông tin tổng dữ liệu trong quản lý phê duyệt
+    @PostMapping("/quan-ly-phe-duyet/totaldata")
+    public Integer totalData(@RequestBody TemInDTO temInDTO) {
+        Integer totalData = this.userServices.totalData(temInDTO);
+        return totalData;
     }
 
     @GetMapping("/chi-tiet-lenh-san-xuat/{maLenhSanXuatId}")
