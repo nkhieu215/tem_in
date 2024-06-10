@@ -161,14 +161,15 @@
   padding-top: 2rem;
 
   > div {
-    border: #000 solid 1px;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 5px;
   }
 
   .table-check {
-    width: 40vw;
+    width: 50vw;
     border-collapse: collapse;
     margin: 20px 0;
-    font-size: 16px;
     font-size: 22px;
   }
 
@@ -226,12 +227,13 @@
 .group-canvas {
   height: 300px;
   width: 300px;
+  translate: -30px -180px;
 }
 
 .group-pie {
   border: #000 solid 1px;
   width: 30%;
-  height: 340px;
+  height: 325px;
 }
 
 .pie {
@@ -243,8 +245,13 @@
 }
 
 .inspection-stations {
-  width: 50%;
+  width: 52vw;
   margin-top: 30px;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 5px;
+  min-height: 22rem;
+  display: block;
 
   .table-inspection {
     width: 50vw;
@@ -291,6 +298,7 @@
       padding: 12px 15px;
       border-bottom: 1px solid #ddd;
       border: 0.8px solid #000;
+      font-weight: 400;
 
       &:last-child {
         text-align: center;
@@ -300,9 +308,15 @@
 }
 
 .user-access {
-  width: 30%;
-  height: 200px;
+  display: block;
+  min-height: 23rem;
+  width: 25vw;
+  // height: 200px;
   margin-top: 30px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 5px;
 
   .table-user {
     width: 100%;
@@ -366,6 +380,7 @@
         padding: 12px 15px;
         border-bottom: 1px solid #ddd;
         border: 0.8px solid #000;
+        font-weight: 400;
 
         &:last-child {
           text-align: center;

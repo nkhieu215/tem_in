@@ -70,9 +70,13 @@ export class ScanCheckComponent implements OnInit {
     ],
     //firstRowIsData: true,
     options: {
-      width: 600,
-      height: 400,
+      width: 650,
+      height: 650,
       backgroundColor: 'transparent',
+      legend: {
+        position: 'right',
+        alignment: 'center',
+      },
     },
   };
   public lastTime = Date.now();
