@@ -44,6 +44,10 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() machineId = '';
   @Input() machineName = '';
   @Input() itemPerPage = 10;
+  @Input() statusName = '';
+  //list goi y
+  listUsername: any[] = [];
+  listOfNameGroupMachine: any[] = [];
   // quản lý thiết bị
   listOfGroupMachine: any[] = [];
   groupMachine: any;
@@ -81,10 +85,22 @@ export class QuanLyThietBiComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
       this.listOfGroupMachine = res;
-      console.log('TB', res);
+      this.listOfNameGroupMachine = res;
+      for (let i = 0; i < this.listOfGroupMachine.length; i++) {
+        this.listOfGroupMachine[i].statusName = this.listOfGroupMachine[i].groupStatus === 1 ? 'Active' : 'Deactive';
+      }
+      const map = new Map();
+      this.listOfGroupMachine.map(s => map.set(s.username, { Name: s.username }));
+      this.listUsername = Array.from(map.values());
+      console.log('TB', this.listUsername);
     });
   }
-
+  // tim kiem function
+  search(): void {
+    this.listOfGroupMachine = this.listOfNameGroupMachine.filter(
+      item => item.groupName.includes(this.groupName) && item.username.includes(this.userName) && item.statusName.includes(this.statusName)
+    );
+  }
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
   }
