@@ -22,14 +22,14 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         " gm.group_name as groupName, " +
         "wo.group_id as groupId," +
         "wo.product_id as productId " +
-        " from scan_work_order as wo\n" +
+        " from Scan_workOrder as wo\n" +
         "  inner join scan_products as pd on pd.product_id = wo.product_id\n" +
-        "  inner join scan_group_machines as gm on gm.group_id = wo.group_id ; ",
+        "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id ; ",
         nativeQuery = true
     )
     public List<workOrderInfo> listWorkOrderByGroup();
 
-    @Query(value = "update scan_work_order set working=?1 " + "inner join scan " + "where order_id=?2;", nativeQuery = true)
+    @Query(value = "update Scan_workOrder set working=?1 " + "inner join scan " + "where order_id=?2;", nativeQuery = true)
     public void updateWorkingWorkOrder(Integer working, Long orderId);
 
     @Query(
@@ -45,9 +45,9 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         " gm.group_name as groupName," +
         "wo.group_id as groupId, " +
         "wo.product_id as productId " +
-        " from scan_work_order as wo\n" +
+        " from Scan_workOrder as wo\n" +
         "  inner join scan_products as pd on pd.product_id = wo.product_id\n" +
-        "  inner join scan_group_machines as gm on gm.group_id = wo.group_id " +
+        "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id " +
         "where wo.order_id =?1 ; ",
         nativeQuery = true
     )

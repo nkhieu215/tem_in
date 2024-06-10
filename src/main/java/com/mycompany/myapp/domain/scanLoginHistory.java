@@ -6,7 +6,7 @@ import javax.persistence.*;
 import liquibase.pro.packaged.I;
 
 @Entity
-@Table(name = "scan_login_history")
+@Table(name = "scan_loginHistory")
 public class scanLoginHistory {
 
     @Id

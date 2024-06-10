@@ -160,6 +160,10 @@
   justify-content: space-between;
   padding-top: 2rem;
 
+  > div {
+    border: #000 solid 1px;
+  }
+
   .table-check {
     width: 40vw;
     border-collapse: collapse;
@@ -210,9 +214,11 @@
 
   tbody {
     td {
+      font-size: 4rem;
       text-align: center;
       font-weight: 400;
       border: 0.8px solid #000;
+      height: 13rem;
     }
   }
 }
@@ -223,8 +229,9 @@
 }
 
 .group-pie {
+  border: #000 solid 1px;
   width: 30%;
-  height: 200px;
+  height: 340px;
 }
 
 .pie {
@@ -371,7 +378,7 @@
 .group-station-user {
   display: flex;
   justify-content: space-between;
-  padding-top: 3rem;
+  padding-top: 4rem;
 }
 
 .paginate {

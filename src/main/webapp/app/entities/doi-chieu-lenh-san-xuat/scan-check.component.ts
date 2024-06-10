@@ -70,9 +70,9 @@ export class ScanCheckComponent implements OnInit {
     ],
     //firstRowIsData: true,
     options: {
-      title: 'Biểu đồ thống kê',
-      width: '900',
-      height: '900',
+      width: 600,
+      height: 400,
+      backgroundColor: 'transparent',
     },
   };
   public lastTime = Date.now();
@@ -191,6 +191,12 @@ export class ScanCheckComponent implements OnInit {
           this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
         }
         console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
+        this.pieChart.dataTable = [
+          ['Parameters', 'Count'],
+          ['PASS', this.totalPass],
+          ['NG', this.totalFail],
+        ];
+        this.pieChart.component!.draw(this.pieChart);
       });
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
         this.checkValue = res3.checkValue;
@@ -240,6 +246,7 @@ export class ScanCheckComponent implements OnInit {
         ['PASS', this.totalPass],
         ['NG', this.totalFail],
       ];
+      this.pieChart.component!.draw(this.pieChart);
       // this.pieChartDatasets = [
       //   {
       //     data: [this.totalFail, this.totalPass],
