@@ -13,7 +13,7 @@
     <form>
       <table class="table" aria-describedby="page-heading">
         <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
             <th scope="col" jhiSortBy="STT">
               <span>STT</span>
               <input type="text" style="width: 1px; border: none; background-color: #309acf" />
@@ -21,27 +21,66 @@
 
             <th scope="col" jhiSortBy="groupName">
               <span>Nhóm thiết bị</span>
-              <input #searchInput type="text" [(ngModel)]="groupName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="groupName"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                list="groupMachine"
+                (change)="search()"
+              />
+              <datalist id="groupMachine">
+                <option *ngFor="let data of listOfNameGroupMachine" value="{{ data.groupName }}"></option>
+              </datalist>
             </th>
 
             <th scope="col" jhiSortBy="createdAt">
               <span>Ngày tạo</span>
-              <input #searchInput type="text" [(ngModel)]="createdAt" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="date"
+                [(ngModel)]="createdAt"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                disabled
+              />
             </th>
 
             <th scope="col" jhiSortBy="updatedAt">
               <span>Ngày cập nhật</span>
-              <input #searchInput type="text" [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="date"
+                [(ngModel)]="updatedAt"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                disabled
+              />
             </th>
 
             <th scope="col" jhiSortBy="username">
               <span>Update By</span>
-              <input #searchInput type="text" [(ngModel)]="userName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="userName"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                list="username"
+              />
+              <datalist id="username">
+                <option *ngFor="let data of listUsername" value="{{ data.Name }}"></option>
+              </datalist>
             </th>
 
             <th scope="col" jhiSortBy="groupStatus">
               <span>Trạng thái</span>
-              <input #searchInput type="text" [(ngModel)]="groupStatus" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <select class="form-control form-select" [(ngModel)]="statusName" [ngModelOptions]="{ standalone: true }">
+                <option hidden></option>
+                <option value="Active">Active</option>
+                <option value="Deactive">Deactive</option>
+              </select>
             </th>
 
             <th scope="col">
@@ -57,7 +96,7 @@
             <td>{{ item.createdAt }}</td>
             <td>{{ item.updatedAt }}</td>
             <td>{{ item.username }}</td>
-            <td>{{ item.groupStatus }}</td>
+            <td>{{ item.statusName }}</td>
             <td class="text-end">
               <div class="btn-group">
                 <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi(i, item.groupId)">
