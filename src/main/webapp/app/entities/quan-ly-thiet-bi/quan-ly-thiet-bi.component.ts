@@ -40,7 +40,7 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() createdAt = '';
   @Input() updatedAt = '';
   @Input() userName = '';
-  @Input() groupStatus = '';
+  @Input() groupStatus = 0;
   @Input() machineId = '';
   @Input() machineName = '';
   @Input() itemPerPage = 10;
@@ -100,6 +100,10 @@ export class QuanLyThietBiComponent implements OnInit {
     this.listOfGroupMachine = this.listOfNameGroupMachine.filter(
       item => item.groupName.includes(this.groupName) && item.username.includes(this.userName) && item.statusName.includes(this.statusName)
     );
+  }
+  //Cập nhật trạng thái khi thêm mới nhóm thiết bị
+  updateStatus(): void {
+    this.groupStatus = this.statusName === 'Active' ? 1 : 0;
   }
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;

@@ -10,115 +10,113 @@
   </div>
 
   <div class="table-responsive">
-    <form>
-      <table class="table" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-            <th scope="col" jhiSortBy="STT">
-              <span>STT</span>
-              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
-            </th>
+    <table class="table" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+          <th scope="col" jhiSortBy="STT">
+            <span>STT</span>
+            <input type="text" style="width: 1px; border: none; background-color: #309acf" />
+          </th>
 
-            <th scope="col" jhiSortBy="groupName">
-              <span>Nhóm thiết bị</span>
-              <input
-                #searchInput
-                type="text"
-                [(ngModel)]="groupName"
-                [ngModelOptions]="{ standalone: true }"
-                placeholder="Tìm kiếm"
-                list="groupMachine"
-                (change)="search()"
-              />
-              <datalist id="groupMachine">
-                <option *ngFor="let data of listOfNameGroupMachine" value="{{ data.groupName }}"></option>
-              </datalist>
-            </th>
+          <th scope="col" jhiSortBy="groupName">
+            <span>Nhóm thiết bị</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="groupName"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              list="groupMachine"
+              (change)="search()"
+            />
+            <datalist id="groupMachine">
+              <option *ngFor="let data of listOfNameGroupMachine" value="{{ data.groupName }}"></option>
+            </datalist>
+          </th>
 
-            <th scope="col" jhiSortBy="createdAt">
-              <span>Ngày tạo</span>
-              <input
-                #searchInput
-                type="date"
-                [(ngModel)]="createdAt"
-                [ngModelOptions]="{ standalone: true }"
-                placeholder="Tìm kiếm"
-                disabled
-              />
-            </th>
+          <th scope="col" jhiSortBy="createdAt">
+            <span>Ngày tạo</span>
+            <input
+              #searchInput
+              type="date"
+              [(ngModel)]="createdAt"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              disabled
+            />
+          </th>
 
-            <th scope="col" jhiSortBy="updatedAt">
-              <span>Ngày cập nhật</span>
-              <input
-                #searchInput
-                type="date"
-                [(ngModel)]="updatedAt"
-                [ngModelOptions]="{ standalone: true }"
-                placeholder="Tìm kiếm"
-                disabled
-              />
-            </th>
+          <th scope="col" jhiSortBy="updatedAt">
+            <span>Ngày cập nhật</span>
+            <input
+              #searchInput
+              type="date"
+              [(ngModel)]="updatedAt"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              disabled
+            />
+          </th>
 
-            <th scope="col" jhiSortBy="username">
-              <span>Update By</span>
-              <input
-                #searchInput
-                type="text"
-                [(ngModel)]="userName"
-                [ngModelOptions]="{ standalone: true }"
-                placeholder="Tìm kiếm"
-                list="username"
-              />
-              <datalist id="username">
-                <option *ngFor="let data of listUsername" value="{{ data.Name }}"></option>
-              </datalist>
-            </th>
+          <th scope="col" jhiSortBy="username">
+            <span>Update By</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="userName"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              list="username"
+            />
+            <datalist id="username">
+              <option *ngFor="let data of listUsername" value="{{ data.Name }}"></option>
+            </datalist>
+          </th>
 
-            <th scope="col" jhiSortBy="groupStatus">
-              <span>Trạng thái</span>
-              <select class="form-control form-select" [(ngModel)]="statusName" [ngModelOptions]="{ standalone: true }">
-                <option hidden></option>
-                <option value="Active">Active</option>
-                <option value="Deactive">Deactive</option>
-              </select>
-            </th>
+          <th scope="col" jhiSortBy="groupStatus">
+            <span>Trạng thái</span>
+            <select class="form-control form-select" [(ngModel)]="statusName" [ngModelOptions]="{ standalone: true }">
+              <option hidden></option>
+              <option value="Active">Active</option>
+              <option value="Deactive">Deactive</option>
+            </select>
+          </th>
 
-            <th scope="col">
-              <span>Options</span>
-              <input type="text" style="width: 1px; border: none; background-color: #309acf" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of listOfGroupMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ item.groupName }}</td>
-            <td>{{ item.createdAt }}</td>
-            <td>{{ item.updatedAt }}</td>
-            <td>{{ item.username }}</td>
-            <td>{{ item.statusName }}</td>
-            <td class="text-end">
-              <div class="btn-group">
-                <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi(i, item.groupId)">
-                  <fa-icon icon="pencil"></fa-icon>
-                </button>
+          <th scope="col">
+            <span>Options</span>
+            <input type="text" style="width: 1px; border: none; background-color: #309acf" disabled />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listOfGroupMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.groupName }}</td>
+          <td>{{ item.createdAt }}</td>
+          <td>{{ item.updatedAt }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.statusName }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi(i, item.groupId)">
+                <fa-icon icon="pencil"></fa-icon>
+              </button>
 
-                <button type="submit" class="btn btn-danger btn-sm">
-                  <fa-icon icon="times"></fa-icon>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
+              <button type="submit" class="btn btn-danger btn-sm">
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div class="paginate" *ngIf="listOfGroupMachine && listOfGroupMachine.length > 0">
     <div class="paginate-container">
       <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
+        <option value="5">5</option>
         <option value="10">10</option>
-        <option value="30">30</option>
-        <option value="50">50</option>
+        <option value="20">20</option>
         <option value="{{ listOfGroupMachine.length }}">All</option>
       </select>
       <pagination-controls (pageChange)="page = $event"></pagination-controls>
@@ -158,7 +156,11 @@
               <span></span>
             </td>
             <td>
-              <span></span>
+              <select class="form-select" id="status" data-cy="status" [(ngModel)]="statusName" (change)="updateStatus()">
+                <option [ngValue]="null" hidden></option>
+                <option value="Active">Active</option>
+                <option value="Deactive">Deactive</option>
+              </select>
             </td>
           </tbody>
         </table>
@@ -252,7 +254,7 @@
               <span>{{ groupMachine.username }}</span>
             </td>
             <td>
-              <span>{{ groupMachine.groupStatus }}</span>
+              <span>{{ groupMachine.statusName }}</span>
             </td>
           </tbody>
         </table>

@@ -35,8 +35,7 @@
             placeholder="search"
             list="maLenhSanXuat"
             style="width: 8rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
@@ -50,8 +49,7 @@
             placeholder="search"
             list="sapCode"
             style="width: 5rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
@@ -64,8 +62,7 @@
             [ngModelOptions]="{ standalone: true }"
             placeholder="search"
             list="sapName"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
@@ -79,10 +76,7 @@
             placeholder="search"
             list="workOrderCode"
             style="width: 5rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
@@ -96,8 +90,7 @@
             placeholder="search"
             list="version"
             style="width: 5rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
@@ -111,8 +104,7 @@
             placeholder="search"
             list="storageCode"
             style="width: 6rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
           <datalist id="storageCode">
             <option value="01">Kho linh kiện điện tử</option>
@@ -151,31 +143,18 @@
             placeholder="search"
             list="createBy"
             style="width: 6rem"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
+            (change)="findFucntion()"
           />
         </th>
 
         <th scope="col" jhiSortBy="entryTime">
           <span>Thời gian tạo tem</span>
-          <input
-            type="date"
-            [(ngModel)]="entryTime"
-            [ngModelOptions]="{ standalone: true }"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
-          />
+          <input type="date" [(ngModel)]="entryTime" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" />
         </th>
 
         <th scope="col" jhiSortBy="timeUpdate">
           <span>Thời gian cập nhật</span>
-          <input
-            type="date"
-            [(ngModel)]="timeUpdate"
-            [ngModelOptions]="{ standalone: true }"
-            (keyup.enter)="findFucntion()"
-            (keydown.tab)="mappingBodySearchAndPagination()"
-          />
+          <input type="date" [(ngModel)]="timeUpdate" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" />
         </th>
 
         <th scope="col" jhiSortBy="trangThai">
