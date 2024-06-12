@@ -236,6 +236,7 @@ export class ScanCheckComponent implements OnInit {
         this.totalPass++;
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
         console.log('luu PASS thanh cong');
+        this.scanValue = '';
       } else {
         await this.playAlertSound();
         // setTimeout(() => {
@@ -245,6 +246,7 @@ export class ScanCheckComponent implements OnInit {
         this.warningNG(this.scanValue);
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
         console.log('luu NG thanh cong');
+        this.scanValue = '';
       }
       this.pieChart.dataTable = [
         ['Parameters', 'Count'],
@@ -258,7 +260,7 @@ export class ScanCheckComponent implements OnInit {
       //   },
       // ];
 
-      this.scanValue = ''; // Xóa dữ liệu trong ô input
+      // this.scanValue = ''; // Xóa dữ liệu trong ô input
       if (this.totalScans % 10 === 0) {
         this.scanHistory = [];
       }

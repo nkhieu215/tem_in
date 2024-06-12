@@ -3,7 +3,7 @@
     <span>Quản lý nhóm thiết bị</span>
   </h2>
   <div class="d-flex justify-content-end">
-    <button class="btn btn-info me-2" (click)="openPopupThemMoiNhomThietBi()">
+    <button class="btn btn-info me-2" (click)="openPopupThemMoiNhomThietBi()" style="padding: 10px 20px">
       <fa-icon icon="add"></fa-icon>
       <span>Thêm mới</span>
     </button>
@@ -15,7 +15,7 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
           <th scope="col" jhiSortBy="STT">
             <span>STT</span>
-            <input type="text" style="width: 1px; border: none; background-color: #309acf" />
+            <input type="text" style="width: 1px; border: none; background-color: #006699" />
           </th>
 
           <th scope="col" jhiSortBy="groupName">
@@ -84,7 +84,7 @@
 
           <th scope="col">
             <span>Options</span>
-            <input type="text" style="width: 1px; border: none; background-color: #309acf" disabled />
+            <input type="text" style="width: 1px; border: none; background-color: #006699" disabled />
           </th>
         </tr>
       </thead>
@@ -142,7 +142,7 @@
               <th scope="col"><span>Trạng thái</span></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="background-color: #d3eefc">
             <td>
               <span><input type="text" /></span>
             </td>
@@ -164,14 +164,15 @@
             </td>
           </tbody>
         </table>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave4()">
+        <!-- <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary"
+          (click)="openPopupConfirmSave4()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button>
+        </button> -->
 
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-info me-2" (click)="openPopupThemMoiThietBi()">
+          <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
             <fa-icon icon="add"></fa-icon>
             <span>Thêm mới</span>
           </button>
@@ -183,7 +184,7 @@
               <th scope="col">STT</th>
               <th scope="col">Mã thiết bị</th>
               <th scope="col">Tên thiết bị</th>
-              <th scope="col">Options</th>
+              <th scope="col" style="width: 8rem">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -210,7 +211,7 @@
           id="cancel-save"
           data-cy="entityCreateCancelButton"
           class="btn btn-secondary"
-          (click)="closePopupThemMoiThietBi()"
+          (click)="closePopupThemMoiNhomThietBi()"
         >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
@@ -240,7 +241,7 @@
               <th scope="col"><span>Trạng thái</span></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="background-color: #d3eefc">
             <td>
               <span><input type="text" [(ngModel)]="groupMachine.groupName" [ngModelOptions]="{ standalone: true }" /></span>
             </td>
@@ -265,7 +266,7 @@
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-info me-2" (click)="openPopupThemMoiThietBi()">
+          <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
             <fa-icon icon="add"></fa-icon>
             <span>Thêm mới</span>
           </button>
@@ -277,7 +278,7 @@
               <th scope="col">STT</th>
               <th scope="col">Mã thiết bị</th>
               <th scope="col">Tên thiết bị</th>
-              <th scope="col">Options</th>
+              <th scope="col" style="width: 8rem">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -326,8 +327,8 @@
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-              <th scope="col"><span>Chọn</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-              <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
+              <th scope="col"><span>Chọn</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
+              <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
               <th scope="col" jhiSortBy="machineId">
                 <span>Mã thiết bị</span>
                 <input #searchInput type="text" [(ngModel)]="machineId" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
@@ -336,15 +337,15 @@
                 <span>Tên thiết bị</span>
                 <input #searchInput type="text" [(ngModel)]="machineName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
               </th>
-              <th scope="col"><span>Trạng thái</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
+              <th scope="col"><span>Trạng thái</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let item of listOfMachineAdd; let i = index">
               <td><input type="checkbox" class="ui-checkbox" /></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.machineId }}</td>
+              <td>{{ item.machineName }}</td>
               <td></td>
             </tr>
           </tbody>
