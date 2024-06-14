@@ -274,3 +274,79 @@ input[type='checkbox'] {
   color: #ffffff;
   width: 7vw;
 }
+
+/* btn MOVE */
+.move {
+  border: none;
+  background-color: #0276ff;
+  color: #fff;
+  border-radius: 6px;
+  height: 46px;
+  width: 142px;
+}
+
+/* ---------------------------------------------popup move--------------------------------------- */
+.popupMove {
+  top: 0;
+  background: #fff;
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: 'RM Neue', sans-serif;
+}
+
+/* close btn */
+.close-btn {
+  font-size: 23px;
+  cursor: pointer;
+  float: right;
+  width: 36px;
+  text-align: center;
+  margin-right: 3px;
+  margin-top: 3px;
+  height: 33px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+}
+
+.close-btn:hover {
+  color: #fff;
+  background-color: red;
+  cursor: pointer;
+}
+
+.move-title {
+  font-size: 21px;
+  background-image: linear-gradient(to right, #0083b0, #00b4db);
+  margin-top: 61px;
+  max-width: 322px;
+  color: #fff;
+}
+
+.table {
+  thead {
+    background-color: #006699;
+    color: #fff;
+
+    th {
+      border: black solid 1px;
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  tbody {
+    border: black solid 1px;
+    font-size: 18px;
+  }
+}
+
+.btn-margin {
+  text-align: end;
+  margin-bottom: 12px;
+}
+
+.input-text {
+}

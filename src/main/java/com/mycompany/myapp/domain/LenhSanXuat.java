@@ -60,6 +60,28 @@ public class LenhSanXuat implements Serializable {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "group_name")
+    private String groupName;
+
+    @Column(name = "comment_2")
+    private String comment2;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getComment2() {
+        return comment2;
+    }
+
+    public void setComment2(String comment2) {
+        this.comment2 = comment2;
+    }
+
     @OneToMany(mappedBy = "lenhSanXuat")
     @JsonIgnoreProperties(value = { "lenhSanXuat" }, allowSetters = true)
     private Set<ChiTietLenhSanXuat> chiTietLenhSanXuats = new HashSet<>();

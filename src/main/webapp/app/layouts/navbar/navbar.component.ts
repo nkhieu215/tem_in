@@ -94,6 +94,8 @@ export class NavbarComponent implements OnInit {
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
+    document.getElementById('sidebar-id')!.style.width = '50px';
+    this.mainComponent.closeNav();
   }
 
   login(): void {
@@ -107,19 +109,13 @@ export class NavbarComponent implements OnInit {
   }
 
   toggleSidebar(): void {
-    const isSidebarCollapsed = sessionStorage.getItem('toggleSidebar');
-    this.showLogo = sessionStorage.getItem('showLogo')!;
-    if (isSidebarCollapsed === 'open') {
-      this.mainComponent.closeNav();
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    if (this.isNavbarCollapsed === true) {
       document.getElementById('sidebar-id')!.style.width = '50px';
-      sessionStorage.setItem('showLogo', 'hide');
-      sessionStorage.setItem('toggleSidebar', 'close');
-    }
-    if (isSidebarCollapsed === 'close') {
-      this.mainComponent.openNav();
+      this.mainComponent.closeNav();
+    } else {
       document.getElementById('sidebar-id')!.style.width = '250px';
-      sessionStorage.setItem('showLogo', 'show');
-      sessionStorage.setItem('toggleSidebar', 'open');
+      this.mainComponent.openNav();
     }
   }
 }

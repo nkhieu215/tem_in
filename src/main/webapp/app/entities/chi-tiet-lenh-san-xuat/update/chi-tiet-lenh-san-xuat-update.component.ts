@@ -13,7 +13,6 @@ import { ILenhSanXuat, LenhSanXuat } from 'app/entities/lenh-san-xuat/lenh-san-x
 import { LenhSanXuatService } from 'app/entities/lenh-san-xuat/service/lenh-san-xuat.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
-
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat-update',
   templateUrl: './chi-tiet-lenh-san-xuat-update.component.html',
@@ -26,14 +25,14 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   selectedAll = 1;
   checkedList: any;
   @Input() selectedItems: { checked: string }[] = [];
-  @Input() storageUnit = '';
 
   @Input() itemPerPage = 10;
+  @Input() itemPerPage3 = 5;
   @Input() itemPerPage2 = 10;
 
   page?: number;
   page2?: number;
-
+  page3?: number;
   showScanInput = false;
 
   sum = 0;
@@ -41,8 +40,6 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   isSaving = false;
   predicate!: string;
   ascending!: boolean;
-
-  @Input() reelID = '';
 
   selectedStatus = '';
 
@@ -60,8 +57,13 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   chiTietLenhSanXuatNotList: IChiTietLenhSanXuat[] = [];
   // tạo biến lưu trữ giá trị scan
   @Input() scanResults = '';
+  @Input() reelID = '';
+  @Input() storageUnit = '';
+  index = 0; // lưu thông tin index của phần tử vừa scan được
   // tạo biến check sự tồn tại trong danh sách
   isExisted = false;
+  //Đóng mở popup
+  popupMove = false;
   scanValue: IChiTietLenhSanXuat = {
     id: 0,
     reelID: 'null',
@@ -103,7 +105,10 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   countScan = 0;
   tienDoScan = 0;
   resultScanPerCent = '';
-
+  //test popup move
+  dataMove: { id: number; reelID: string; storageUnit: string; subStorageUnit: string }[] = [];
+  count = 0;
+  //----------------
   editForm = this.fb.group({
     id: [],
     maLenhSanXuat: [null, [Validators.required]],
@@ -142,7 +147,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     });
 
     this.activatedRoute.data.subscribe(({ lenhSanXuat }) => {
-      console.log('test: ');
+      // console.log('test: ');
 
       const today = dayjs().startOf('second');
       lenhSanXuat.timeUpdate = today;
@@ -168,6 +173,13 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       });
       this.updateForm(lenhSanXuat);
       // this.loadRelationshipsOptions();
+      setTimeout(() => {
+        const input = document.getElementById('scan');
+        // console.log('test: ');
+        if (input) {
+          input.focus();
+        }
+      }, 100);
     });
   }
   //cập nhật từng mã kho panacim
@@ -177,11 +189,18 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   }
   //Cập nhật tất cả mã kho panacim
   changeAllStorageUnit(): void {
-    this.storageUnit = this.storageUnit.slice(2);
+    const positionSL = this.storageUnit.indexOf('-SL');
+    console.log('check SL', positionSL);
+    const storageUnit = this.storageUnit.slice(2, positionSL);
+    const subsStorageUnit = this.storageUnit.slice(positionSL + 3);
     // console.log("test: ", this.storageUnit)
     for (let i = 0; i < this.chiTietLenhSanXuats.length; i++) {
-      const item = this.storageUnit;
-      this.chiTietLenhSanXuats[i].storageUnit = item;
+      if (positionSL === -1) {
+        this.chiTietLenhSanXuats[i].storageUnit = storageUnit;
+      } else {
+        this.chiTietLenhSanXuats[i].storageUnit = storageUnit;
+        this.chiTietLenhSanXuats[i].subStorageUnit = subsStorageUnit;
+      }
     }
     this.storageUnit = '';
   }
@@ -557,5 +576,82 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       trangThai: this.editForm.get(['trangThai'])!.value,
       comment: this.editForm.get(['comment'])!.value,
     };
+  }
+  // bắt sự kiện scan
+  catchEventScanReelId(): void {
+    const positionSL = this.storageUnit.indexOf('-SL');
+    if (positionSL === -1) {
+      const item = { id: this.count, reelID: this.reelID, storageUnit: this.storageUnit.slice(2, positionSL), subStorageUnit: '' };
+      this.chiTietLenhSanXuatActive[this.index].storageUnit = this.storageUnit.slice(2, positionSL);
+      this.dataMove.push(item);
+      this.dataMove.sort((a: any, b: any) => b.id - a.id);
+      setTimeout(() => {
+        this.count++;
+        this.reelID = '';
+        this.storageUnit = '';
+        document.getElementById('reelID')!.focus();
+      }, 150);
+    } else {
+      const item = {
+        id: this.count,
+        reelID: this.reelID,
+        storageUnit: this.storageUnit.slice(2, positionSL),
+        subStorageUnit: this.storageUnit.slice(positionSL + 3),
+      };
+      this.chiTietLenhSanXuatActive[this.index].storageUnit = this.storageUnit.slice(2, positionSL);
+      this.chiTietLenhSanXuatActive[this.index].subStorageUnit = this.storageUnit.slice(positionSL + 3);
+      this.dataMove.push(item);
+      this.dataMove.sort((a: any, b: any) => b.id - a.id);
+      setTimeout(() => {
+        this.count++;
+        this.reelID = '';
+        this.storageUnit = '';
+        document.getElementById('reelID')!.focus();
+      }, 150);
+    }
+  }
+  // delete thông tin  sau khi scan
+  removeItem(id: any): void {
+    this.dataMove = this.dataMove.filter(item => item.id !== id);
+  }
+  //clear thông tin scan
+  clearScanInFor(): void {
+    this.reelID = '';
+    document.getElementById('reelID')!.focus();
+  }
+  //scan reelID
+  scanReelId(): void {
+    let result = false;
+    const reelID = this.reelID.substring(0, 17);
+    for (let i = 0; i < this.chiTietLenhSanXuatActive.length; i++) {
+      if (reelID === this.chiTietLenhSanXuatActive[i].reelID) {
+        this.reelID = reelID;
+        this.index = i;
+        document.getElementById('storageUnit')!.focus();
+        result = true;
+      }
+    }
+    setTimeout(() => {
+      if (result === false) {
+        this.alertTimeout('Tem không nằm trong danh sách', 3000);
+        document.getElementById('reelID')!.focus();
+        this.reelID = '';
+      }
+      console.log(reelID);
+    }, 300);
+  }
+  //cập nhật thông tin kho sau khi scan Move
+  updateInfo(): void {
+    this.popupMove = false;
+    this.alertTimeout('Cập nhật vị trí kho thành công', 5000);
+  }
+  openPopupMove(): void {
+    this.popupMove = true;
+    setTimeout(() => {
+      document.getElementById('reelID')!.focus();
+    }, 100);
+  }
+  closePopupMove(): void {
+    this.popupMove = false;
   }
 }

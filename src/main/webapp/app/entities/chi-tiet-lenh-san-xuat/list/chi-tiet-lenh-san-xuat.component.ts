@@ -13,6 +13,7 @@ import { IChiTietLenhSanXuat } from '../chi-tiet-lenh-san-xuat.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ChiTietLenhSanXuatService } from '../service/chi-tiet-lenh-san-xuat.service';
 import { ChiTietLenhSanXuatDeleteDialogComponent } from '../delete/chi-tiet-lenh-san-xuat-delete-dialog.component';
+import { doc } from 'prettier';
 
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat',
@@ -113,6 +114,35 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     protected formBuilder: FormBuilder,
     protected http: HttpClient
   ) {}
+  // Thay đổi background color ứng với mỗi trạng thái
+  changeColor(): void {
+    for (let i = 0; i < this.lenhSanXuats!.length; i++) {
+      const item = this.lenhSanXuats![i].id!.toString();
+      if (this.lenhSanXuats![i].groupName?.includes('TC01') === true) {
+        document.getElementById(item)!.style.backgroundColor = '#FF9900';
+      } else if (this.lenhSanXuats![i].groupName?.includes('SMT01') === true) {
+        document.getElementById(item)!.style.backgroundColor = '#00CCFF';
+      } else if (this.lenhSanXuats![i].groupName?.includes('SMT02') === true) {
+        console.log('tesst', this.lenhSanXuats![i].groupName?.includes('SMT02'));
+        document.getElementById(item)!.style.backgroundColor = '#00CC00';
+      }
+      if (this.lenhSanXuats![i].trangThai === 'Chờ duyệt') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#FFFF33';
+      } else if (this.lenhSanXuats![i].trangThai === 'Đã phê duyệt') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#00FF00';
+      } else if (this.lenhSanXuats![i].trangThai === 'Sản xuất hủy') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#EE0000';
+        document.getElementById(i.toString())!.style.color = '#fff';
+      } else if (this.lenhSanXuats![i].trangThai === 'Kho hủy') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#DD0000';
+        document.getElementById(i.toString())!.style.color = '#fff';
+      } else if (this.lenhSanXuats![i].trangThai === 'Bản nháp') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#00FFFF';
+      } else if (this.lenhSanXuats![i].trangThai === 'Từ chối') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#FFCC00';
+      }
+    }
+  }
   mappingBodySearchAndPagination(): void {
     this.body.maLenhSanXuat = this.maLenhSanXuat;
     this.body.sapCode = this.sapCode;
@@ -209,32 +239,32 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log(this.body);
-    this.http.post<any>(this.resourceUrlApprove, this.body).subscribe(res => {
-      this.lenhSanXuats = res;
-      console.log('test', this.lenhSanXuats);
-      // if (this.lenhSanXuats) {
-      //   this.lenhSanXuats.sort((a, b) => {
-      //     if (
-      //       a.entryTime !== undefined &&
-      //       a.entryTime !== null &&
-      //       b.entryTime !== undefined &&
-      //       b.entryTime !== null &&
-      //       a.trangThai !== undefined &&
-      //       a.trangThai !== null &&
-      //       b.trangThai !== undefined &&
-      //       b.trangThai !== null
-      //     ) {
-      //       return (
-      //         a.trangThai.localeCompare(b.trangThai) ||
-      //         <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY HH:mm:ss')) -
-      //         <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
-      //       );
-      //     }
-      //     return 0;
-      //   });
-      // }
-    });
+    // console.log(this.body);
+    // this.http.post<any>(this.resourceUrlApprove, this.body).subscribe(res => {
+    //   this.lenhSanXuats = res;
+    //   console.log('test', this.lenhSanXuats);
+    //   // if (this.lenhSanXuats) {
+    //   //   this.lenhSanXuats.sort((a, b) => {
+    //   //     if (
+    //   //       a.entryTime !== undefined &&
+    //   //       a.entryTime !== null &&
+    //   //       b.entryTime !== undefined &&
+    //   //       b.entryTime !== null &&
+    //   //       a.trangThai !== undefined &&
+    //   //       a.trangThai !== null &&
+    //   //       b.trangThai !== undefined &&
+    //   //       b.trangThai !== null
+    //   //     ) {
+    //   //       return (
+    //   //         a.trangThai.localeCompare(b.trangThai) ||
+    //   //         <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY HH:mm:ss')) -
+    //   //         <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
+    //   //       );
+    //   //     }
+    //   //     return 0;
+    //   //   });
+    //   // }
+    // });
     this.getTotalData();
     this.getLenhSanXuatList();
     this.createListOfMaLenhSanXuat();
@@ -242,6 +272,9 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     this.createListOfSapName();
     this.createListOfVersion();
     this.createListOfWordOrderCode();
+    // setTimeout(() => {
+    //   this.changeColor();
+    // }, 500)
   }
   reloadPage(): void {
     window.location.reload();
@@ -250,6 +283,9 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     this.http.post<any>(this.resourceUrlApprove, this.body).subscribe(res => {
       this.lenhSanXuats = res;
       console.log('tesst 1: ', this.pageNumber, res);
+      setTimeout(() => {
+        this.changeColor();
+      }, 500);
     });
   }
 

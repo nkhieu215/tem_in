@@ -70,6 +70,7 @@ export class LenhSanXuatComponent implements OnInit {
   @Input() trangThai = '';
   @Input() entryTime = null;
   @Input() timeUpdate = null;
+  @Input() groupName = '';
   // body tim kiem + pagination
   body: {
     maLenhSanXuat: string;
@@ -177,6 +178,35 @@ export class LenhSanXuatComponent implements OnInit {
       this.getTotalData();
     }, 100);
   }
+  // Thay đổi background color ứng với mỗi trạng thái
+  changeColor(): void {
+    for (let i = 0; i < this.lenhSanXuats!.length; i++) {
+      const item = this.lenhSanXuats![i].id!.toString();
+      if (this.lenhSanXuats![i].groupName?.includes('TC01') === true) {
+        document.getElementById(item)!.style.backgroundColor = '#FF9900';
+      } else if (this.lenhSanXuats![i].groupName?.includes('SMT01') === true) {
+        document.getElementById(item)!.style.backgroundColor = '#00CCFF';
+      } else if (this.lenhSanXuats![i].groupName?.includes('SMT02') === true) {
+        console.log('tesst', this.lenhSanXuats![i].groupName?.includes('SMT02'));
+        document.getElementById(item)!.style.backgroundColor = '#00CC00';
+      }
+      if (this.lenhSanXuats![i].trangThai === 'Chờ duyệt') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#FFFF33';
+      } else if (this.lenhSanXuats![i].trangThai === 'Đã phê duyệt') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#00FF00';
+      } else if (this.lenhSanXuats![i].trangThai === 'Sản xuất hủy') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#EE0000';
+        document.getElementById(i.toString())!.style.color = '#fff';
+      } else if (this.lenhSanXuats![i].trangThai === 'Kho hủy') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#DD0000';
+        document.getElementById(i.toString())!.style.color = '#fff';
+      } else if (this.lenhSanXuats![i].trangThai === 'Bản nháp') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#00FFFF';
+      } else if (this.lenhSanXuats![i].trangThai === 'Từ chối') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#FFCC00';
+      }
+    }
+  }
   getTotalData(): void {
     this.http.post<any>(this.totalDataUrl, this.body).subscribe(res => {
       this.totalData = res;
@@ -225,6 +255,9 @@ export class LenhSanXuatComponent implements OnInit {
   getLenhSanXuatList(): void {
     this.http.post<any>(this.resourceUrl, this.body).subscribe(res => {
       this.lenhSanXuats = res;
+      setTimeout(() => {
+        this.changeColor();
+      }, 500);
     });
   }
   reloadPage(): void {

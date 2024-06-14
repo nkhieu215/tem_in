@@ -15,6 +15,8 @@ export interface ILenhSanXuat {
   timeUpdate?: dayjs.Dayjs | null;
   trangThai?: string | null;
   comment?: string | null;
+  groupName?: string | null;
+  comment2?: string | null;
   chiTietLenhSanXuats?: IChiTietLenhSanXuat[] | null;
 }
 
@@ -33,6 +35,8 @@ export class LenhSanXuat implements ILenhSanXuat {
     public timeUpdate?: dayjs.Dayjs | null,
     public trangThai?: string | null,
     public comment?: string | null,
+    public groupName?: string | null,
+    public comment2?: string | null,
     public chiTietLenhSanXuats?: IChiTietLenhSanXuat[] | null
   ) {}
 }

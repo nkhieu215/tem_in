@@ -124,7 +124,8 @@
           <!-- danh sách tems có trong lệnh sản xuất -->
           <h3 id="jhi-lenh-san-xuat-heading" data-cy="LenhSanXuatCreateUpdateHeading">
             Danh sách tem có trong lệnh
-            <p>Số lượng thùng: {{ chiTietLenhSanXuatActive.length }}</p>
+            <p>Số thùng: {{ chiTietLenhSanXuatActive.length }}</p>
+            <button class="move" (click)="openPopupMove()">Move</button>
           </h3>
           <input
             #searchInput
@@ -274,15 +275,7 @@
                 <span>{{ data.warmupTime }}</span>
               </td>
               <td>
-                <input
-                  class="input-table"
-                  type="text"
-                  list="storageUnit"
-                  [(ngModel)]="data.storageUnit"
-                  [ngModelOptions]="{ standalone: true }"
-                  onkeypress="return event.key != 'Enter';"
-                  (change)="setStorageUnit(data.storageUnit)"
-                />
+                <span>{{ data.storageUnit }}</span>
               </td>
               <td>
                 <span>{{ data.subStorageUnit }}</span>
@@ -558,5 +551,70 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+<!-- popup xan chi tiet -->
+<div class="popupMove" *ngIf="popupMove === true">
+  <span class="close-btn" (click)="closePopupMove()">X</span>
+  <p class="move-title">&nbsp; Xác nhận mã hàng hóa về kho</p>
+  <table class="table">
+    <thead>
+      <th>Thông tin BTP</th>
+      <th>Kho</th>
+    </thead>
+    <tbody>
+      <td>
+        <input
+          type="text"
+          id="reelID"
+          placeholder="24061110271900002"
+          style="width: 230px; height: 30px"
+          [(ngModel)]="reelID"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="scanReelId()"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="storageUnit"
+          placeholder="RD-BTP-01"
+          style="width: 160px; height: 30px"
+          [(ngModel)]="storageUnit"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="catchEventScanReelId()"
+        />
+      </td>
+    </tbody>
+  </table>
+  <div class="btn-margin">
+    <button class="btn-primary" (click)="clearScanInFor()">Clear</button>
+  </div>
+  <div style="height: 355px; overflow: auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="z-index: 50; position: sticky; top: -2px">Thông tin BTP</th>
+          <th style="z-index: 50; position: sticky; top: -2px">Kho</th>
+          <th style="z-index: 50; position: sticky; top: -2px">Slot</th>
+          <th style="z-index: 50; position: sticky; top: -2px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dataMove">
+          <td style="width: 170px">{{ item.reelID }}</td>
+          <td style="max-width: 81px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{ item.storageUnit }}</td>
+          <td style="max-width: 60px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{ item.subStorageUnit }}</td>
+          <td style="width: 70px">
+            <button class="btn-danger" style="width: 55px; margin-left: -3px" (click)="removeItem(item.id)">
+              <fa-icon icon="times"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="btn-margin">
+    <button class="btn-primary" style="margin-top: 12px" (click)="updateInfo()">Lưu</button>
   </div>
 </div>
