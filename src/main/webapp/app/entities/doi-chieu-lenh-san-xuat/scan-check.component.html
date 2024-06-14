@@ -201,9 +201,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
+                <tr *ngFor="let item of listOfMachines">
+                  <td>{{ item.machineId }}</td>
+                  <td>{{ position }}</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -241,6 +241,17 @@
                   <th scope="col"><span>Result</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
                 </tr>
               </thead>
+              <tbody>
+                <tr *ngFor="let item of listOfMachines">
+                  <td>{{ position }}</td>
+                  <td>{{ item.machineId }}</td>
+                  <td></td>
+                  <td>{{ checkValue }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
             </table>
             <div class="paginate">
               <div class="paginate-container">

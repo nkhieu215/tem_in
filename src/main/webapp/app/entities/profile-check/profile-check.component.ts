@@ -27,8 +27,12 @@ export class ProfileCheckComponent implements OnInit {
 
   // list product
   listOfProduct: any[] = [];
+  listOfNhomMayVersion: any[] = [];
+  listOfMaMay: any[] = [];
+  listInfoMachineAdd: any[] = [];
   popupKhaiBaoProfile = false;
   popupConfirmSave = false;
+  machines: any;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -65,8 +69,13 @@ export class ProfileCheckComponent implements OnInit {
     });
   }
 
-  openPopupKhaiBaoProfile(): void {
+  openPopupKhaiBaoProfile(index: any, id: any): void {
     this.popupKhaiBaoProfile = true;
+    this.machines = this.listOfMaMay[index];
+    this.http.get<any>(`${this.listOfProDuctURL}/${id as string}`).subscribe(res => {
+      this.listOfMaMay = res;
+    });
+    console.log('machine', this.machines);
   }
 
   closePopupKhaiBaoProfile(): void {
@@ -75,9 +84,38 @@ export class ProfileCheckComponent implements OnInit {
 
   openPopupConfirmSave(): void {
     this.popupConfirmSave = true;
+    this.http.post<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
+      console.log('post profile', this.listInfoMachineAdd);
+    });
+    this.http.put<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
+      console.log('put profile', this.listInfoMachineAdd);
+    });
   }
 
   closePopupConfirmSave(): void {
     this.popupConfirmSave = false;
+  }
+
+  addRowGroupMachine(): void {
+    const newRow = {
+      id: 0,
+      productVersion: null,
+      groupName: null,
+    };
+    this.listOfNhomMayVersion = [...this.listOfNhomMayVersion, newRow];
+    console.log('them dong', this.listOfNhomMayVersion);
+  }
+
+  addRowChiTietMay(): void {
+    const newRow = {
+      id: 0,
+      machineId: '',
+      posotion: '',
+      recordValue: '',
+      checkName: '',
+      checkStatus: '',
+    };
+    this.listOfMaMay = [...this.listOfMaMay, newRow];
+    console.log('them dong 2', this.listOfMaMay);
   }
 }

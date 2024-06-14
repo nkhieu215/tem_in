@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { ScanCheckComponent } from './scan-check.component';
 
 @Component({
   selector: 'jhi-doi-chieu-lenh-san-xuat',
@@ -41,7 +42,8 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     protected modalService: NgbModal,
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient
-  ) {}
+  ) // private scanCheck: ScanCheckComponent
+  {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
@@ -65,6 +67,13 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get<any>(this.doiChieuLenhSanXuatUrl).subscribe(res => {
+      res.forEach((item: { trangThai: string | number }) => {
+        if (item.trangThai === 0) {
+          item.trangThai = 'active';
+        } else if (item.trangThai === 1) {
+          item.trangThai = 'deactive';
+        }
+      });
       this.listOfLenhSanXuat = res;
       console.log('lsx', res);
     });

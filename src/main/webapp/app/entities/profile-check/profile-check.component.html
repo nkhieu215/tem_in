@@ -53,7 +53,7 @@
             <td>{{ item.productStatus }}</td>
             <td>
               <div class="btn-group">
-                <button type="submit" class="btn btn-info btn-sm" (click)="openPopupKhaiBaoProfile()">
+                <button type="submit" class="btn btn-info btn-sm" (click)="openPopupKhaiBaoProfile(i, item.groupId)">
                   <fa-icon icon="eye"></fa-icon>
                 </button>
 
@@ -98,8 +98,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td>{{ machines.productCode }}</td>
+                  <td>{{ machines.productName }}</td>
                 </tr>
               </tbody>
             </table>
@@ -112,7 +112,7 @@
               <div class="table-body-container-first">
                 <h2>Thông tin nhóm máy theo version</h2>
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-info me-2" style="padding: 10px 20px">
+                  <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowGroupMachine()">
                     <fa-icon icon="add"></fa-icon>
                     <span>Thêm mới</span>
                   </button>
@@ -127,10 +127,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><input type="text" /></td>
+                    <tr *ngFor="let data of listOfNhomMayVersion">
+                      <td><input type="text" [(ngModel)]="data.productVersion" /></td>
                       <td>
-                        <select class="form-select">
+                        <select class="form-select" [(ngModel)]="data.groupName">
                           <option value="">Chọn 1</option>
                           <option value="">Chọn 2</option>
                           <option value="">Chọn 3</option>
@@ -154,7 +154,7 @@
               <div class="table-body-container-second">
                 <h2>Thông tin chi tiết các máy</h2>
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-info me-2" style="padding: 10px 20px">
+                  <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowChiTietMay()">
                     <fa-icon icon="add"></fa-icon>
                     <span>Thêm mới</span>
                   </button>
@@ -173,13 +173,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr *ngFor="let data of listOfMaMay; let i = index">
                       <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><input type="checkbox" class="ui-checkbox" /></td>
+                      <td [(ngModel)]="data.machineId"></td>
+                      <td [(ngModel)]="data.posotion"></td>
+                      <td [(ngModel)]="data.recordValue"></td>
+                      <td [(ngModel)]="data.checkName"></td>
+                      <td [(ngModel)]="data.checkStatus"><input type="checkbox" class="ui-checkbox" /></td>
                       <td>
                         <div class="btn-group">
                           <button type="submit" class="btn btn-info btn-sm">

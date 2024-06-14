@@ -94,6 +94,10 @@ $checkmark-size: 1.2;
       &:last-child {
         text-align: center;
       }
+
+      .btn-sm {
+        border-radius: 5px;
+      }
     }
   }
 }
@@ -186,8 +190,8 @@ th[scope='col'].sorted-desc::after {
   }
 
   fa-icon {
-    margin-right: 5px;
-    font-size: 16px;
+    margin: 2px;
+    font-size: 18px;
   }
 }
 
@@ -398,7 +402,8 @@ th[scope='col'].sorted-desc::after {
   margin-right: 5px;
 
   fa-icon {
-    margin-right: 8px;
+    margin: 2px;
+    font-size: 18px;
   }
 
   &.btn-secondary {

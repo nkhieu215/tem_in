@@ -130,7 +130,7 @@
     <span class="close-btn" (click)="closePopupThemMoiNhomThietBi()">&times;</span>
     <div>
       <div class="popup-chi-tiet-nhom-thiet-bi">
-        <h2>Chi tiết nhóm thiết bị</h2>
+        <h2>Thêm mới nhóm thiết bị</h2>
 
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
@@ -188,17 +188,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let i = index">
+            <tr *ngFor="let item of listOfMachines; let i = index">
               <td>{{ i + 1 }}</td>
-              <td></td>
-              <td></td>
+              <td>{{ item.machineId }}</td>
+              <td>{{ item.machineName }}</td>
               <td>
                 <div class="btn-group">
-                  <button type="submit" class="btn btn-info btn-sm">
+                  <button type="submit" class="btn btn-info btn-sm" title="Chỉnh sửa">
                     <fa-icon icon="pencil"></fa-icon>
                   </button>
 
-                  <button type="submit" class="btn btn-danger btn-sm">
+                  <button type="submit" class="btn btn-danger btn-sm" title="Xoá">
                     <fa-icon icon="times"></fa-icon>
                   </button>
                 </div>
@@ -342,7 +342,14 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of listOfMachineAdd; let i = index">
-              <td><input type="checkbox" class="ui-checkbox" /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="ui-checkbox"
+                  [checked]="isMachineSelected(item)"
+                  (change)="updateSelectedMachines(item, $event)"
+                />
+              </td>
               <td>{{ i + 1 }}</td>
               <td>{{ item.machineId }}</td>
               <td>{{ item.machineName }}</td>
@@ -391,7 +398,7 @@
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
-      <button class="confirm-btn" (click)="closePopupConfirmSave3()">Xác nhận</button>
+      <button class="confirm-btn" (click)="saveSelectedMachines()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave3()">Hủy</button>
     </div>
   </div>
