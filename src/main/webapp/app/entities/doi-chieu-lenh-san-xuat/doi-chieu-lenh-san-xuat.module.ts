@@ -30,5 +30,6 @@ const doiChieuLenhSanXuatRoute: Routes = [
   ],
   declarations: [DoiChieuLenhSanXuatComponent, ScanCheckComponent],
   exports: [RouterModule],
+  providers: [ScanCheckComponent],
 })
 export class DoiChieuLenhSanXuatModule {}

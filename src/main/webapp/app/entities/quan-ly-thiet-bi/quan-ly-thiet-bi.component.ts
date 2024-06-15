@@ -28,6 +28,7 @@ export class QuanLyThietBiComponent implements OnInit {
   popupConfirmSave2 = false;
   popupConfirmSave3 = false;
   popupConfirmSave4 = false;
+  popupConfirmDelete = false;
 
   // formSearch = this.formBuilder.group({
   //   groupName: '',
@@ -118,9 +119,9 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
-    // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
-    //   console.log("them moi nhom thiet bi", this.listOfGroupMachineAdd)
-    // })
+    this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
+      console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
+    });
   }
 
   closePopupThemMoiNhomThietBi(): void {
@@ -197,6 +198,14 @@ export class QuanLyThietBiComponent implements OnInit {
 
   closePopupConfirmSave4(): void {
     this.popupConfirmSave4 = false;
+  }
+
+  openPopupConfirmDelete(): void {
+    this.popupConfirmDelete = true;
+  }
+
+  closePopupConfirmDelete(): void {
+    this.popupConfirmDelete = false;
   }
 
   updateSelectedMachines(machine: any, event: any): void {

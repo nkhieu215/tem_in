@@ -65,14 +65,15 @@ export class ProfileCheckComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
       this.listOfProduct = res;
-      console.log(res);
+      console.log('thong tin chung', res);
     });
   }
 
-  openPopupKhaiBaoProfile(index: any, id: any): void {
+  openPopupKhaiBaoProfile(index: any, groupId: any): void {
     this.popupKhaiBaoProfile = true;
+
     this.machines = this.listOfMaMay[index];
-    this.http.get<any>(`${this.listOfProDuctURL}/${id as string}`).subscribe(res => {
+    this.http.get<any>(`${this.listOfProDuctURL}/${groupId as string}`).subscribe(res => {
       this.listOfMaMay = res;
     });
     console.log('machine', this.machines);

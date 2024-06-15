@@ -102,7 +102,7 @@
                 <fa-icon icon="pencil"></fa-icon>
               </button>
 
-              <button type="submit" class="btn btn-danger btn-sm">
+              <button type="submit" class="btn btn-danger btn-sm" (click)="openPopupConfirmDelete()">
                 <fa-icon icon="times"></fa-icon>
               </button>
             </div>
@@ -410,6 +410,16 @@
     <div class="btn-group-save">
       <button class="confirm-btn" (click)="closePopupConfirmSave4()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave4()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info3" role="dialog" *ngIf="popupConfirmDelete === true">
+  <div>
+    <p>Bạn có chắc chắn muốn xoá thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmDelete()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmDelete()">Hủy</button>
     </div>
   </div>
 </div>

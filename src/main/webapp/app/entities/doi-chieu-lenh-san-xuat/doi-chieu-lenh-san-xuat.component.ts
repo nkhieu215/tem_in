@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { ScanCheckComponent } from './scan-check.component';
+import { SharedDataService } from './shared-data.service';
 
 @Component({
   selector: 'jhi-doi-chieu-lenh-san-xuat',
@@ -14,6 +15,8 @@ import { ScanCheckComponent } from './scan-check.component';
 export class DoiChieuLenhSanXuatComponent implements OnInit {
   doiChieuLenhSanXuatUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/groupId');
   WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');
+  tongHopURL = this.applicationConfigService.getEndpointFor('api/tong-hop');
+
   predicate!: string;
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -36,14 +39,19 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
 
   //list lenh san xuat
   listOfLenhSanXuat: any[] = [];
+
+  totalPass = 0;
+  totalFail = 0;
+
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
     protected applicationConfigService: ApplicationConfigService,
-    protected http: HttpClient
-  ) // private scanCheck: ScanCheckComponent
-  {}
+    protected http: HttpClient,
+    private sharedDataService: SharedDataService,
+    protected scanCheck: ScanCheckComponent // private scanCheck: ScanCheckComponent
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
@@ -76,6 +84,23 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
       });
       this.listOfLenhSanXuat = res;
       console.log('lsx', res);
+      for (let i = 0; i < this.listOfLenhSanXuat.length; i++) {
+        this.listOfLenhSanXuat[i].totalFail = 0;
+        this.listOfLenhSanXuat[i].totalPass = 0;
+        this.http.get<any>(`${this.tongHopURL}/${this.listOfLenhSanXuat[i].orderId as string}`).subscribe((res2: any[]) => {
+          if (res2.length > 0) {
+            for (let j = 0; j < res2.length; j++) {
+              if (res2[j].result === 'NG') {
+                this.listOfLenhSanXuat[i].totalFail = res2[j].recordValue;
+              } else {
+                this.listOfLenhSanXuat[i].totalPass = res2[j].recordValue;
+              }
+            }
+          }
+          // console.log('ng', this.listOfLenhSanXuat)
+          // console.log('ng', res2)
+        });
+      }
     });
   }
 
