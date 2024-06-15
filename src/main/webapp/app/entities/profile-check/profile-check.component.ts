@@ -65,7 +65,7 @@ export class ProfileCheckComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
       this.listOfProduct = res;
-      console.log(res);
+      // console.log(res);
     });
   }
 
@@ -75,7 +75,7 @@ export class ProfileCheckComponent implements OnInit {
     this.http.get<any>(`${this.listOfProDuctURL}/${id as string}`).subscribe(res => {
       this.listOfMaMay = res;
     });
-    console.log('machine', this.machines);
+    // console.log('machine', this.machines);
   }
 
   closePopupKhaiBaoProfile(): void {
@@ -85,10 +85,10 @@ export class ProfileCheckComponent implements OnInit {
   openPopupConfirmSave(): void {
     this.popupConfirmSave = true;
     this.http.post<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
-      console.log('post profile', this.listInfoMachineAdd);
+      // console.log('post profile', this.listInfoMachineAdd);
     });
     this.http.put<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
-      console.log('put profile', this.listInfoMachineAdd);
+      // console.log('put profile', this.listInfoMachineAdd);
     });
   }
 
@@ -103,7 +103,7 @@ export class ProfileCheckComponent implements OnInit {
       groupName: null,
     };
     this.listOfNhomMayVersion = [...this.listOfNhomMayVersion, newRow];
-    console.log('them dong', this.listOfNhomMayVersion);
+    // console.log('them dong', this.listOfNhomMayVersion);
   }
 
   addRowChiTietMay(): void {
@@ -116,6 +116,6 @@ export class ProfileCheckComponent implements OnInit {
       checkStatus: '',
     };
     this.listOfMaMay = [...this.listOfMaMay, newRow];
-    console.log('them dong 2', this.listOfMaMay);
+    // console.log('them dong 2', this.listOfMaMay);
   }
 }

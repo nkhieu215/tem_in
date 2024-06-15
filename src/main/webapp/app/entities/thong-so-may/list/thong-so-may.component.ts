@@ -103,14 +103,14 @@ export class ThongSoMayComponent implements OnInit {
   //   };
   //   if (sessionStorage.getItem(JSON.stringify(timKiem)) === null) {
   //     this.http.post<any>('http://192.168.18.145:5000/quan-ly-thong-so/tim-kiem', timKiem).subscribe(res => {
-  //       console.log('tim kiem: ', res);
+  //       // console.log('tim kiem: ', res);
   //       this.searchResults = res as any;
   //       sessionStorage.setItem(JSON.stringify(timKiem), JSON.stringify(res));
   //     });
   //   } else {
   //     var result = sessionStorage.getItem(JSON.stringify(timKiem));
   //     if (result) {
-  //       console.log('lay tu cache');
+  //       // console.log('lay tu cache');
   //       this.searchResults = JSON.parse(result);
   //     }
   //   }
@@ -123,7 +123,7 @@ export class ThongSoMayComponent implements OnInit {
   //   }
 
   //   this.fetchSearchResults(this.searchKeyWord).subscribe(res => {
-  //     console.log("tim kiem", res);
+  //     // console.log("tim kiem", res);
   //     this.searchResults = res;
   //   });
   // }
@@ -141,7 +141,7 @@ export class ThongSoMayComponent implements OnInit {
 
   //   const cachedResult = sessionStorage.getItem(JSON.stringify(timKiem));
   //   if (cachedResult) {
-  //     console.log('Lay tu cache');
+  //     // console.log('Lay tu cache');
   //     return (JSON.parse(cachedResult))
   //   }
 

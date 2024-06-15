@@ -7,6 +7,7 @@ import { DoiChieuLenhSanXuatComponent } from './doi-chieu-lenh-san-xuat.componen
 import { ScanCheckComponent } from './scan-check.component';
 import { NgChartsModule } from 'ng2-charts';
 import { GoogleChartComponent, Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 const doiChieuLenhSanXuatRoute: Routes = [
   {
@@ -27,6 +28,7 @@ const doiChieuLenhSanXuatRoute: Routes = [
     FormsModule,
     NgChartsModule,
     Ng2GoogleChartsModule,
+    NgApexchartsModule,
   ],
   declarations: [DoiChieuLenhSanXuatComponent, ScanCheckComponent],
   exports: [RouterModule],

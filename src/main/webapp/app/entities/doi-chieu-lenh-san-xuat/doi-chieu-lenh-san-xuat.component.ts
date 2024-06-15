@@ -41,9 +41,8 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     protected router: Router,
     protected modalService: NgbModal,
     protected applicationConfigService: ApplicationConfigService,
-    protected http: HttpClient
-  ) // private scanCheck: ScanCheckComponent
-  {}
+    protected http: HttpClient // private scanCheck: ScanCheckComponent
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
@@ -69,13 +68,17 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     this.http.get<any>(this.doiChieuLenhSanXuatUrl).subscribe(res => {
       res.forEach((item: { trangThai: string | number }) => {
         if (item.trangThai === 0) {
-          item.trangThai = 'active';
+          item.trangThai = 'Waitting';
         } else if (item.trangThai === 1) {
-          item.trangThai = 'deactive';
+          item.trangThai = 'Running';
+        } else if (item.trangThai === 2) {
+          item.trangThai = 'Finish';
+        } else if (item.trangThai === 3) {
+          item.trangThai = 'Paused';
         }
       });
       this.listOfLenhSanXuat = res;
-      console.log('lsx', res);
+      // console.log('lsx', res);
     });
   }
 
@@ -87,7 +90,7 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     this.popupChiTietThongTinScan = false;
   }
   getWorkOrderDetail(id: any, groupId: any): any {
-    console.log({ index: id, idgroup: groupId });
+    // console.log({ index: id, idgroup: groupId });
     sessionStorage.setItem('orderId', id);
     sessionStorage.setItem('groupId', groupId);
   }

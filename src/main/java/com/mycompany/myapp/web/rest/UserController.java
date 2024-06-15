@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.UserServices;
+import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
 import java.util.List;
 import org.slf4j.Logger;
@@ -558,5 +559,21 @@ public class UserController {
     public List<TongHopResponse> tongHop(@PathVariable Long orderId) {
         List<TongHopResponse> tongHopResponses = this.userServices.tongHop(orderId);
         return tongHopResponses;
+    }
+
+    @PostMapping("lenh-san-xuat/tong-so-luong")
+    public List<LenhSanXuatDTO> getTongSoLuong(@RequestBody List<LenhSanXuat> lenhSanXuats) {
+        List<LenhSanXuatDTO> lenhSanXuatDTOS = this.userServices.getTongSoLuong(lenhSanXuats);
+        return lenhSanXuatDTOS;
+    }
+
+    @PutMapping("login-history")
+    public void saveLoginHistoryInfo(@RequestBody scanLoginHistory scanLoginHistory) {
+        this.userServices.saveLoginHistoryInfo(scanLoginHistory);
+    }
+
+    @PutMapping("work-order-working")
+    public void updateWorkOrderWorking(@RequestBody scanWorkorder scanWorkorder) {
+        this.userServices.updateWorkOrderWorking(scanWorkorder);
     }
 }

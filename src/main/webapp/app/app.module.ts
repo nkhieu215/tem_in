@@ -29,6 +29,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
+    NgApexchartsModule,
   ],
   providers: [
     Title,

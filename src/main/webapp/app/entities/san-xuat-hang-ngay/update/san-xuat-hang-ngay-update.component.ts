@@ -285,7 +285,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
         }
         //---------------------------------- Set thông tin tương ứng theo Nhóm thiết bị-----------------------------
         //lay thong tin chi tiet kich ban
-        // console.log('hello', this.listNhomThietBi);
+        // // console.log('hello', this.listNhomThietBi);
         // set thông tin kịch bản để hiển thị
         this.dayChuyen = res.dayChuyen;
         this.nhomSanPham = res.nhomSanPham;
@@ -301,7 +301,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
           versionSanPham: res.versionSanPham,
           trangThai: res.trangThai,
         });
-        // console.log('lay ma thiet bi', res.maThietBi);
+        // // console.log('lay ma thiet bi', res.maThietBi);
         // lấy danh sách mã thiết bị theo loại thiết bị
         this.getMaThietBi(res.loaiThietBi, res.maThietBi);
       });
@@ -413,7 +413,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
           this.isSignalChange = true;
         });
       } else {
-        console.log('khong bat duoc su kien thay doi');
+        // console.log('khong bat duoc su kien thay doi');
       }
     }
   }
@@ -433,11 +433,11 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
           // thay đổi signal khi có sự thay đổi
           const change = { signal: 2 };
           this.http.put<any>(`${this.changeSignalUrl}/${this.idSanXuatHangNgay as number}`, change).subscribe(() => {
-            console.log('thanh cong');
+            // console.log('thanh cong');
           });
           break;
         } else {
-          console.log('khong co su thay doi');
+          // console.log('khong co su thay doi');
         }
       }
     }
@@ -475,7 +475,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
       for (let i = 0; i < this.listOfChiTietKichBan.length; i++) {
         this.listOfChiTietKichBan[i].idSanXuatHangNgay = this.idSanXuatHangNgay;
       }
-      // console.log("gan: ", this.listOfChiTietKichBan);
+      // // console.log("gan: ", this.listOfChiTietKichBan);
       //------------ cập nhật kich_ban_id trong table chi tiết sản xuất -------------
       if (this.listOfChiTietKichBan[0].idSanXuatHangNgay === undefined) {
         this.resultThongSo = 'Kịch bản chưa được khởi tạo';
@@ -485,13 +485,13 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
           this.previousState();
         });
       }
-      // console.log(this.listOfChiTietKichBan);
+      // // console.log(this.listOfChiTietKichBan);
     } else {
       //------------ cập nhật kich_ban_id trong table chi tiết sản xuất -------------
       this.http.put<any>(this.putChiTietSanXuatUrl, this.listOfChiTietKichBan).subscribe(() => {
         this.resultThongSo = 'Cập nhật chi tiết sản xuất thành công';
         this.previousState();
-        // console.log(this.listOfChiTietKichBan);
+        // // console.log(this.listOfChiTietKichBan);
       });
     }
     this.showSuccessPopup = true;

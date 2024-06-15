@@ -100,7 +100,7 @@ export class QuanLyThietBiComponent implements OnInit {
       const map = new Map();
       this.listOfGroupMachine.map(s => map.set(s.username, { Name: s.username }));
       this.listUsername = Array.from(map.values());
-      console.log('TB', this.listUsername);
+      // console.log('TB', this.listUsername);
     });
 
     // this.listOfMachinesInGroup = this.sharedSelectedMachines
@@ -119,7 +119,7 @@ export class QuanLyThietBiComponent implements OnInit {
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
     // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
-    //   console.log("them moi nhom thiet bi", this.listOfGroupMachineAdd)
+    //   // console.log("them moi nhom thiet bi", this.listOfGroupMachineAdd)
     // })
   }
 
@@ -132,15 +132,15 @@ export class QuanLyThietBiComponent implements OnInit {
     this.groupMachine = this.listOfGroupMachine[index];
     this.http.get<any>(`${this.listOfMachineURL}/${id as string}`).subscribe(res => {
       this.listOfMachines = res;
-      // console.log('machine:', res);
+      // // console.log('machine:', res);
     });
 
     this.http.put<any>(this.listOfMachineURL, this.listOfMachines).subscribe(() => {
-      console.log('machine', this.listOfMachines);
+      // console.log('machine', this.listOfMachines);
     });
 
     this.http.put<any>(this.listOfGroupMachineURL, this.listOfGroupMachine).subscribe(() => {
-      console.log('group machine', this.listOfGroupMachine);
+      // console.log('group machine', this.listOfGroupMachine);
     });
   }
 
@@ -153,7 +153,7 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupThemMoiThietBi = true;
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
-      console.log('machine:', res);
+      // console.log('machine:', res);
     });
   }
 
@@ -188,10 +188,10 @@ export class QuanLyThietBiComponent implements OnInit {
   openPopupConfirmSave4(): void {
     this.popupConfirmSave4 = true;
     this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
-      console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
+      // console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
     });
     this.http.post<any>(this.listOfMachineURL, this.listOfMachineAdd).subscribe(() => {
-      console.log('them moi thiet bi', this.listOfMachineAdd);
+      // console.log('them moi thiet bi', this.listOfMachineAdd);
     });
   }
 

@@ -97,7 +97,7 @@ export class QuanLyThongSoComponent implements OnInit {
   }
 
   onChangeSearch(): void {
-    // console.log('Selected Status:', this.selectedStatus);
+    // // console.log('Selected Status:', this.selectedStatus);
   }
 
   onChangeQuanlyThongSo(): void {

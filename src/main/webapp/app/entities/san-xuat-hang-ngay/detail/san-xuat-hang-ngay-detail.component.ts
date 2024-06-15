@@ -32,14 +32,14 @@ export class SanXuatHangNgayDetailComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ sanXuatHangNgay }) => {
       this.sanXuatHangNgay = sanXuatHangNgay;
-      // console.log('sxhn: ',this.sanXuatHangNgay)
+      // // console.log('sxhn: ',this.sanXuatHangNgay)
     });
     // lay thong tin thong so thiet bi
     if (this.sanXuatHangNgay?.id) {
       this.http.get<any>(`${this.resourceUrl}/${this.sanXuatHangNgay.id}`).subscribe(res => {
         this.chiTietSanXuats = res;
-        // console.log("res :", res);
-        // console.log("chi tiet san xuat :", this.chiTietSanXuats);
+        // // console.log("res :", res);
+        // // console.log("chi tiet san xuat :", this.chiTietSanXuats);
       });
     }
   }

@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.scanWorkorder;
 import com.mycompany.myapp.domain.workOrderInfo;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,10 +22,12 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         " wo.create_at as createAt,\n" +
         " gm.group_name as groupName, " +
         "wo.group_id as groupId," +
-        "wo.product_id as productId " +
+        "wo.product_id as productId, " +
+        "wo.run_time as runTime " +
         " from Scan_workOrder as wo\n" +
         "  inner join scan_products as pd on pd.product_id = wo.product_id\n" +
-        "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id ; ",
+        "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id " +
+        "order by order_id desc; ",
         nativeQuery = true
     )
     public List<workOrderInfo> listWorkOrderByGroup();
@@ -44,7 +47,8 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         " wo.create_at as createAt,\n" +
         " gm.group_name as groupName," +
         "wo.group_id as groupId, " +
-        "wo.product_id as productId " +
+        "wo.product_id as productId," +
+        "wo.run_time as runTime " +
         " from Scan_workOrder as wo\n" +
         "  inner join scan_products as pd on pd.product_id = wo.product_id\n" +
         "  inner join Scan_groupMachines as gm on gm.group_id = wo.group_id " +
@@ -52,4 +56,8 @@ public interface scanWorkOrderRepository extends JpaRepository<scanWorkorder, Lo
         nativeQuery = true
     )
     public workOrderInfo listWorkOrderByGroupById(Long orderId);
+
+    @Modifying
+    @Query(value = "update Scan_workOrder set working = ?1, run_time = ?2 where order_id = ?3", nativeQuery = true)
+    public void updateWorkOrderWorking(Integer working, Integer runTime, Long orderId);
 }

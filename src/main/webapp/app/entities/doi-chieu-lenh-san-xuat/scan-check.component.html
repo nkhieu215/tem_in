@@ -42,8 +42,8 @@
           <td>{{ element.productName }}</td>
           <td>{{ element.lot }}</td>
 
-          <td>{{ element.trangThai }}</td>
-          <td>{{ elapsedTime }}</td>
+          <td>{{ element.tenTrangThai }}</td>
+          <td>{{ getFormattedElapsedTime() }}</td>
         </tr>
       </tbody>
     </table>
@@ -66,13 +66,20 @@
           </tbody>
         </table>
       </div>
-      <div class="group-pie">
-        <div style="display: block" class="group-canvas">
-          <google-chart [data]="pieChart"></google-chart>
-          <!-- <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [plugins]="pieChartPlugins"
+      <!-- <div class="group-pie"> -->
+      <div class="group-canvas">
+        <apx-chart
+          [series]="chartSeries"
+          [chart]="chartDetails"
+          [labels]="chartLabels"
+          [title]="chartTitle"
+          [colors]="chartColors"
+          [dataLabels]="chartDataLabels"
+        ></apx-chart>
+        <!-- <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [plugins]="pieChartPlugins"
             [labels]="pieChartLabels" [legend]="pieChartLegend" [options]="lineChartOptions">
           </canvas> -->
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -118,20 +125,22 @@
     </div>
     <div class="user-access">
       <H3>Thông tin người truy cập</H3>
-      <table class="table-user">
-        <thead>
-          <tr>
-            <th>Tên người dùng</th>
-            <th>Thời gian đăng nhập</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let element of dataUser | paginate: { itemsPerPage: itemPerPage, currentPage: page }">
-            <td>{{ element.username }}</td>
-            <td>{{ element.timeLogin }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="overflow: auto; height: 196px">
+        <table class="table-user">
+          <thead>
+            <tr>
+              <th style="position: sticky; top: 0">Tên người dùng</th>
+              <th style="position: sticky; top: 0">Thời gian đăng nhập</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let element of dataUser | paginate: { itemsPerPage: itemPerPage, currentPage: page }">
+              <td>{{ element.username }}</td>
+              <td>{{ element.timeLogin }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="paginate" *ngIf="dataUser && dataUser.length > 0">
         <div class="paginate-container">
           <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">

@@ -70,8 +70,8 @@ export class ThietBiDetailComponent implements OnInit {
       if (this.thietBi?.id) {
         // this.http.get<any>(`${this.resourceUrl}/${this.thietBi.id}`).subscribe(res =>{
         //   this.thietBi1 = res;
-        //   console.log("id :", this.thietBi);
-        //   console.log("chi tiet thiet bi :", this.thietBi1?.thongSoMays);
+        //   // console.log("id :", this.thietBi);
+        //   // console.log("chi tiet thiet bi :", this.thietBi1?.thongSoMays);
         // });
 
         this.http.get<any>(`${this.getThongSoThietBiUrl}/${thietBi.id as number}`).subscribe(res => {
@@ -81,7 +81,7 @@ export class ThietBiDetailComponent implements OnInit {
             this.listOfThietBi[i].idThietBi = thietBi.id;
             this.listOfThietBi[i].maThietBi = thietBi.maThietBi;
           }
-          // console.log('thong so thiet bi:', this.listOfThietBi);
+          // // console.log('thong so thiet bi:', this.listOfThietBi);
         });
       }
     });

@@ -122,10 +122,10 @@
 
         <div class="search-all">
           <!-- danh sách tems có trong lệnh sản xuất -->
-          <h3 id="jhi-lenh-san-xuat-heading" data-cy="LenhSanXuatCreateUpdateHeading">
+          <h3 id="jhi-lenh-san-xuat-heading">
             Danh sách tem có trong lệnh
             <p>Số thùng: {{ chiTietLenhSanXuatActive.length }}</p>
-            <button class="move" (click)="openPopupMove()">Move</button>
+            <button type="button" class="move" id="scannnnnnnn" (click)="openPopupMove()">Move</button>
           </h3>
           <input
             #searchInput
@@ -167,8 +167,14 @@
                 <th scope="col">
                   <span class="custom-width">Storage Unit</span>
                   <div class="custom-search">
-                    <input class="inp-replace" type="text" [(ngModel)]="storageUnit" [ngModelOptions]="{ standalone: true }" />
-                    <button class="btn-replace" (click)="changeAllStorageUnit()">
+                    <input
+                      class="inp-replace"
+                      type="text"
+                      [(ngModel)]="storageUnit"
+                      [ngModelOptions]="{ standalone: true }"
+                      (keydown.enter)="changeAllStorageUnit()"
+                    />
+                    <button class="btn-replace" (keydown.enter)="changeAllStorageUnit()">
                       <fa-icon icon="eye"></fa-icon>
                     </button>
                   </div>
@@ -590,7 +596,7 @@
   <div class="btn-margin">
     <button class="btn-primary" (click)="clearScanInFor()">Clear</button>
   </div>
-  <div style="height: 355px; overflow: auto">
+  <div style="height: 240px; overflow: auto">
     <table class="table">
       <thead>
         <tr>

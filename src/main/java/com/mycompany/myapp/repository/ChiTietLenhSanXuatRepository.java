@@ -1,6 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.ChiTietLenhSanXuat;
+import com.mycompany.myapp.domain.TongHopResponse;
 import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,7 @@ public interface ChiTietLenhSanXuatRepository extends JpaRepository<ChiTietLenhS
         nativeQuery = true
     )
     public ChiTietLenhSanXuat getChiTietLenhSanXuatItem(String reelID);
+
+    @Query(value = "" + "select sum(initial_quantity) from chi_tiet_lenh_san_xuat where ma_lenh_san_xuat_id =?1 ;", nativeQuery = true)
+    public String getTongSoLuong(Long id);
 }

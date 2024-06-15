@@ -123,6 +123,8 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     timeUpdate: [],
     trangThai: [],
     comment: [],
+    groupName: [],
+    comment2: [],
   });
 
   initialQuantity: any;
@@ -143,21 +145,21 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     });
     // bắt sự kiện scan
     this.scanResult.valueChanges.subscribe(data => {
-      console.log('data: ');
+      // console.log('data: ');
     });
 
     this.activatedRoute.data.subscribe(({ lenhSanXuat }) => {
-      // console.log('test: ');
+      // // console.log('test: ');
 
       const today = dayjs().startOf('second');
       lenhSanXuat.timeUpdate = today;
 
       this.changeStatus.id = lenhSanXuat.id;
       this.changeStatus.totalQuantity = lenhSanXuat.totalQuantity;
-      // console.log(this.changeStatus);
+      // // console.log(this.changeStatus);
       this.http.get<any>(`${this.resourceUrl}/${lenhSanXuat.id as number}`).subscribe(res => {
         this.chiTietLenhSanXuats = res;
-        // console.log('chi tiet: ', this.chiTietLenhSanXuats);
+        // // console.log('chi tiet: ', this.chiTietLenhSanXuats);
         //lấy danh sách chi tiết lsx ở trạng thái active
         this.chiTietLenhSanXuatActive = this.chiTietLenhSanXuats.filter(a => a.trangThai === 'Active');
         this.itemPerPage = this.chiTietLenhSanXuatActive.length;
@@ -175,7 +177,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       // this.loadRelationshipsOptions();
       setTimeout(() => {
         const input = document.getElementById('scan');
-        // console.log('test: ');
+        // // console.log('test: ');
         if (input) {
           input.focus();
         }
@@ -185,15 +187,15 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   //cập nhật từng mã kho panacim
   test(test: string): void {
     test = '';
-    console.log('test:', test);
+    // console.log('test:', test);
   }
   //Cập nhật tất cả mã kho panacim
   changeAllStorageUnit(): void {
     const positionSL = this.storageUnit.indexOf('-SL');
-    console.log('check SL', positionSL);
+    // console.log('check SL', positionSL);
     const storageUnit = this.storageUnit.slice(2, positionSL);
     const subsStorageUnit = this.storageUnit.slice(positionSL + 3);
-    // console.log("test: ", this.storageUnit)
+    // // console.log("test: ", this.storageUnit)
     for (let i = 0; i < this.chiTietLenhSanXuats.length; i++) {
       if (positionSL === -1) {
         this.chiTietLenhSanXuats[i].storageUnit = storageUnit;
@@ -258,9 +260,9 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
         }
       }
     }
-    console.log('id: ', id);
-    console.log('check: ', checker);
-    console.log(this.chiTietLenhSanXuats);
+    // console.log('id: ', id);
+    // console.log('check: ', checker);
+    // console.log(this.chiTietLenhSanXuats);
   }
 
   // cap nhat vao mang checkedList cac ptu chiTietLenhSanXuatActive co thuoc tinh checked
@@ -332,7 +334,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   //================================ chức năng scan mã kho panacim =========================================
   setStorageUnit(storageUnit: string): void {
     storageUnit = storageUnit.slice(2);
-    console.log('test: ', storageUnit);
+    // console.log('test: ', storageUnit);
   }
 
   save(): void {
@@ -393,6 +395,8 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       timeUpdate: lenhSanXuat.timeUpdate ? lenhSanXuat.timeUpdate.format(DATE_TIME_FORMAT) : null,
       trangThai: lenhSanXuat.trangThai,
       comment: lenhSanXuat.comment,
+      groupName: lenhSanXuat.groupName,
+      comment2: lenhSanXuat.comment2,
     });
   }
   // chuyển hướng con trỏ
@@ -575,6 +579,8 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
       timeUpdate: this.editForm.get(['timeUpdate'])!.value ? dayjs(this.editForm.get(['timeUpdate'])!.value, DATE_TIME_FORMAT) : undefined,
       trangThai: this.editForm.get(['trangThai'])!.value,
       comment: this.editForm.get(['comment'])!.value,
+      comment2: this.editForm.get(['comment2'])!.value,
+      groupName: this.editForm.get(['groupName'])!.value,
     };
   }
   // bắt sự kiện scan
@@ -637,7 +643,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
         document.getElementById('reelID')!.focus();
         this.reelID = '';
       }
-      console.log(reelID);
+      // console.log(reelID);
     }, 300);
   }
   //cập nhật thông tin kho sau khi scan Move

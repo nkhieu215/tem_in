@@ -74,7 +74,7 @@ export class QuanLyThongSoUpdateComponent implements OnInit {
         const today = dayjs().startOf('millisecond');
         quanLyThongSo.ngayTao = today;
         quanLyThongSo.ngayUpdate = today;
-        // console.log('today', quanLyThongSo.ngayTao);
+        // // console.log('today', quanLyThongSo.ngayTao);
       }
       const today = dayjs().startOf('millisecond');
       quanLyThongSo.ngayUpdate = today;
@@ -93,7 +93,7 @@ export class QuanLyThongSoUpdateComponent implements OnInit {
   }
 
   openSuccessPopup(): void {
-    // console.log('id', this.editForm.get(['id'])!.value);
+    // // console.log('id', this.editForm.get(['id'])!.value);
     if (this.editForm.get(['id'])!.value === undefined) {
       this.result = 'Thêm mới thông số thành công';
     } else {
