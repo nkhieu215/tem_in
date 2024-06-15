@@ -124,7 +124,7 @@ export class ThietBiUpdateComponent implements OnInit {
     });
     this.activatedRoute.data.subscribe(({ thietBi }) => {
       if (thietBi.id === undefined) {
-        // console.log(thietBi)
+        // // console.log(thietBi)
         const today = dayjs().startOf('minutes');
         thietBi.ngayTao = today;
         thietBi.timeUpdate = today;
@@ -142,14 +142,14 @@ export class ThietBiUpdateComponent implements OnInit {
             this.listOfThietBi[i].idThietBi = thietBi.id;
             this.listOfThietBi[i].maThietBi = thietBi.maThietBi;
           }
-          // console.log('thong so thiet bi:', this.listOfThietBi);
+          // // console.log('thong so thiet bi:', this.listOfThietBi);
         });
       }
       this.updateForm(thietBi);
       this.getAllThongSo();
       this.getAllNhomThietBi();
       this.getAllDayChuyen();
-      // console.log(this.getAllNhomThietBi)
+      // // console.log(this.getAllNhomThietBi)
     });
     this.accountService
       .getAuthenticationState()
@@ -172,7 +172,7 @@ export class ThietBiUpdateComponent implements OnInit {
   getAllThongSo(): void {
     this.http.get<IQuanLyThongSo>(this.listThongSoUrl).subscribe(res => {
       this.listOfThongSo = res as any;
-      // console.log("danh sach thong so: ", this.listOfThongSo);
+      // // console.log("danh sach thong so: ", this.listOfThongSo);
     });
   }
   getAllNhomThietBi(): void {
@@ -180,10 +180,10 @@ export class ThietBiUpdateComponent implements OnInit {
       this.listNhomThietBi = res;
       // sắp xếp lại danh sách
       this.listNhomThietBi.sort((a, b) => a.loaiThietBi.localeCompare(b.loaiThietBi));
-      // console.log('nhom thiet bi:', this.listNhomThietBi);
+      // // console.log('nhom thiet bi:', this.listNhomThietBi);
       const item = { loaiThietBi: this.listNhomThietBi[0].loaiThietBi };
       this.listLoaiThietBi.push(item);
-      // console.log('loai thiet bi:', this.listLoaiThietBi);
+      // // console.log('loai thiet bi:', this.listLoaiThietBi);
       for (let i = 1; i < this.listNhomThietBi.length; i++) {
         if (this.listNhomThietBi[i].loaiThietBi !== this.listNhomThietBi[i - 1].loaiThietBi) {
           const items = { loaiThietBi: this.listNhomThietBi[i].loaiThietBi };
@@ -192,13 +192,13 @@ export class ThietBiUpdateComponent implements OnInit {
           continue;
         }
       }
-      // console.log('loai thiet bi:', this.listLoaiThietBi);
+      // // console.log('loai thiet bi:', this.listLoaiThietBi);
     });
   }
   getAllDayChuyen(): void {
     this.http.get<any>(this.getListDayChuyenUrl).subscribe(res => {
       this.listDayChuyen = res;
-      // console.log("day chuyen:", this.listDayChuyen)
+      // // console.log("day chuyen:", this.listDayChuyen)
     });
   }
   //---------------------------------- Set thông tin tương ứng theo tên thông số -----------------------------
@@ -208,23 +208,23 @@ export class ThietBiUpdateComponent implements OnInit {
         if (this.listOfThietBi[i].thongSo === this.listOfThongSo[j].tenThongSo) {
           this.listOfThietBi[i].moTa = this.listOfThongSo[j].moTa;
           this.listOfThietBi[i].status = this.listOfThongSo[j].status;
-          // console.log('mo ta:', this.listOfThongSo[j].moTa)
+          // // console.log('mo ta:', this.listOfThongSo[j].moTa)
         }
       }
     }
-    // console.log('tuong ung: ', this.listOfThietBi);
+    // // console.log('tuong ung: ', this.listOfThietBi);
   }
   //---------------------------------- Set thông tin tương ứng theo Nhóm thiết bị-----------------------------
   timKiemTheoLoaiThietBi(): void {
     this.loaiThietBi = this.editForm.get(['loaiThietBi'])!.value;
-    // console.log(this.editForm.get(['loaiThietBi'])!.value);
+    // // console.log(this.editForm.get(['loaiThietBi'])!.value);
     for (let i = 0; i < this.listNhomThietBi.length; i++) {
       if (this.loaiThietBi === this.listNhomThietBi[i].loaiThietBi) {
         const items = { maThietBi: this.listNhomThietBi[i].maThietBi };
         this.listMaThietBi.push(items);
       }
     }
-    // console.log('ma thiet bi:', this.listMaThietBi);
+    // // console.log('ma thiet bi:', this.listMaThietBi);
   }
   //------------------------------------------------- set thông tin dây chuyền tương ứng theo mã thiết bị
   setDayChuyen(): void {
@@ -234,7 +234,7 @@ export class ThietBiUpdateComponent implements OnInit {
         break;
       }
     }
-    // console.log('day chuyen:', this.dayChuyen)
+    // // console.log('day chuyen:', this.dayChuyen)
   }
   //-------------------------------------------------------- SAVE --------------------------------------------------------
   save(): void {
@@ -285,7 +285,7 @@ export class ThietBiUpdateComponent implements OnInit {
       for (let i = 0; i < this.listOfThietBi.length; i++) {
         this.listOfThietBi[i].idThietBi = this.idThietBi;
       }
-      // console.log('response: ',this.listOfThietBi)
+      // // console.log('response: ',this.listOfThietBi)
     });
   }
 
@@ -356,12 +356,12 @@ export class ThietBiUpdateComponent implements OnInit {
 
   createFromForm(): IThietBi {
     // gán giá trị cho input
-    // console.log('ma thiet bi:', this.maThietBi);
-    // console.log('loai thiet bi:', this.loaiThietBi);
+    // // console.log('ma thiet bi:', this.maThietBi);
+    // // console.log('loai thiet bi:', this.loaiThietBi);
     // gán giá trị cho object đầu tiên trong list thông số
     this.listOfThietBi[0].maThietBi = this.maThietBi;
     this.listOfThietBi[0].loaiThietBi = this.editForm.get(['loaiThietBi'])!.value;
-    // console.log('khoi tao thiet bi:', this.listOfThietBi);
+    // // console.log('khoi tao thiet bi:', this.listOfThietBi);
     return {
       ...new ThietBi(),
       id: this.editForm.get(['id'])!.value,

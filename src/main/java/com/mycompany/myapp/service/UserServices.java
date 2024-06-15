@@ -2,6 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
+import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -916,6 +917,7 @@ public class UserServices {
             if (entity != null) {
                 entity.setInitialQuantity(chiTietLenhSanXuat.getInitialQuantity());
                 entity.setStorageUnit(chiTietLenhSanXuat.getStorageUnit());
+                entity.setSubStorageUnit(chiTietLenhSanXuat.getSubStorageUnit());
                 entity.setTrangThai(chiTietLenhSanXuat.getTrangThai());
                 entity.setChecked(chiTietLenhSanXuat.getChecked());
                 this.chiTietLenhSanXuatRepository.save(entity);
@@ -1107,5 +1109,34 @@ public class UserServices {
     public List<TongHopResponse> tongHop(Long orderId) {
         List<TongHopResponse> tongHopResponses = this.scanDetailCheckRepository.tongHop(orderId);
         return tongHopResponses;
+    }
+
+    //☺ lay tong so luong
+    public List<LenhSanXuatDTO> getTongSoLuong(List<LenhSanXuat> lenhSanXuats) {
+        List<LenhSanXuatDTO> tongHopResponses = new ArrayList<>();
+        for (LenhSanXuat lenhSanXuat : lenhSanXuats) {
+            LenhSanXuatDTO lenhSanXuatDTO = new LenhSanXuatDTO();
+            lenhSanXuatDTO.setTongSoLuong(this.chiTietLenhSanXuatRepository.getTongSoLuong(lenhSanXuat.getId()));
+            tongHopResponses.add(lenhSanXuatDTO);
+        }
+        return tongHopResponses;
+    }
+
+    //☺ luu thong tin login
+    public void saveLoginHistoryInfo(scanLoginHistory scanLoginHistory) {
+        this.scanLoginHistoryRepository.saveLoginHistoryInfo(
+                scanLoginHistory.getUsername(),
+                scanLoginHistory.getTimeLogin(),
+                scanLoginHistory.getOrderId()
+            );
+    }
+
+    //☺ Cap nhat trang thai working
+    public void updateWorkOrderWorking(scanWorkorder scanWorkorder) {
+        this.scanWorkOrderRepository.updateWorkOrderWorking(
+                scanWorkorder.getWorking(),
+                scanWorkorder.getRunTime(),
+                scanWorkorder.getOrderId()
+            );
     }
 }

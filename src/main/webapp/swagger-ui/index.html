@@ -46,7 +46,7 @@
             urls = response.data.map(({ group, description }) => ({ name: description, url: `${baseUrl}/${group}` }));
           }
         }
-        console.log(`Swagger urls`, urls);
+        // console.log(`Swagger urls`, urls);
 
         if (urls) {
           urls.sort(function (a, b) {

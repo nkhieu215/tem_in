@@ -172,7 +172,7 @@ export class ThietBiComponent implements OnInit {
 
     this.searchResults = [];
 
-    // console.log("body:", timKiem)
+    // // console.log("body:", timKiem)
     this.http.post<any>(this.resourceUrl, data).subscribe(res => {
       //luu du lieu tra ve de hien thi len front-end
       this.thietBis = res;

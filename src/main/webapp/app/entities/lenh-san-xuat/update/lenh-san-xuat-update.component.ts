@@ -53,6 +53,8 @@ export class LenhSanXuatUpdateComponent implements OnInit {
     timeUpdate: [],
     trangThai: [],
     comment: [],
+    groupName: [],
+    comment2: [],
   });
 
   @Input() reelID = '';
@@ -65,7 +67,7 @@ export class LenhSanXuatUpdateComponent implements OnInit {
     protected http: HttpClient,
     protected formBuilder: FormBuilder,
     protected accountService: AccountService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
@@ -99,12 +101,11 @@ export class LenhSanXuatUpdateComponent implements OnInit {
   guiPheDuyet(): void {
     this.editForm.patchValue({
       trangThai: 'Chờ duyệt',
-    })
+    });
     const lenhSanXuat = this.createFromForm();
     this.lenhSanXuatService.update(lenhSanXuat).subscribe(() => {
-      this.http
-        .put<any>(`${this.resourceUrl1}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats)
-        .subscribe();
+      // console.log(this.editForm)
+      this.http.put<any>(`${this.resourceUrl1}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats).subscribe();
       alert('Gửi phê duyệt thành công');
       this.previousState();
     });
@@ -113,12 +114,10 @@ export class LenhSanXuatUpdateComponent implements OnInit {
   boPhanSanXuatHuy(): void {
     this.editForm.patchValue({
       trangThai: 'Sản xuất hủy',
-    })
+    });
     const lenhSanXuat = this.createFromForm();
     this.lenhSanXuatService.update(lenhSanXuat).subscribe(() => {
-      this.http
-        .put<any>(`${this.resourceUrl1}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats)
-        .subscribe();
+      this.http.put<any>(`${this.resourceUrl1}/${this.editForm.get(['id'])!.value as number}`, this.chiTietLenhSanXuats).subscribe();
       alert('Huỷ thành công');
       this.previousState();
     });
@@ -192,6 +191,8 @@ export class LenhSanXuatUpdateComponent implements OnInit {
       timeUpdate: lenhSanXuat.timeUpdate ? lenhSanXuat.timeUpdate.format(DATE_TIME_FORMAT) : null,
       trangThai: lenhSanXuat.trangThai,
       comment: lenhSanXuat.comment,
+      groupName: lenhSanXuat.groupName,
+      comment2: lenhSanXuat.comment2,
     });
   }
 
@@ -211,6 +212,8 @@ export class LenhSanXuatUpdateComponent implements OnInit {
       timeUpdate: this.editForm.get(['timeUpdate'])!.value ? dayjs(this.editForm.get(['timeUpdate'])!.value, DATE_TIME_FORMAT) : undefined,
       trangThai: this.editForm.get(['trangThai'])!.value,
       comment: this.editForm.get(['comment'])!.value,
+      comment2: this.editForm.get(['comment2'])!.value,
+      groupName: this.editForm.get(['groupName'])!.value,
     };
   }
 }

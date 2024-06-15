@@ -143,7 +143,7 @@ export class KichBanComponent implements OnInit {
 
     this.http.post<any>(this.resourceUrl, data).subscribe(res => {
       this.kichBans = res;
-      // console.log("kich ban:", this.kichBans);
+      // // console.log("kich ban:", this.kichBans);
       //lấy danh sách SXHN
       this.http.get<any>(`${this.sanXuatHangNgayUrl}/${2}`).subscribe(res1 => {
         this.listOfSanXuatHangNgay = res1;
@@ -230,12 +230,12 @@ export class KichBanComponent implements OnInit {
       if (maKichBan === this.listOfSanXuatHangNgay[j].maKichBan) {
         this.http.get<any>(`${this.SanXuatHangNgayDoiChieu}/${this.listOfSanXuatHangNgay[j].id as number}`).subscribe(res => {
           this.chiTietSanXuats = res;
-          // console.log('api-sxhn', res);
+          // // console.log('api-sxhn', res);
           this.http.get<any>(`${this.resourceUrlKB}/${id as number}`).subscribe(res1 => {
             this.chiTietKichBans = res1;
 
-            // console.log('res1 :', res1);
-            // console.log('chi tiet kich ban1 :', this.chiTietKichBans);
+            // // console.log('res1 :', res1);
+            // // console.log('chi tiet kich ban1 :', this.chiTietKichBans);
             // cách 2:
             if (this.chiTietKichBans && this.chiTietSanXuats !== null) {
               for (let i = 0; i < this.chiTietKichBans.length; i++) {
@@ -353,8 +353,8 @@ export class KichBanComponent implements OnInit {
         };
         this.listOfChiTietKichBan.push(newRows);
       }
-      // console.log('thiet bi: ', this.listOfChiTietKichBan);
-      // console.log('tim kiem: ', timKiem);
+      // // console.log('thiet bi: ', this.listOfChiTietKichBan);
+      // // console.log('tim kiem: ', timKiem);
     });
     //set dây chuyền tương ứng theo mã thiết bị
     for (let i = 0; i < this.listNhomThietBi.length; i++) {
@@ -362,15 +362,15 @@ export class KichBanComponent implements OnInit {
         this.dayChuyen = this.listNhomThietBi[i].dayChuyen;
       }
     }
-    // console.log('thiet bi: ', res;
-    // console.log('tim kiem: ', timKiem);
+    // // console.log('thiet bi: ', res;
+    // // console.log('tim kiem: ', timKiem);
   }
 
   xacNhanDongBo(): void {
     //Cập nhật mã kịch bản
     const updateBody = { id: this.idSanXuatHangNgay, maThietBi: this.listMaThietBiSXHN.toString() };
     this.http.put<any>(this.updateKichBanUrl, updateBody).subscribe(res => {
-      console.log('cap nhat ma kich ban thanh cong', res.maKichBan);
+      // console.log('cap nhat ma kich ban thanh cong', res.maKichBan);
     });
     if (this.chiTietKichBans && this.chiTietSanXuats) {
       for (let i = 0; i < this.chiTietKichBans.length; i++) {
@@ -382,12 +382,12 @@ export class KichBanComponent implements OnInit {
       }
       // cập nhật thông số kịch bản
       this.http.put<any>(this.putChiTietKichBanUrl, this.chiTietKichBans).subscribe(() => {
-        console.log('cap nhat');
+        // console.log('cap nhat');
       });
       // change signal SXHN
       const change = { maKichBan: this.chiTietKichBans[0].maKichBan, signal: 2 };
       this.http.put<any>(`${this.sanXuatHangNgayUrl}`, change).subscribe(() => {
-        console.log('thanh cong');
+        // console.log('thanh cong');
       });
       // window.location.reload();
     }

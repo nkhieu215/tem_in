@@ -223,14 +223,14 @@ export class KichBanUpdateComponent implements OnInit {
   getAllThongSo(): void {
     this.http.get<IQuanLyThongSo>(this.listThongSoUrl).subscribe(res => {
       this.listOfThongSo = res as any;
-      // console.log("danh sach thong so: ", this.listOfThongSo);
+      // // console.log("danh sach thong so: ", this.listOfThongSo);
     });
   }
 
   getAllThietBi(): void {
     this.http.get<IThietBi>(this.listThietBiUrl).subscribe(res => {
       this.listOfThietBi = res as any;
-      // console.log("danh sach thiet bi: ", this.listOfThietBi);
+      // // console.log("danh sach thiet bi: ", this.listOfThietBi);
     });
   }
 
@@ -244,10 +244,10 @@ export class KichBanUpdateComponent implements OnInit {
     this.http.get<any>(this.listNhomThietBiUrl).subscribe(res => {
       this.listNhomThietBi = res;
       this.listNhomThietBi.sort((a, b) => a.loaiThietBi.localeCompare(b.loaiThietBi));
-      // console.log("nhom thiet bi:", this.listNhomThietBi);
+      // // console.log("nhom thiet bi:", this.listNhomThietBi);
       const item = { loaiThietBi: this.listNhomThietBi[0].loaiThietBi };
       this.listLoaiThietBi.push(item);
-      // console.log('loai thiet bi:', this.listLoaiThietBi);
+      // // console.log('loai thiet bi:', this.listLoaiThietBi);
       for (let i = 1; i < this.listNhomThietBi.length; i++) {
         if (this.listNhomThietBi[i].loaiThietBi !== this.listNhomThietBi[i - 1].loaiThietBi) {
           const items = { loaiThietBi: this.listNhomThietBi[i].loaiThietBi };
@@ -256,21 +256,21 @@ export class KichBanUpdateComponent implements OnInit {
           continue;
         }
       }
-      // console.log('loai thiet bi:', this.listNhomThietBi);
+      // // console.log('loai thiet bi:', this.listNhomThietBi);
     });
   }
 
   getAllDonVi(): void {
     this.http.get<any>(this.donViUrl).subscribe(res => {
       this.listDonVi = res;
-      // console.log('don vi:', this.listDonVi);
+      // // console.log('don vi:', this.listDonVi);
     });
   }
 
   getMaThietBiUpdate(loaiTB: string | undefined | null, maTB: string | undefined | null): void {
     //---------------------------------- Set thông tin tương ứng theo Nhóm thiết bị-----------------------------
     this.listMaThietBi = [];
-    // console.log('ma thiet bi:',this.listNhomThietBi)
+    // // console.log('ma thiet bi:',this.listNhomThietBi)
     for (let i = 0; i < this.listNhomThietBi.length; i++) {
       if (loaiTB === this.listNhomThietBi[i].loaiThietBi) {
         const items = { maThietBi: this.listNhomThietBi[i].maThietBi };
@@ -304,7 +304,7 @@ export class KichBanUpdateComponent implements OnInit {
   getAllDayChuyen(): void {
     this.http.get<any>(this.listDayChuyenUrl).subscribe(res => {
       this.listDayChuyen = res;
-      // console.log("day chuyen:", this.listDayChuyen)
+      // // console.log("day chuyen:", this.listDayChuyen)
     });
   }
 

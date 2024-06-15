@@ -33,6 +33,9 @@ public class scanWorkorder {
     @Column(name = "create_at")
     private Date createAt;
 
+    @Column(name = "run_time")
+    private Integer runTime;
+
     public scanWorkorder() {}
 
     public scanWorkorder(
@@ -53,6 +56,14 @@ public class scanWorkorder {
         this.groupId = groupId;
         this.working = working;
         this.createAt = createAt;
+    }
+
+    public Integer getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(Integer runTime) {
+        this.runTime = runTime;
     }
 
     public Long getOrderId() {

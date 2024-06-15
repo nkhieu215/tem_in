@@ -97,11 +97,11 @@ export class EditComponent implements OnInit {
   }
 
   onChangeSearch(): void {
-    // console.log('Selected Status:', this.selectedStatus);
+    // // console.log('Selected Status:', this.selectedStatus);
   }
 
   onChangeStatus(): void {
-    // console.log('Selected Status:', this.selectedStatus);
+    // // console.log('Selected Status:', this.selectedStatus);
   }
 
   trackId(_index: number, item: IThietBi): number {
@@ -128,16 +128,16 @@ export class EditComponent implements OnInit {
 
   saveThongSoThietBi(): void {
     this.searchResults = [];
-    // console.log(this.maThietBi);
+    // // console.log(this.maThietBi);
     // this.http.post<any>(this.resourceUrlAdd,this.listOfThietBi).subscribe(res => {
-    //   console.log("res", res)
-    //   console.log('save', this.listOfThietBi);
+    //   // console.log("res", res)
+    //   // console.log('save', this.listOfThietBi);
     // });
   }
 
   subscribeToSaveResponse(result: Observable<HttpResponse<IThietBi>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(() =>
-      // console.log('res:',res)
+      // // console.log('res:',res)
       ({
         next: () => this.onSaveSuccess(),
         error: () => this.onSaveError(),
@@ -192,7 +192,7 @@ export class EditComponent implements OnInit {
     if (this.editId !== null) {
       this.http.post<any>(this.resourceUrl, this.listOfThietBi[this.editId + 1]).subscribe(
         response => {
-          console.log('update thanh cong', response);
+          // console.log('update thanh cong', response);
         },
         error => {
           console.error('update fail', error);
@@ -217,7 +217,7 @@ export class EditComponent implements OnInit {
     };
 
     this.listOfThietBi = [...this.listOfThietBi, newRow];
-    // console.log('add row', this.listOfThietBi);
+    // // console.log('add row', this.listOfThietBi);
     this.i++;
   }
 

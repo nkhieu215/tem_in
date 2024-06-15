@@ -116,10 +116,10 @@ export class SanXuatHangNgayComponent implements OnInit {
   }
 
   onSelectAll(items: any): void {
-    console.log(items);
+    // console.log(items);
   }
   onDeSelectAll(items: any): void {
-    console.log(items);
+    // console.log(items);
   }
 
   trackId(_index: number, item: ISanXuatHangNgay): number {

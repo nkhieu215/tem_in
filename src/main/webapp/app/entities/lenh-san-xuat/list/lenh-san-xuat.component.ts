@@ -130,7 +130,7 @@ export class LenhSanXuatComponent implements OnInit {
     this.body.itemPerPage = this.itemPerPage;
     this.body.pageNumber = this.pageNumber;
     this.body.trangThai = this.trangThai;
-    console.log('body: ', this.body);
+    // console.log('body: ', this.body);
   }
   nextPage(): void {
     this.pageNumber++;
@@ -187,7 +187,7 @@ export class LenhSanXuatComponent implements OnInit {
       } else if (this.lenhSanXuats![i].groupName?.includes('SMT01') === true) {
         document.getElementById(item)!.style.backgroundColor = '#00CCFF';
       } else if (this.lenhSanXuats![i].groupName?.includes('SMT02') === true) {
-        console.log('tesst', this.lenhSanXuats![i].groupName?.includes('SMT02'));
+        // console.log('tesst', this.lenhSanXuats![i].groupName?.includes('SMT02'));
         document.getElementById(item)!.style.backgroundColor = '#00CC00';
       }
       if (this.lenhSanXuats![i].trangThai === 'Chờ duyệt') {
@@ -217,7 +217,7 @@ export class LenhSanXuatComponent implements OnInit {
         this.nextPageBtn = false;
         this.lastPageBtn = false;
       }
-      console.log('total data', res, Math.floor(this.totalData / this.itemPerPage));
+      // console.log('total data', res, Math.floor(this.totalData / this.itemPerPage));
     });
   }
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -270,31 +270,31 @@ export class LenhSanXuatComponent implements OnInit {
   createListOfMaLenhSanXuat(): void {
     this.http.get<any>(this.maLenhSanXuatResourceUrl).subscribe(res => {
       this.listOfMaLenhSanXuat = res;
-      // console.log(res);
+      // // console.log(res);
     });
   }
   createListOfSapCode(): void {
     this.http.get<any>(this.sapCodetResourceUrl).subscribe(res => {
       this.listOfSapCode = res;
-      // console.log('sap code', res);
+      // // console.log('sap code', res);
     });
   }
   createListOfSapName(): void {
     this.http.get<any>(this.sapNameResourceUrl).subscribe(res => {
       this.listOfSapName = res;
-      // console.log('sap name', res);
+      // // console.log('sap name', res);
     });
   }
   createListOfWordOrderCode(): void {
     this.http.get<any>(this.workOrderCodeResourceUrl).subscribe(res => {
       this.listOfWorkOrderCode = res;
-      // console.log('Work order code', res);
+      // // console.log('Work order code', res);
     });
   }
   createListOfVersion(): void {
     this.http.get<any>(this.versionResourceUrl).subscribe(res => {
       this.listOfVersion = res;
-      // console.log('version', res);
+      // // console.log('version', res);
     });
   }
   delete(lenhSanXuat: ILenhSanXuat): void {

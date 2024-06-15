@@ -10,6 +10,8 @@ import { AccountService } from 'app/core/auth/account.service';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { ChartOptions } from 'chart.js';
 import { GoogleChartInterface, GoogleChartType } from 'ng2-google-charts';
+import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'jhi-scan-check',
   templateUrl: './scan-check.component.html',
@@ -22,6 +24,31 @@ export class ScanCheckComponent implements OnInit {
   listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
   tongHopURL = this.applicationConfigService.getEndpointFor('api/tong-hop');
   profileURL = this.applicationConfigService.getEndpointFor('api/profile-check');
+  postUserLoginURL = this.applicationConfigService.getEndpointFor('api/login-history');
+  updateWorkingURL = this.applicationConfigService.getEndpointFor('api/work-order-working');
+  //
+  chartSeries: ApexNonAxisChartSeries = [1, 0];
+
+  chartDetails: ApexChart = {
+    type: 'pie',
+    toolbar: {
+      show: false,
+    },
+  };
+  chartColors = ['#0000FF', '#F44336'];
+  chartLabels = ['PASS', 'NG'];
+  //disablebtn
+  disableStart = false;
+  disablePause = true;
+  disableFinish = false;
+  chartTitle: ApexTitleSubtitle = {
+    text: 'Biểu đồ thống kê',
+    align: 'center',
+  };
+
+  chartDataLabels: ApexDataLabels = {
+    enabled: true,
+  };
 
   //btn
   start = true;
@@ -44,7 +71,7 @@ export class ScanCheckComponent implements OnInit {
   runTime = 0;
   stopTime = 0;
   timer: any;
-  elapsedTime = 0;
+  elapsedTime = 64;
   stationName = 'BG XK03';
   running = false;
   numberPlan = this.dataWorkOrder[0].sanLuong;
@@ -76,6 +103,7 @@ export class ScanCheckComponent implements OnInit {
       legend: {
         position: 'right',
         alignment: 'center',
+        fontSize: '14px',
       },
     },
   };
@@ -103,7 +131,7 @@ export class ScanCheckComponent implements OnInit {
   //         data.forEach((element: any) => {
   //           total += element.value
   //         });
-  //         // console.log(total)
+  //         // // console.log(total)
   //         //Khởi tạo biến chứa kết quả tính toán %
   //         const percenTageValue = (value.value / total * 100).toFixed(2)
   //         return `${percenTageValue}%`
@@ -161,58 +189,65 @@ export class ScanCheckComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
       this.account = account;
-      console.log('acc', this.account);
+      // console.log('acc', this.account);
     });
     const item = sessionStorage.getItem('orderId');
     this.http.get<any>(`${this.WorkOrderDetailUrl}/${item as string}`).subscribe(res => {
       this.dataWorkOrder[0] = res;
+      console.log(this.dataWorkOrder);
       this.numberPlan = this.dataWorkOrder[0].sanLuong;
       if (this.dataWorkOrder[0].trangThai === 0) {
-        this.dataWorkOrder[0].trangThai = 'waiting';
+        this.dataWorkOrder[0].tenTrangThai = 'Waiting';
+      } else if (this.dataWorkOrder[0].trangThai === 1) {
+        this.dataWorkOrder[0].tenTrangThai = 'Running';
+      } else if (this.dataWorkOrder[0].trangThai === 2) {
+        this.dataWorkOrder[0].tenTrangThai = 'Finish';
+        this.disableStart = true;
+      } else if (this.dataWorkOrder[0].trangThai === 3) {
+        this.dataWorkOrder[0].tenTrangThai = 'Pause';
       }
-      console.log('detail', this.dataWorkOrder[0]);
+      this.elapsedTime = this.dataWorkOrder[0].runTime;
+      // console.log('detail', this.dataWorkOrder[0]);
       this.http.get<any>(`${this.userLoginlUrl}/${item as string}`).subscribe(res1 => {
         this.dataUser = res1;
-        console.log('login', res1);
+        // console.log('login', res1);
       });
       this.http.get<any>(`${this.tongHopURL}/${item as string}`).subscribe((res2: any[]) => {
+        this.rateCompleted = '0.000';
         if (res2.length === 1) {
           if (res2[0].recordName === 'NG') {
             this.totalFail = Number(res2[0].recordValue);
             this.totalPass = 0;
             this.totalScans = this.totalFail + this.totalPass;
             this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
+            this.chartSeries = [this.totalPass, this.totalFail];
           } else {
             this.totalFail = 0;
             this.totalPass = Number(res2[0].recordValue);
             this.totalScans = this.totalFail + this.totalPass;
             this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
+            this.chartSeries = [this.totalPass, this.totalFail];
           }
         } else {
           this.totalFail = Number(res2[0].recordValue);
           this.totalPass = Number(res2[1].recordValue);
           this.totalScans = this.totalFail + this.totalPass;
           this.rateCompleted = ((this.totalScans / Number(this.numberPlan)) * 100).toFixed(3);
+          this.chartSeries = [this.totalPass, this.totalFail];
         }
-        console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
-        this.pieChart.dataTable = [
-          ['Parameters', 'Count'],
-          ['PASS', this.totalPass],
-          ['NG', this.totalFail],
-        ];
-        this.pieChart.component!.draw(this.pieChart);
+        // console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
       });
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
         this.checkValue = res3.checkValue;
         this.checkName = res3.checkName;
         this.position = res3.position;
-        console.log('profile', this.checkValue);
+        // console.log('profile', this.checkValue);
       });
     });
   }
 
   async onScan(): Promise<any> {
-    console.log({ ttscan: this.totalScans, number: this.numberPlan });
+    // console.log({ ttscan: this.totalScans, number: this.numberPlan });
     if (this.scanValue.trim()) {
       this.totalScans++;
       const status = this.scanValue === this.checkValue ? 'PASS' : 'NG';
@@ -235,7 +270,7 @@ export class ScanCheckComponent implements OnInit {
       if (status === 'PASS') {
         this.totalPass++;
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
-        console.log('luu PASS thanh cong');
+        // console.log('luu PASS thanh cong');
         this.scanValue = '';
       } else {
         await this.playAlertSound();
@@ -245,15 +280,10 @@ export class ScanCheckComponent implements OnInit {
         this.totalFail++;
         this.warningNG(this.scanValue);
         this.http.post<any>(this.DetaiChecklUrl, this.scanHistory).subscribe();
-        console.log('luu NG thanh cong');
+        // console.log('luu NG thanh cong');
         this.scanValue = '';
       }
-      this.pieChart.dataTable = [
-        ['Parameters', 'Count'],
-        ['PASS', this.totalPass],
-        ['NG', this.totalFail],
-      ];
-      this.pieChart.component!.draw(this.pieChart);
+      this.chartSeries = [this.totalPass, this.totalFail];
       // this.pieChartDatasets = [
       //   {
       //     data: [this.totalFail, this.totalPass],
@@ -296,33 +326,51 @@ export class ScanCheckComponent implements OnInit {
   }
 
   btnStart(): void {
+    this.disableStart = true;
+    this.disablePause = false;
     document.getElementById('scanCheck')?.focus();
-    this.dataWorkOrder[0].trangThai = 'Running';
+    this.dataWorkOrder[0].tenTrangThai = 'Running';
+    this.dataWorkOrder[0].trangThai = 1;
     this.running = true;
     this.timer = setInterval(() => {
       this.elapsedTime++;
     }, 1000);
-    const currentTime = new Date().toLocaleString();
+    const currentTime = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
+    const item = { username: this.account.login, timeLogin: currentTime, orderId: this.dataWorkOrder[0].orderId };
+    const working = { working: this.dataWorkOrder[0].trangThai, runTime: this.elapsedTime, orderId: this.dataWorkOrder[0].orderId };
     this.dataUser.push({ username: this.account.login, timeLogin: currentTime });
+    this.http.put<any>(this.postUserLoginURL, item).subscribe();
+    this.http.put<any>(this.updateWorkingURL, working).subscribe();
   }
 
   btnPause(): void {
-    this.dataWorkOrder[0].trangThai = 'Pause';
+    this.disablePause = true;
+    this.disableStart = false;
+    this.dataWorkOrder[0].tenTrangThai = 'Pause';
+    this.dataWorkOrder[0].trangThai = 3;
     this.running = false;
     clearInterval(this.timer);
+    console.log(this.elapsedTime);
+    const working = { working: this.dataWorkOrder[0].trangThai, runTime: this.elapsedTime, orderId: this.dataWorkOrder[0].orderId };
+    this.http.put<any>(this.updateWorkingURL, working).subscribe();
   }
 
   btnFinish(): void {
-    this.dataWorkOrder[0].trangThai = 'Finish';
+    this.disableFinish = true;
+    this.disableStart = true;
+    this.dataWorkOrder[0].tenTrangThai = 'Finish';
+    this.dataWorkOrder[0].trangThai = 2;
     this.running = false;
     clearInterval(this.timer);
+    const working = { working: this.dataWorkOrder[0].trangThai, runTime: this.elapsedTime, orderId: this.dataWorkOrder[0].orderId };
+    this.http.put<any>(this.updateWorkingURL, working).subscribe();
   }
 
   openPopupChiTietThongTinScan(): void {
     const groupId = sessionStorage.getItem('groupId');
     this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
       this.listOfMachines = res;
-      console.log('machinessss:', res);
+      // console.log('machinessss:', res);
     });
     this.popupChiTietThongTinScan = true;
   }
