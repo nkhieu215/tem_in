@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.scanGroupMachines;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +13,11 @@ public interface scanGroupMachinesRepository extends JpaRepository<scanGroupMach
     @Query(value = " select * from [ProfileProductions].[dbo].[Scan_groupMachines] as a ;", nativeQuery = true)
     public List<scanGroupMachines> groupMachinesList();
 
+    @Modifying
     @Query(value = "insert into Scan_groupMachines (group_name,create_at,username,group_status) values(?1,?2,?3,?4) ", nativeQuery = true)
     public void insertGroupMachines(String groupName, ZonedDateTime createAt, String username, Integer groupStatus);
 
+    @Modifying
     @Query(
         value = "update Scan_groupMachines set group_name =?1 , update_at=?2,username =?3, group_status =?4 where group_id =?5",
         nativeQuery = true
