@@ -82,7 +82,8 @@ export class ProfileCheckComponent implements OnInit {
     this.http.get<any>(`${this.listOfProDuctURL}/${groupId as string}`).subscribe(res => {
       this.listOfMaMay = res;
     });
-    console.log('machine', this.listOfProduct[index]);
+
+    console.log('machine', this.machines);
   }
 
   closePopupKhaiBaoProfile(): void {
