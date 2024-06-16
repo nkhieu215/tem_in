@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
+import com.mycompany.myapp.service.dto.groupMachineDTO;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -1002,7 +1003,7 @@ public class UserServices {
     }
 
     //?Chỉnh sửa thông tin nhóm thiết bị
-    public void putGroupMachines(scanGroupMachines scanGroupMachines) {
+    public void putGroupMachines(groupMachineDTO scanGroupMachines) {
         this.scanGroupMachinesRepository.putGroupMachines(
                 scanGroupMachines.getGroupName(),
                 scanGroupMachines.getUpdateAt(),

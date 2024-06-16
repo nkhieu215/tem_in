@@ -93,7 +93,7 @@
           <td>{{ i + 1 }}</td>
           <td>{{ item.groupName }}</td>
           <td>{{ item.createdAt }}</td>
-          <td>{{ item.updatedAt }}</td>
+          <td>{{ item.updateAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
           <td>{{ item.username }}</td>
           <td>{{ item.statusName }}</td>
           <td class="text-end">
@@ -243,13 +243,16 @@
           </thead>
           <tbody style="background-color: #d3eefc">
             <td>
-              <span><input type="text" [(ngModel)]="groupMachine.groupName" [ngModelOptions]="{ standalone: true }" /></span>
+              <span>{{ groupMachine.groupName }}</span>
+              <!-- <span><input type="text" [(ngModel)]="groupMachine.groupName" [ngModelOptions]="{ standalone: true }"
+                  (change)="updateGroupMachine()" /></span> -->
+              <!-- đặt hàm cập nhật nhóm thiết bị ở đây -> giảm bớt tiến trình ấn lưu thông tin nhóm thiết bị  -->
             </td>
             <td>
               <span>{{ groupMachine.createdAt }}</span>
             </td>
             <td>
-              <span>{{ groupMachine.updatedAt }}</span>
+              <span>{{ groupMachine.updateAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
             </td>
             <td>
               <span>{{ groupMachine.username }}</span>
@@ -259,17 +262,18 @@
             </td>
           </tbody>
         </table>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
+        <!-- <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary"
+          (click)="openPopupConfirmSave()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button>
+        </button> -->
 
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
+          <!-- <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
             <fa-icon icon="add"></fa-icon>
             <span>Thêm mới</span>
-          </button>
+          </button> -->
         </div>
         <hr />
         <table class="table table-striped" aria-describedby="page-heading">
@@ -278,7 +282,7 @@
               <th scope="col">STT</th>
               <th scope="col">Mã thiết bị</th>
               <th scope="col">Tên thiết bị</th>
-              <th scope="col" style="width: 8rem">Options</th>
+              <!-- <th scope="col" style="width: 8rem">Options</th> -->
             </tr>
           </thead>
           <tbody>
@@ -286,7 +290,7 @@
               <td>{{ i + 1 }}</td>
               <td>{{ item.machineId }}</td>
               <td>{{ item.machineName }}</td>
-              <td>
+              <!-- <td>
                 <div class="btn-group">
                   <button type="submit" class="btn btn-info btn-sm">
                     <fa-icon icon="pencil"></fa-icon>
@@ -296,22 +300,18 @@
                     <fa-icon icon="times"></fa-icon>
                   </button>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
-        <button
-          type="button"
-          id="cancel-save"
-          data-cy="entityCreateCancelButton"
-          class="btn btn-secondary"
-          (click)="closePopupNhomThietBi()"
-        >
+        <!-- <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+          (click)="closePopupNhomThietBi()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave2()">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary"
+          (click)="openPopupConfirmSave2()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

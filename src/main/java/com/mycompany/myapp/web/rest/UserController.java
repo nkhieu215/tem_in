@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.UserServices;
 import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
+import com.mycompany.myapp.service.dto.groupMachineDTO;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -482,7 +483,7 @@ public class UserController {
     }
 
     @PutMapping("scan-group-machines")
-    public void putGroupMachines(@RequestBody scanGroupMachines scanGroupMachines) {
+    public void putGroupMachines(@RequestBody groupMachineDTO scanGroupMachines) {
         this.userServices.putGroupMachines(scanGroupMachines);
     }
 
