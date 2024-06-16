@@ -40,6 +40,11 @@
   padding: 0;
   margin: 0;
   display: block;
+
+  .group-btn-header {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .main-dashboard {
@@ -166,6 +171,18 @@
     border-radius: 5px;
   }
 
+  .group-pie {
+    border: #ccc solid 1px;
+    width: 30vw;
+    height: 325px;
+
+    .group-canvas {
+      // margin: auto;
+      height: 300px;
+      width: 400px;
+    }
+  }
+
   .table-check {
     width: 50vw;
     border-collapse: collapse;
@@ -222,19 +239,6 @@
       height: 13rem;
     }
   }
-}
-
-.group-canvas {
-  margin: auto;
-  width: 32rem;
-  height: 300px;
-  width: 400px;
-}
-
-.group-pie {
-  border: #000 solid 1px;
-  width: 30%;
-  height: 325px;
 }
 
 .pie {
@@ -311,7 +315,7 @@
 .user-access {
   display: block;
   min-height: 23rem;
-  width: 25vw;
+  width: 30vw;
   // height: 200px;
   margin-top: 30px;
   padding: 1rem;
@@ -531,6 +535,13 @@
       .table-container {
         width: 90vw;
         height: 80vh;
+
+        .table-footer {
+          .btn-footer {
+            border-top: none;
+            margin-top: 1rem;
+          }
+        }
       }
     }
 

@@ -1079,7 +1079,7 @@ public class UserServices {
 
     //?Lấy thông tin chi tiết scan sản phẩm theo lệnh sản xuất
     public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId) {
-        List<scanDetailCheck> scanDetailChecks = this.scanDetailCheckRepository.listDetailCheckByWorkOrder(orderId);
+        List<scanDetailCheck> scanDetailChecks = this.scanDetailCheckRepository.findAllByOrderId(orderId);
         return scanDetailChecks;
     }
 

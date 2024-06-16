@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Repository
 public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck, Long> {
-    @Query(value = "select * from scan_detail_check  where order_id=?1;", nativeQuery = true)
+    public List<scanDetailCheck> findAllByOrderId(Long orderId);
+
+    @Modifying
+    @Query(value = "select * from scan_detail_check  where order_id = ?1;", nativeQuery = true)
     public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId);
 
     @Modifying

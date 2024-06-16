@@ -156,6 +156,7 @@ export class ScanCheckComponent implements OnInit {
   account: any;
   // Thiet bi
   listOfMachines: any[] = [];
+  infoCheckMachine: any[] = [];
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -370,7 +371,13 @@ export class ScanCheckComponent implements OnInit {
     const groupId = sessionStorage.getItem('groupId');
     this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
       this.listOfMachines = res;
-      // console.log('machinessss:', res);
+      console.log('machinessss:', res);
+    });
+    const item = sessionStorage.getItem('orderId');
+
+    this.http.get<any>(`${this.DetaiChecklUrl}/${item as string}`).subscribe(res2 => {
+      this.infoCheckMachine = res2;
+      console.log('tt chi tiet', res2);
     });
     this.popupChiTietThongTinScan = true;
   }

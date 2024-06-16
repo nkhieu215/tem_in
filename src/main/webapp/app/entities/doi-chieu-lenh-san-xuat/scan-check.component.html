@@ -1,9 +1,11 @@
 <div class="main-container">
-  <button type="button" class="btn btn-secondary" (click)="previousState()">
-    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-  </button>
-  <div class="main-dashboard">
-    <h1>Thông tin giám sát sản xuất</h1>
+  <div class="group-btn-header">
+    <div class="btn-back">
+      <button type="button" class="btn btn-secondary" (click)="previousState()">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+    </div>
+
     <div class="btn-actions">
       <button type="button" class="btn btn-success" (click)="btnStart()" [disabled]="disableStart">Start</button>
       <button type="button" class="btn btn-warning" (click)="btnPause()" [disabled]="disablePause">Pause</button>
@@ -21,6 +23,9 @@
         />
       </div>
     </div>
+  </div>
+  <div class="main-dashboard">
+    <h1>Thông tin giám sát sản xuất</h1>
   </div>
   <div class="product-info">
     <table class="table-info">
@@ -66,20 +71,20 @@
           </tbody>
         </table>
       </div>
-      <!-- <div class="group-pie"> -->
-      <div class="group-canvas">
-        <apx-chart
-          [series]="chartSeries"
-          [chart]="chartDetails"
-          [labels]="chartLabels"
-          [title]="chartTitle"
-          [colors]="chartColors"
-          [dataLabels]="chartDataLabels"
-        ></apx-chart>
-        <!-- <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [plugins]="pieChartPlugins"
+      <div class="group-pie">
+        <div class="group-canvas">
+          <apx-chart
+            [series]="chartSeries"
+            [chart]="chartDetails"
+            [labels]="chartLabels"
+            [title]="chartTitle"
+            [colors]="chartColors"
+            [dataLabels]="chartDataLabels"
+          ></apx-chart>
+          <!-- <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [plugins]="pieChartPlugins"
             [labels]="pieChartLabels" [legend]="pieChartLegend" [options]="lineChartOptions">
           </canvas> -->
-        <!-- </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -203,17 +208,17 @@
                     <span>Vị trí</span>
                     <input #searchInput type="text" [(ngModel)]="position" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
                   </th>
-                  <th scope="col"><span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
                   <th scope="col">
                     <span>Thông tin check</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                   </th>
+                  <th scope="col"><span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of listOfMachines">
                   <td>{{ item.machineId }}</td>
                   <td>{{ position }}</td>
-                  <td></td>
+                  <td>{{ checkName }}</td>
                   <td style="text-align: left">{{ checkValue }}</td>
                 </tr>
               </tbody>
@@ -251,16 +256,36 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of listOfMachines">
-                  <td>{{ position }}</td>
-                  <td>{{ item.machineName }}</td>
+                <tr *ngFor="let item of infoCheckMachine; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.machineId }}</td>
                   <td></td>
-                  <td>{{ checkValue }}</td>
-                  <td></td>
-                  <td>{{ position }}</td>
-                  <td>{{ result }}</td>
+                  <td>{{ item.recordName }}</td>
+                  <td>{{ item.recordValue }}</td>
+                  <td>{{ item.position }}</td>
+                  <td>{{ item.result }}</td>
                 </tr>
               </tbody>
+              <div class="btn-footer">
+                <button
+                  type="button"
+                  id="cancel-save"
+                  data-cy="entityCreateCancelButton"
+                  class="btn btn-secondary"
+                  (click)="closePopupChiTietThongTinScan()"
+                >
+                  <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button
+                  type="submit"
+                  id="save-entity"
+                  data-cy="entityCreateSaveButton"
+                  class="btn btn-primary"
+                  (click)="openPopupConfirmSave()"
+                >
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+                </button>
+              </div>
             </table>
             <div class="paginate">
               <div class="paginate-container">
@@ -275,18 +300,6 @@
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          id="cancel-save"
-          data-cy="entityCreateCancelButton"
-          class="btn btn-secondary"
-          (click)="closePopupChiTietThongTinScan()"
-        >
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-        </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button>
       </div>
     </div>
   </div>
