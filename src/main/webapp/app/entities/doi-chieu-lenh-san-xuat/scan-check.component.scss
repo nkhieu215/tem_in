@@ -226,6 +226,7 @@
 
 .group-canvas {
   margin: auto;
+  width: 32rem;
   height: 300px;
   width: 400px;
 }
@@ -301,7 +302,7 @@
       font-weight: 400;
 
       &:last-child {
-        text-align: center;
+        text-align: left;
       }
     }
   }
@@ -383,7 +384,7 @@
         font-weight: 400;
 
         &:last-child {
-          text-align: center;
+          text-align: left;
         }
       }
     }
