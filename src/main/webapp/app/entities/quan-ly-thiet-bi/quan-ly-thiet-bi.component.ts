@@ -1,9 +1,11 @@
+import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { AccountService } from 'app/core/auth/account.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 @Component({
@@ -15,7 +17,7 @@ export class QuanLyThietBiComponent implements OnInit {
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
   listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
   listOfMachineAddURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/machine');
-
+  getListOfMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
   predicate!: string;
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -37,7 +39,8 @@ export class QuanLyThietBiComponent implements OnInit {
   //   username: '',
   //   groupStatus: '',
   // });
-
+  // acount
+  account: any;
   @Input() groupName = '';
   @Input() createdAt = '';
   @Input() updatedAt = '';
@@ -68,7 +71,9 @@ export class QuanLyThietBiComponent implements OnInit {
     protected modalService: NgbModal,
     protected formBuilder: FormBuilder,
     protected http: HttpClient,
-    protected applicationConfigService: ApplicationConfigService
+    protected applicationConfigService: ApplicationConfigService,
+
+    protected accountService: AccountService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -92,6 +97,10 @@ export class QuanLyThietBiComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      // console.log('acc', this.account);
+    });
     this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
       this.listOfGroupMachine = res;
       this.listOfNameGroupMachine = res;
@@ -136,18 +145,18 @@ export class QuanLyThietBiComponent implements OnInit {
   openPopupNhomThietBi(index: any, id: any): void {
     this.popupNhomThietBi = true;
     this.groupMachine = this.listOfGroupMachine[index];
+    console.log('machine:', this.groupMachine);
     this.http.get<any>(`${this.listOfMachineURL}/${id as string}`).subscribe(res => {
       this.listOfMachines = res;
-      // // console.log('machine:', res);
+      console.log('machine', this.listOfMachines);
     });
+    // this.http.put<any>(this.listOfMachineURL, this.listOfMachines).subscribe(() => {
+    //   // console.log('machine', this.listOfMachines);
+    // });
 
-    this.http.put<any>(this.listOfMachineURL, this.listOfMachines).subscribe(() => {
-      // console.log('machine', this.listOfMachines);
-    });
-
-    this.http.put<any>(this.listOfGroupMachineURL, this.listOfGroupMachine).subscribe(() => {
-      // console.log('group machine', this.listOfGroupMachine);
-    });
+    // this.http.put<any>(this.listOfGroupMachineURL, this.listOfGroupMachine).subscribe(() => {
+    //   // console.log('group machine', this.listOfGroupMachine);
+    // });
   }
 
   closePopupNhomThietBi(): void {
@@ -230,5 +239,16 @@ export class QuanLyThietBiComponent implements OnInit {
 
   isMachineSelected(machine: any): any {
     return this.selectedMachines.some(m => m.machineId === machine.machineId);
+  }
+  // cập nhật thông tin nhóm thiết bị
+  updateGroupMachine(): void {
+    console.log('tesst', this.groupMachine);
+    const currentTime = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
+    this.groupMachine.updateAt = currentTime;
+    this.groupMachine.username = this.account.login;
+    //api cập nhật thông tin nhóm thiết bị
+    this.http.put<any>(this.listOfGroupMachineURL, this.groupMachine).subscribe(() => {
+      alert('update thành công');
+    });
   }
 }

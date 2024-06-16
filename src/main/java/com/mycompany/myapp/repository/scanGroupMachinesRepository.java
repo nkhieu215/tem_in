@@ -22,5 +22,5 @@ public interface scanGroupMachinesRepository extends JpaRepository<scanGroupMach
         value = "update Scan_groupMachines set group_name =?1 , update_at=?2,username =?3, group_status =?4 where group_id =?5",
         nativeQuery = true
     )
-    public void putGroupMachines(String groupName, ZonedDateTime updateAt, String username, Integer groupStatus, Long groupId);
+    public void putGroupMachines(String groupName, String updateAt, String username, Integer groupStatus, Long groupId);
 }

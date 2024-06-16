@@ -98,8 +98,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ productCode }}</td>
-                  <td>{{ productName }}</td>
+                  <td>{{ product.productCode }}</td>
+                  <td>{{ product.productName }}</td>
                 </tr>
               </tbody>
             </table>
@@ -127,10 +127,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let data of listOfNhomMayVersion">
-                      <td><input type="text" [(ngModel)]="data.productVersion" /></td>
+                    <tr>
+                      <td><input type="text" [(ngModel)]="product.productVersion" /></td>
                       <td>
-                        <select class="form-select" [(ngModel)]="data.groupName">
+                        <select class="form-select">
                           <option value="">Chọn 1</option>
                           <option value="">Chọn 2</option>
                           <option value="">Chọn 3</option>

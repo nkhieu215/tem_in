@@ -16,7 +16,8 @@ export class ProfileCheckComponent implements OnInit {
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
-
+  versions: any;
+  product: any;
   @Input() productCode = '';
   @Input() productName = '';
   @Input() createdAt = '';
@@ -73,13 +74,15 @@ export class ProfileCheckComponent implements OnInit {
   openPopupKhaiBaoProfile(index: any, groupId: any): void {
     this.popupKhaiBaoProfile = true;
     console.log('product', this.listOfProduct[index]);
-    this.productCode = this.listOfProduct[index].productCode;
-    this.productName = this.listOfProduct[index].productName;
-    this.machines = this.listOfMaMay[index];
+    this.product = this.listOfProduct[index];
+    // this.productCode = this.listOfProduct[index].productCode;
+    // this.productName = this.listOfProduct[index].productName;
+    // this.versions = this.listOfProduct[index].productVersion;
+    // this.machines = this.listOfMaMay[index];
     this.http.get<any>(`${this.listOfProDuctURL}/${groupId as string}`).subscribe(res => {
       this.listOfMaMay = res;
     });
-    // console.log('machine', this.machines);
+    console.log('machine', this.listOfProduct[index]);
   }
 
   closePopupKhaiBaoProfile(): void {
