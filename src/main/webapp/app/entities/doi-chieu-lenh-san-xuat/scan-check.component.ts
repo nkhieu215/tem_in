@@ -49,7 +49,8 @@ export class ScanCheckComponent implements OnInit {
   chartDataLabels: ApexDataLabels = {
     enabled: true,
   };
-
+  //Dữ liệu profilecheck tổng hợp
+  listProfileCheck: any[] = [];
   //btn
   start = true;
   pause = true;
@@ -57,6 +58,7 @@ export class ScanCheckComponent implements OnInit {
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
+  page1?: number;
 
   title = 'ScanSystem';
   result = '';
@@ -87,6 +89,7 @@ export class ScanCheckComponent implements OnInit {
     username: string;
     orderId: number;
     timeRecorded: string;
+    createAt: string;
   }[] = [];
   public pieChart: GoogleChartInterface = {
     chartType: GoogleChartType.PieChart,
@@ -109,41 +112,6 @@ export class ScanCheckComponent implements OnInit {
   };
   public lastTime = Date.now();
   public lastCmd = null;
-  // public pieChartLabels = ['NG', 'PASS',];
-  // public pieChartDatasets = [
-  //   {
-  //     data: [0, 1],
-
-  //   },
-  // ];
-  // public lineChartOptions: ChartOptions<'pie'> = {
-  //   responsive: false,
-  //   maintainAspectRatio: true,
-  //   plugins: {
-  //     datalabels: {
-  //       display: true,
-  //       align: 'center',
-  //       anchor: 'center',
-  //       formatter: (value: any, context: any) => {
-  //         const data: any[] = context.chart.data.datasets[0].data
-  //         //Khởi tạo biến chứa kết quả tính tổng
-  //         let total = 0;
-  //         data.forEach((element: any) => {
-  //           total += element.value
-  //         });
-  //         // // console.log(total)
-  //         //Khởi tạo biến chứa kết quả tính toán %
-  //         const percenTageValue = (value.value / total * 100).toFixed(2)
-  //         return `${percenTageValue}%`
-  //       },
-  //       font: {
-  //         size: 20
-  //       }
-  //     }
-  //   }
-  // };
-  // public pieChartLegend = true;
-  // public pieChartPlugins = [pluginDataLabels];
 
   popupChiTietThongTinScan = false;
   popupConfirmSave = false;
@@ -239,10 +207,9 @@ export class ScanCheckComponent implements OnInit {
         // console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
       });
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
-        this.checkValue = res3.checkValue;
-        this.checkName = res3.checkName;
-        this.position = res3.position;
-        // console.log('profile', this.checkValue);
+        this.listProfileCheck = res3;
+        this.checkName = res3[0].recordName;
+        console.log('profile', this.listProfileCheck);
       });
     });
   }
@@ -264,6 +231,7 @@ export class ScanCheckComponent implements OnInit {
           machineId: 2,
           orderId: this.dataWorkOrder[0].orderId,
           timeRecorded: this.timeRecord,
+          createAt: formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US'),
         },
       ];
 

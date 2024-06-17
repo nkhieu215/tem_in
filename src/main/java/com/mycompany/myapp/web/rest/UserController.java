@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.UserServices;
 import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
+import com.mycompany.myapp.service.dto.detailCheckDTO;
 import com.mycompany.myapp.service.dto.groupMachineDTO;
 import java.util.List;
 import org.slf4j.Logger;
@@ -516,9 +517,8 @@ public class UserController {
     }
 
     @PostMapping("scan-work-order/detail")
-    public List<scanDetailCheck> insertDetailCheck(@RequestBody List<scanDetailCheck> scanDetailChecks) {
-        List<scanDetailCheck> scanDetailChecks1 = this.userServices.insertDetailCheck(scanDetailChecks);
-        return scanDetailChecks1;
+    public void insertDetailCheck(@RequestBody List<detailCheckDTO> scanDetailChecks) {
+        this.userServices.insertDetailCheck(scanDetailChecks);
     }
 
     @GetMapping("user-login-history/{orderId}")
@@ -528,8 +528,8 @@ public class UserController {
     }
 
     @GetMapping("scan-work-order/detail/{orderId}")
-    public List<scanDetailCheck> listDetailCheckByWorkOrder(@PathVariable Long orderId) {
-        List<scanDetailCheck> scanDetailChecks = this.userServices.listDetailCheckByWorkOrder(orderId);
+    public List<TongHopResponse> listDetailCheckByWorkOrder(@PathVariable Long orderId) {
+        List<TongHopResponse> scanDetailChecks = this.userServices.listDetailCheckByWorkOrder(orderId);
         return scanDetailChecks;
     }
 
@@ -551,8 +551,8 @@ public class UserController {
     }
 
     @GetMapping("profile-check/{productId}")
-    public ScanPprofileCheck listProfileCheck(@PathVariable Long productId) {
-        ScanPprofileCheck scanPprofileCheck = this.userServices.listProfileCheck(productId);
+    public List<TongHopResponse> listProfileCheck(@PathVariable Long productId) {
+        List<TongHopResponse> scanPprofileCheck = this.userServices.listProfileCheck(productId);
         return scanPprofileCheck;
     }
 

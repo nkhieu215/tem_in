@@ -14,22 +14,34 @@ public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck
     public List<scanDetailCheck> findAllByOrderId(Long orderId);
 
     @Modifying
-    @Query(value = "select * from scan_detail_check  where order_id = ?1;", nativeQuery = true)
-    public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId);
+    @Query(
+        value = " select" +
+        " wo.record_name as recordName," +
+        " wo.record_value as recordValue," +
+        " wo.result as result, " +
+        " wo.position as position, " +
+        " mc.machine_name as machineName " +
+        " from scan_detail_check as wo\n" +
+        " inner join Scan_machines as mc on wo.machine_id = mc.machine_id\n" +
+        " where wo.order_id = ?1 ;",
+        nativeQuery = true
+    )
+    public List<TongHopResponse> listDetailCheckByWorkOrder(Long orderId);
 
     @Modifying
     @Query(
-        value = "insert into scan_detail_check (order_id,record_value,result,position,username,machine_id,record_name) values(?1,?2,?3,?4,?5,?6,?7) ",
+        value = "insert into scan_detail_check (order_id,record_value,result,position,username,machine_id,record_name,create_at) values(?1,?2,?3,?4,?5,?6,?7,?8) ;",
         nativeQuery = true
     )
-    public scanDetailCheck insertDetailCheck(
+    public void insertDetailCheck(
         Long orderId,
         String recordValue,
         String result,
         Integer position,
         String username,
         Long machineId,
-        String recordName
+        String recordName,
+        String createAt
     );
 
     @Query(

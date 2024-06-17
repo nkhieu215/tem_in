@@ -191,7 +191,7 @@
                   <td>{{ element.productCode }}</td>
                   <td>{{ element.productName }}</td>
                   <td>{{ element.groupName }}</td>
-                  <td></td>
+                  <td>{{ element.version }}</td>
 
                   <td>{{ element.trangThai }}</td>
                   <td>{{ element.sanLuong }}</td>
@@ -215,78 +215,68 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of listOfMachines">
-                  <td>{{ item.machineId }}</td>
-                  <td>{{ position }}</td>
-                  <td>{{ checkName }}</td>
-                  <td style="text-align: left">{{ checkValue }}</td>
+                <tr *ngFor="let item of listProfileCheck">
+                  <td>{{ item.machineName }}</td>
+                  <td>{{ item.position }}</td>
+                  <td>{{ item.recordName }}</td>
+                  <td style="text-align: left">{{ item.recordValue }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="table-footer">
-            <table class="table table-striped" aria-describedby="page-heading">
-              <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                  <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                  <th scope="col">
-                    <span>Mã máy</span>
-                    <input
-                      #searchInput
-                      type="text"
-                      [(ngModel)]="machineId"
-                      [ngModelOptions]="{ standalone: true }"
-                      placeholder="Tìm kiếm"
-                    />
-                  </th>
-                  <th scope="col"><span>Serial</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                  <th scope="col">
-                    <span>Thông tin check</span>
-                    <input
-                      #searchInput
-                      type="text"
-                      [(ngModel)]="checkValue"
-                      [ngModelOptions]="{ standalone: true }"
-                      placeholder="Tìm kiếm"
-                    />
-                  </th>
-                  <th scope="col"><span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                  <th scope="col"><span>Vị trí</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                  <th scope="col"><span>Result</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of infoCheckMachine; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ item.machineId }}</td>
-                  <td></td>
-                  <td>{{ item.recordName }}</td>
-                  <td>{{ item.recordValue }}</td>
-                  <td>{{ item.position }}</td>
-                  <td>{{ item.result }}</td>
-                </tr>
-              </tbody>
-              <div class="btn-footer">
-                <button
-                  type="button"
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  class="btn btn-secondary"
-                  (click)="closePopupChiTietThongTinScan()"
-                >
-                  <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-                </button>
-                <button
-                  type="submit"
-                  id="save-entity"
-                  data-cy="entityCreateSaveButton"
-                  class="btn btn-primary"
-                  (click)="openPopupConfirmSave()"
-                >
-                  <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-                </button>
-              </div>
-            </table>
+            <div style="height: 324px">
+              <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                  <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                    <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
+                    <th scope="col">
+                      <span>Mã máy</span>
+                      <input
+                        #searchInput
+                        type="text"
+                        [(ngModel)]="machineId"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Tìm kiếm"
+                      />
+                    </th>
+                    <th scope="col">
+                      <span>Serial</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                    </th>
+                    <th scope="col">
+                      <span>Thông tin check</span>
+                      <input
+                        #searchInput
+                        type="text"
+                        [(ngModel)]="checkValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Tìm kiếm"
+                      />
+                    </th>
+                    <th scope="col">
+                      <span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                    </th>
+                    <th scope="col">
+                      <span>Vị trí</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                    </th>
+                    <th scope="col">
+                      <span>Result</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of infoCheckMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page1 }; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.machineName }}</td>
+                    <td></td>
+                    <td>{{ item.recordName }}</td>
+                    <td>{{ item.recordValue }}</td>
+                    <td>{{ item.position }}</td>
+                    <td>{{ item.result }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <div class="paginate">
               <div class="paginate-container">
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="itemsPerPage">
@@ -295,8 +285,28 @@
                   <option value="50">50</option>
                 </select>
 
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                <pagination-controls (pageChange)="page1 = $event"></pagination-controls>
               </div>
+            </div>
+            <div class="btn-footer">
+              <button
+                type="button"
+                id="cancel-save"
+                data-cy="entityCreateCancelButton"
+                class="btn btn-secondary"
+                (click)="closePopupChiTietThongTinScan()"
+              >
+                <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+              </button>
+              <button
+                type="submit"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                class="btn btn-primary"
+                (click)="openPopupConfirmSave()"
+              >
+                <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+              </button>
             </div>
           </div>
         </div>

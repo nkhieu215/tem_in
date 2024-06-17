@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
 import com.mycompany.myapp.service.dto.TemInDTO;
+import com.mycompany.myapp.service.dto.detailCheckDTO;
 import com.mycompany.myapp.service.dto.groupMachineDTO;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -1063,13 +1064,19 @@ public class UserServices {
     }
 
     //?Lưu thông tin kết quả scan theo chu kỳ ( 10 kết quả) theo id lệnh sản xuất (OrderID)
-    public List<scanDetailCheck> insertDetailCheck(List<scanDetailCheck> scanDetailChecks) {
-        List<scanDetailCheck> scanDetailChecks1 = new ArrayList<>();
-        for (scanDetailCheck scanDetailCheck1 : scanDetailChecks) {
-            this.scanDetailCheckRepository.save(scanDetailCheck1);
-            scanDetailChecks1.add(scanDetailCheck1);
+    public void insertDetailCheck(List<detailCheckDTO> scanDetailChecks) {
+        for (detailCheckDTO scanDetailCheck1 : scanDetailChecks) {
+            this.scanDetailCheckRepository.insertDetailCheck(
+                    scanDetailCheck1.getOrderId(),
+                    scanDetailCheck1.getRecordValue(),
+                    scanDetailCheck1.getResult(),
+                    scanDetailCheck1.getPosition(),
+                    scanDetailCheck1.getUsername(),
+                    scanDetailCheck1.getMachineId(),
+                    scanDetailCheck1.getRecordName(),
+                    scanDetailCheck1.getCreateAt()
+                );
         }
-        return scanDetailChecks1;
     }
 
     //?Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
@@ -1079,8 +1086,8 @@ public class UserServices {
     }
 
     //?Lấy thông tin chi tiết scan sản phẩm theo lệnh sản xuất
-    public List<scanDetailCheck> listDetailCheckByWorkOrder(Long orderId) {
-        List<scanDetailCheck> scanDetailChecks = this.scanDetailCheckRepository.findAllByOrderId(orderId);
+    public List<TongHopResponse> listDetailCheckByWorkOrder(Long orderId) {
+        List<TongHopResponse> scanDetailChecks = this.scanDetailCheckRepository.listDetailCheckByWorkOrder(orderId);
         return scanDetailChecks;
     }
 
@@ -1102,8 +1109,8 @@ public class UserServices {
     }
 
     //? lấy thông tin profile check
-    public ScanPprofileCheck listProfileCheck(Long productId) {
-        ScanPprofileCheck scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck(productId);
+    public List<TongHopResponse> listProfileCheck(Long productId) {
+        List<TongHopResponse> scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck(productId);
         return scanPprofileCheck;
     }
 
