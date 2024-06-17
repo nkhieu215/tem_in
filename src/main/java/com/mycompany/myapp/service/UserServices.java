@@ -1153,7 +1153,7 @@ public class UserServices {
 
     //☺ Lấy thông tin version theo productId
     public List<scanProductVersions> getListVersionsByProductId(Long productId) {
-        List<scanProductVersions> scanProductVersionsList = this.scanProductVersionRepository.findAllByProductId(productId);
+        List<scanProductVersions> scanProductVersionsList = this.scanProductVersionRepository.getAllByProductId(productId);
         return scanProductVersionsList;
     }
 }
