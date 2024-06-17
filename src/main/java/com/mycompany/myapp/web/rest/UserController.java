@@ -577,4 +577,10 @@ public class UserController {
     public void updateWorkOrderWorking(@RequestBody scanWorkorder scanWorkorder) {
         this.userServices.updateWorkOrderWorking(scanWorkorder);
     }
+
+    @GetMapping("scan-profile-check/versions/{productId}")
+    public List<scanProductVersions> getListVersionsByProductId(@PathVariable Long productId) {
+        List<scanProductVersions> scanProductVersionsList = this.userServices.getListVersionsByProductId(productId);
+        return scanProductVersionsList;
+    }
 }

@@ -90,6 +90,9 @@ public class UserServices {
     @Autowired
     private scanWorkOrderRepository scanWorkOrderRepository;
 
+    @Autowired
+    private scanProductVersionRepository scanProductVersionRepository;
+
     //☺ Template login - Chức năng xác thực tài khoản
     //    public ResponseMessage loginAuth(UserPostRequest request) {
     //        UserEntity entity = userRepository.getByUserName(request.getUserName());
@@ -1146,5 +1149,11 @@ public class UserServices {
                 scanWorkorder.getRunTime(),
                 scanWorkorder.getOrderId()
             );
+    }
+
+    //☺ Lấy thông tin version theo productId
+    public List<scanProductVersions> getListVersionsByProductId(Long productId) {
+        List<scanProductVersions> scanProductVersionsList = this.scanProductVersionRepository.findAllByProductId(productId);
+        return scanProductVersionsList;
     }
 }

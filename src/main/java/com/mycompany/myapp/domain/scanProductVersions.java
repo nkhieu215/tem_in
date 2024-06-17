@@ -16,7 +16,7 @@ public class scanProductVersions {
     private String version;
 
     @Column(name = "product_id")
-    private Long prodcucId;
+    private Long productId;
 
     @Column(name = "create_at")
     private ZonedDateTime create;
@@ -42,12 +42,12 @@ public class scanProductVersions {
         this.version = version;
     }
 
-    public Long getProdcucId() {
-        return prodcucId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProdcucId(Long prodcucId) {
-        this.prodcucId = prodcucId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public ZonedDateTime getCreate() {
