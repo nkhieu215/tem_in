@@ -2,10 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
-import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
-import com.mycompany.myapp.service.dto.TemInDTO;
-import com.mycompany.myapp.service.dto.detailCheckDTO;
-import com.mycompany.myapp.service.dto.groupMachineDTO;
+import com.mycompany.myapp.service.dto.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -997,7 +994,7 @@ public class UserServices {
     }
 
     //?Thêm mới nhóm thiết bị
-    public void insertGroupMachines(scanGroupMachines scanGroupMachines) {
+    public void insertGroupMachines(groupMachineDTO scanGroupMachines) {
         this.scanGroupMachinesRepository.insertGroupMachines(
                 scanGroupMachines.getGroupName(),
                 scanGroupMachines.getCreateAt(),
@@ -1155,5 +1152,50 @@ public class UserServices {
     public List<scanProductVersions> getListVersionsByProductId(Long productId) {
         List<scanProductVersions> scanProductVersionsList = this.scanProductVersionRepository.getAllByProductId(productId);
         return scanProductVersionsList;
+    }
+
+    // * ------------------------- Quản lý trạm thông tin kiểm tra ------------------
+    //☺ Lấy danh sách sản phẩm + phân trang + lọc
+    public List<scanProduct> getListProduct(scanProductDTO scanProductDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        if (scanProductDTO.getCreatedAt() != null) {
+            entryTime1 = scanProductDTO.getCreatedAt() + " 00:00:00.000";
+            entryTime2 = scanProductDTO.getCreatedAt() + " 23:59:59.000";
+        }
+        List<scanProduct> scanProducts =
+            this.scanProductRepository.getListProduct(
+                    "%" + scanProductDTO.getProductCode() + "%",
+                    "%" + scanProductDTO.getProductName() + "%",
+                    entryTime1,
+                    entryTime2,
+                    "%" + scanProductDTO.getUsername() + "%",
+                    (scanProductDTO.getPageNumber() - 1) * scanProductDTO.getItemPerPage(),
+                    scanProductDTO.getItemPerPage()
+                );
+        return scanProducts;
+    }
+
+    //☺ Lấy tổng phần tử
+    public Integer getTotalItemPD(scanProductDTO scanProductDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        if (scanProductDTO.getCreatedAt() != null) {
+            entryTime1 = scanProductDTO.getCreatedAt() + " 00:00:00.000";
+            entryTime2 = scanProductDTO.getCreatedAt() + " 23:59:59.000";
+        }
+        Integer scanProducts =
+            this.scanProductRepository.getTotalItem(
+                    "%" + scanProductDTO.getProductCode() + "%",
+                    "%" + scanProductDTO.getProductName() + "%",
+                    entryTime1,
+                    entryTime2,
+                    "%" + scanProductDTO.getUsername() + "%"
+                );
+        return scanProducts;
     }
 }

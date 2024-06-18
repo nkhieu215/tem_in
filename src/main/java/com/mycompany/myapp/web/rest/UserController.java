@@ -2,10 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.UserServices;
-import com.mycompany.myapp.service.dto.LenhSanXuatDTO;
-import com.mycompany.myapp.service.dto.TemInDTO;
-import com.mycompany.myapp.service.dto.detailCheckDTO;
-import com.mycompany.myapp.service.dto.groupMachineDTO;
+import com.mycompany.myapp.service.dto.*;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -479,7 +476,7 @@ public class UserController {
     }
 
     @PostMapping("scan-group-machines")
-    public void insertGroupMachines(@RequestBody scanGroupMachines scanGroupMachines) {
+    public void insertGroupMachines(@RequestBody groupMachineDTO scanGroupMachines) {
         this.userServices.insertGroupMachines(scanGroupMachines);
     }
 
@@ -582,5 +579,20 @@ public class UserController {
     public List<scanProductVersions> getListVersionsByProductId(@PathVariable Long productId) {
         List<scanProductVersions> scanProductVersionsList = this.userServices.getListVersionsByProductId(productId);
         return scanProductVersionsList;
+    }
+
+    // * ---------------------- Quản lý trạm thông tin kiểm tra ----------------------------
+    //☺ Lấy danh sách sản phẩm + phân trang + lọc
+    @PostMapping("scan-profile-check/panigation")
+    public List<scanProduct> getListProduct(@RequestBody scanProductDTO scanProductDTO) {
+        List<scanProduct> scanProducts = this.userServices.getListProduct(scanProductDTO);
+        return scanProducts;
+    }
+
+    //☺ Lấy tổng phần tử
+    @PostMapping("scan-profile-check/total")
+    public Integer getTotalItemPD(@RequestBody scanProductDTO scanProductDTO) {
+        Integer totalPage = this.userServices.getTotalItemPD(scanProductDTO);
+        return totalPage;
     }
 }

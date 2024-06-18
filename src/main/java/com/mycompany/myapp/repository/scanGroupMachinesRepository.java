@@ -15,7 +15,7 @@ public interface scanGroupMachinesRepository extends JpaRepository<scanGroupMach
 
     @Modifying
     @Query(value = "insert into Scan_groupMachines (group_name,create_at,username,group_status) values(?1,?2,?3,?4) ", nativeQuery = true)
-    public void insertGroupMachines(String groupName, ZonedDateTime createAt, String username, Integer groupStatus);
+    public void insertGroupMachines(String groupName, String createAt, String username, Integer groupStatus);
 
     @Modifying
     @Query(
