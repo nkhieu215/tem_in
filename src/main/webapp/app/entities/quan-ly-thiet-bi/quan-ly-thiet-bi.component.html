@@ -39,7 +39,7 @@
             <input
               #searchInput
               type="date"
-              [(ngModel)]="createdAt"
+              [(ngModel)]="createAt"
               [ngModelOptions]="{ standalone: true }"
               placeholder="Tìm kiếm"
               disabled
@@ -75,7 +75,7 @@
 
           <th scope="col" jhiSortBy="groupStatus">
             <span>Trạng thái</span>
-            <select class="form-control form-select" [(ngModel)]="statusName" [ngModelOptions]="{ standalone: true }">
+            <select class="form-control form-select" [(ngModel)]="groupStatus" [ngModelOptions]="{ standalone: true }">
               <option hidden></option>
               <option value="Active">Active</option>
               <option value="Deactive">Deactive</option>
@@ -144,16 +144,16 @@
           </thead>
           <tbody style="background-color: #d3eefc">
             <td>
-              <span><input type="text" /></span>
+              <span><input type="text" [(ngModel)]="groupName" [ngModelOptions]="{ standalone: true }" /></span>
             </td>
             <td>
-              <span></span>
+              <span [(ngModel)]="createAt" [ngModelOptions]="{ standalone: true }"> {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
             </td>
             <td>
-              <span></span>
+              <span [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }"> {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
             </td>
             <td>
-              <span></span>
+              <span [(ngModel)]="userName" [ngModelOptions]="{ standalone: true }"></span>
             </td>
             <td>
               <select class="form-select" id="status" data-cy="status" [(ngModel)]="statusName" (change)="updateStatus()">

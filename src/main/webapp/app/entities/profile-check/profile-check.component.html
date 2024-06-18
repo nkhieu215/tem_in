@@ -127,8 +127,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><input type="text" [(ngModel)]="product.productVersion" /></td>
+                    <tr *ngFor="let item of listOfVersion">
+                      <td>
+                        <input type="text" [(ngModel)]="item.version" [ngModelOptions]="{ standalone: true }" /><datalist id="listVersion">
+                          <option *ngFor="let item of listOfVersion" value="{{ item.version }}"></option>
+                        </datalist>
+                      </td>
                       <td>
                         <select class="form-select">
                           <option value="">Chọn 1</option>
