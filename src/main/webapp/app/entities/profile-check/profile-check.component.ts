@@ -12,20 +12,45 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 })
 export class ProfileCheckComponent implements OnInit {
   listOfProDuctURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check');
+  listOfProDuctPanigationURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/panigation');
+  totalItemURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/total');
   predicate!: string;
   ascending!: boolean;
-  itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
   versions: any;
   product: any;
   @Input() productCode = '';
   @Input() productName = '';
-  @Input() createdAt = '';
+  @Input() createdAt = null;
   @Input() updatedAt = '';
   @Input() username = '';
   @Input() productStatus = '';
   @Input() itemPerPage = 10;
-
+  //phân trang
+  pageNumber = 1;
+  itemsPerPage = ITEMS_PER_PAGE;
+  // thông tin phân trang
+  totalData = 0;
+  nextPageBtn = false;
+  lastPageBtn = false;
+  backPageBtn = true;
+  firstPageBtn = true;
+  //Dữ liệu tìm kiếm
+  body: {
+    productCode: string;
+    productName: string;
+    username: string;
+    createdAt: string | null;
+    itemPerPage: number;
+    pageNumber: number;
+  } = {
+    productCode: '',
+    productName: '',
+    username: '',
+    createdAt: null,
+    itemPerPage: this.itemPerPage,
+    pageNumber: this.pageNumber,
+  };
   // list product
   listOfProduct: any[] = [];
   listOfNhomMayVersion: any[] = [];
@@ -62,8 +87,87 @@ export class ProfileCheckComponent implements OnInit {
     //     },
     //   });
   }
-
+  mappingBodySearchAndPagination(): void {
+    this.body.createdAt = this.createdAt;
+    this.body.productCode = this.productCode;
+    this.body.productName = this.productName;
+    this.body.username = this.username;
+    this.body.itemPerPage = this.itemPerPage;
+    this.body.pageNumber = this.pageNumber;
+    // // console.log('body: ', this.body);
+  }
+  nextPage(): void {
+    this.pageNumber++;
+    this.mappingBodySearchAndPagination();
+    this.backPageBtn = false;
+    this.firstPageBtn = false;
+    if (this.pageNumber === Math.floor(this.totalData / this.itemPerPage) + 1) {
+      this.nextPageBtn = true;
+    }
+    this.getProductList();
+  }
+  lastPage(): void {
+    this.pageNumber = Math.floor(this.totalData / this.itemPerPage) + 1;
+    this.mappingBodySearchAndPagination();
+    this.backPageBtn = false;
+    this.firstPageBtn = false;
+    this.lastPageBtn = true;
+    this.nextPageBtn = true;
+    this.getProductList();
+  }
+  backPage(): void {
+    this.pageNumber--;
+    this.mappingBodySearchAndPagination();
+    this.nextPageBtn = false;
+    this.lastPageBtn = false;
+    if (this.pageNumber === 1) {
+      this.backPageBtn = true;
+      this.firstPageBtn = true;
+    }
+    this.getProductList();
+  }
+  firstPage(): void {
+    this.pageNumber = 1;
+    this.mappingBodySearchAndPagination();
+    this.nextPageBtn = false;
+    this.lastPageBtn = false;
+    this.backPageBtn = true;
+    this.firstPageBtn = true;
+    this.getProductList();
+  }
+  findFucntion(): void {
+    this.mappingBodySearchAndPagination();
+    setTimeout(() => {
+      this.getProductList();
+      this.getTotalData();
+    }, 100);
+  }
+  getTotalData(): void {
+    this.http.post<any>(this.totalItemURL, this.body).subscribe(res => {
+      this.totalData = res;
+      if (this.totalData < this.itemPerPage) {
+        this.nextPageBtn = true;
+        this.lastPageBtn = true;
+      } else {
+        this.nextPageBtn = false;
+        this.lastPageBtn = false;
+      }
+      // console.log('total data', res, Math.floor(this.totalData / this.itemPerPage));
+    });
+  }
+  getProductList(): void {
+    this.http.post<any>(this.listOfProDuctPanigationURL, this.body).subscribe(res => {
+      // this.lenhSanXuats = res;
+      console.log('tesst 1: ', this.pageNumber, res);
+      setTimeout(() => {
+        this.http.post<any>(this.totalItemURL, this.body).subscribe(res1 => {
+          console.log('tongsoluong', res1);
+        });
+      }, 500);
+    });
+  }
   ngOnInit(): void {
+    this.getProductList();
     this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
       this.listOfProduct = res;
       console.log('thong tin chung', res);

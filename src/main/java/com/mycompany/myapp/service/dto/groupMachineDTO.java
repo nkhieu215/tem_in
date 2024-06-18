@@ -4,9 +4,19 @@ public class groupMachineDTO {
 
     private String groupName;
     private String updateAt;
+    private String createAt;
+
     private String username;
     private Integer groupStatus;
     private Long groupId;
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
 
     public groupMachineDTO() {}
 
