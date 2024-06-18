@@ -25,6 +25,9 @@ public interface ChiTietLenhSanXuatRepository extends JpaRepository<ChiTietLenhS
     )
     public ChiTietLenhSanXuat getChiTietLenhSanXuatItem(String reelID);
 
-    @Query(value = "" + "select sum(initial_quantity) from chi_tiet_lenh_san_xuat where ma_lenh_san_xuat_id =?1 ;", nativeQuery = true)
+    @Query(
+        value = "" + "select sum(initial_quantity) from chi_tiet_lenh_san_xuat where ma_lenh_san_xuat_id =?1 and trang_thai ='Active' ;",
+        nativeQuery = true
+    )
     public String getTongSoLuong(Long id);
 }

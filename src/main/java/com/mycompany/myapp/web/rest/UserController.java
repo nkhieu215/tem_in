@@ -595,4 +595,26 @@ public class UserController {
         Integer totalPage = this.userServices.getTotalItemPD(scanProductDTO);
         return totalPage;
     }
+
+    // * --------------------- Kiểm soát đối chiếu lệnh sản xuất ---------------------
+    //☺ Lấy danh sách lệnh sản xuất + phân trang+ tìm kiếm + sort
+    @PostMapping("scan-work-order/panigation")
+    public List<workOrderInfo> getListWorkOrders(@RequestBody ScanWorkOrderDTO scanWorkOrderDTO) {
+        List<workOrderInfo> workOrderInfos = this.userServices.getListWorkOrders(scanWorkOrderDTO);
+        return workOrderInfos;
+    }
+
+    //☺ Lấy tổng item
+    @PostMapping("scan-work-order/total")
+    public Integer getToTalItemWorkOrders(@RequestBody ScanWorkOrderDTO scanWorkOrderDTO) {
+        Integer totalItem = this.userServices.getToTalItemWorkOrders(scanWorkOrderDTO);
+        return totalItem;
+    }
+
+    //☺ Lấy tổng pass , Ng
+    @PostMapping("scan-work-order/total-pass-ng")
+    public List<DetailCheckResponse> getTotalPassNg(@RequestBody ScanWorkOrderDTO scanWorkOrderDTO) {
+        List<DetailCheckResponse> detailCheckResponses = this.userServices.getTotalPassNg(scanWorkOrderDTO);
+        return detailCheckResponses;
+    }
 }

@@ -287,7 +287,7 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       // // console.log('tesst 1: ', this.pageNumber, res);
       setTimeout(() => {
         this.http.post<any>(this.getLenhSanXuatTongSoLuongUrl, this.lenhSanXuats).subscribe(res1 => {
-          console.log('tongsoluong', res1);
+          console.log('tongsoluong', this.lenhSanXuats);
           for (let i = 0; i < this.lenhSanXuats!.length; i++) {
             this.lenhSanXuats![i].totalQuantity = res1[i].tongSoLuong;
           }

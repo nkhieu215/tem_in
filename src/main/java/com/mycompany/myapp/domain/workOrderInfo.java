@@ -14,4 +14,6 @@ public interface workOrderInfo {
     Long getProductId();
     Integer getRunTime();
     String getVersion();
+    Integer getPass();
+    Integer getNg();
 }

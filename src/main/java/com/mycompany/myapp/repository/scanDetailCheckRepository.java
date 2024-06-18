@@ -52,4 +52,16 @@ public interface scanDetailCheckRepository extends JpaRepository<scanDetailCheck
         nativeQuery = true
     )
     public List<TongHopResponse> tongHop(Long orderId);
+
+    @Query(
+        value = "" +
+        "SELECT\n" +
+        "\t\torder_id as orderId,\n" +
+        "\t\tsum(case when result ='PASS' then 1   end) as pass,\n" +
+        "\t\tsum(case when result ='NG' then 1 end) as ng\n" +
+        "          FROM [ProfileProductions].[dbo].[scan_detail_check] as a  group by order_id \n" +
+        "\t\t  order by order_id desc OFFSET ?1 ROWS FETCH NEXT ?2 ROWS ONLY",
+        nativeQuery = true
+    )
+    public List<DetailCheckResponse> getTotalPassNg(Integer pageNumber, Integer itemPerPage);
 }

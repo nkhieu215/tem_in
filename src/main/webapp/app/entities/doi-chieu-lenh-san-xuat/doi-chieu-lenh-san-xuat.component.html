@@ -14,37 +14,86 @@
 
             <th scope="col" jhiSortBy="workOrder">
               <span>WorkOder</span>
-              <input #searchInput type="text" [(ngModel)]="workOrder" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="workOrder"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="lot">
               <span>LOT</span>
-              <input #searchInput type="text" [(ngModel)]="lot" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="lot"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="machineId">
               <span>Mã thiết bị</span>
-              <input #searchInput type="text" [(ngModel)]="machineId" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="machineId"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="productCode">
               <span>Mã sản phẩm</span>
-              <input #searchInput type="text" [(ngModel)]="productCode" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="productCode"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="productName">
               <span>Tên sản phẩm</span>
-              <input #searchInput type="text" [(ngModel)]="productName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="productName"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="working">
               <span>Trạng thái</span>
-              <input #searchInput type="text" [(ngModel)]="working" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="text"
+                [(ngModel)]="working"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                disabled
+              />
             </th>
 
             <th scope="col" jhiSortBy="createdAt">
               <span>Thời gian tiếp nhận</span>
-              <input #searchInput type="text" [(ngModel)]="createdAt" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+              <input
+                #searchInput
+                type="date"
+                [(ngModel)]="createdAt"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Tìm kiếm"
+                (change)="findFucntion()"
+              />
             </th>
 
             <th scope="col" jhiSortBy="numberOfPlan">
@@ -65,7 +114,7 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let item of listOfLenhSanXuat | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index"
+            *ngFor="let item of listOfLenhSanXuat; let i = index"
             [routerLink]="['/doi-chieu-lenh-san-xuat', 'scan-check']"
             (click)="getWorkOrderDetail(item.orderId, item.groupId)"
           >
@@ -75,25 +124,33 @@
             <td>{{ item.groupName }}</td>
             <td>{{ item.productCode }}</td>
             <td>{{ item.productName }}</td>
-            <td>{{ item.trangThai }}</td>
+            <td>{{ item.tenTrangThai }}</td>
             <td>{{ item.createAt }}</td>
             <td>{{ item.sanLuong }}</td>
-            <td>{{ item.totalPass }}</td>
-            <td>{{ item.totalFail }}</td>
+            <td>{{ item.pass }}</td>
+            <td>{{ item.ng }}</td>
           </tr>
         </tbody>
       </table>
     </form>
   </div>
   <div class="paginate">
-    <div class="paginate-container">
-      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
-        <option value="10">10</option>
-        <option value="30">30</option>
-        <option value="50">50</option>
-      </select>
+    <div style="display: flex; justify-content: space-between">
+      <div>
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage" (change)="findFucntion()">
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
 
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <div style="display: flex">
+        <button class="pagination" (click)="firstPage()" [disabled]="firstPageBtn">Trang đầu</button>
+        <button class="pagination" (click)="backPage()" [disabled]="backPageBtn">Trang trước</button>
+        <button class="pagenumber">{{ pageNumber }}</button>
+        <button class="pagination" (click)="nextPage()" [disabled]="nextPageBtn">Trang sau</button>
+        <button class="pagination" (click)="lastPage()" [disabled]="lastPageBtn">Trang cuối</button>
+      </div>
     </div>
   </div>
 </div>

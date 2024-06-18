@@ -1198,4 +1198,63 @@ public class UserServices {
                 );
         return scanProducts;
     }
+
+    // * -------------------------- Kiểm soát đối chiếu lệnh sản xuất -------------------------
+    //☺ Lấy danh sách lệnh sản xuất + phân trang+ tìm kiếm + sort
+    public List<workOrderInfo> getListWorkOrders(ScanWorkOrderDTO scanWorkOrderDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        if (scanWorkOrderDTO.getCreateAt() != null) {
+            entryTime1 = scanWorkOrderDTO.getCreateAt() + " 00:00:00.000";
+            entryTime2 = scanWorkOrderDTO.getCreateAt() + " 23:59:59.000";
+        }
+        List<workOrderInfo> workOrderInfos =
+            this.scanWorkOrderRepository.getListWorkOrders(
+                    "%" + scanWorkOrderDTO.getWorkOrder() + "%",
+                    "%" + scanWorkOrderDTO.getLot() + "%",
+                    "%" + scanWorkOrderDTO.getProductCode() + "%",
+                    "%" + scanWorkOrderDTO.getProductName() + "%",
+                    "%" + scanWorkOrderDTO.getGroupName() + "%",
+                    entryTime1,
+                    entryTime2,
+                    (scanWorkOrderDTO.getPageNumber() - 1) * scanWorkOrderDTO.getItemPerPage(),
+                    scanWorkOrderDTO.getItemPerPage()
+                );
+        return workOrderInfos;
+    }
+
+    //☺ Lấy tổng item
+    public Integer getToTalItemWorkOrders(ScanWorkOrderDTO scanWorkOrderDTO) {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+        String entryTime1 = firstDay.toString() + " 00:00:00.000";
+        String entryTime2 = date.toString() + " 23:59:59.000";
+        if (scanWorkOrderDTO.getCreateAt() != null) {
+            entryTime1 = scanWorkOrderDTO.getCreateAt() + " 00:00:00.000";
+            entryTime2 = scanWorkOrderDTO.getCreateAt() + " 23:59:59.000";
+        }
+        Integer workOrderInfos =
+            this.scanWorkOrderRepository.getTotalData(
+                    "%" + scanWorkOrderDTO.getWorkOrder() + "%",
+                    "%" + scanWorkOrderDTO.getLot() + "%",
+                    "%" + scanWorkOrderDTO.getProductCode() + "%",
+                    "%" + scanWorkOrderDTO.getProductName() + "%",
+                    "%" + scanWorkOrderDTO.getGroupName() + "%",
+                    entryTime1,
+                    entryTime2
+                );
+        return workOrderInfos;
+    }
+
+    //☺ Lấy tổng pass , Ng
+    public List<DetailCheckResponse> getTotalPassNg(ScanWorkOrderDTO scanWorkOrderDTO) {
+        List<DetailCheckResponse> detailCheckResponses =
+            this.scanDetailCheckRepository.getTotalPassNg(
+                    (scanWorkOrderDTO.getPageNumber() - 1) * scanWorkOrderDTO.getItemPerPage(),
+                    scanWorkOrderDTO.getItemPerPage()
+                );
+        return detailCheckResponses;
+    }
 }
