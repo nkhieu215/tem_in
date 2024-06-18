@@ -4,226 +4,279 @@
   </h2>
 
   <div class="table-responsive">
-    <form>
-      <table class="table" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-            <th scope="col" jhiSortBy="STT">
-              <span>STT</span>
-              <input type="text" style="width: 1px; border: none; background-color: #006699" />
-            </th>
-            <th scope="col" jhiSortBy="productCode">
-              <span>Mã sản phẩm</span>
-              <input #searchInput type="text" [(ngModel)]="productCode" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="productName">
-              <span>Tên sản phẩm</span>
-              <input #searchInput type="text" [(ngModel)]="productName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="createdAt">
-              <span>Thời gian tạo</span>
-              <input #searchInput type="text" [(ngModel)]="createdAt" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="updatedAt">
-              <span>Thời gian cập nhật</span>
-              <input #searchInput type="text" [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="username">
-              <span>Người cập nhật</span>
-              <input #searchInput type="text" [(ngModel)]="username" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="productStatus">
-              <span>Trạng thái</span>
-              <input #searchInput type="text" [(ngModel)]="productStatus" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
-            </th>
-            <th scope="col" jhiSortBy="">
-              <span>Options</span>
-              <input type="text" style="width: 1px; border: none; background-color: #006699" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of listOfProduct | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ item.productCode }}</td>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.createdAt }}</td>
-            <td>{{ item.updatedAt }}</td>
-            <td>{{ item.username }}</td>
-            <td>{{ item.productStatus }}</td>
-            <td>
-              <div class="btn-group">
-                <button type="submit" class="btn btn-info btn-sm" (click)="openPopupKhaiBaoProfile(i, item.productId)">
-                  <fa-icon icon="eye"></fa-icon>
-                </button>
+    <table class="table" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="STT">
+            <span>STT</span>
+            <input type="text" style="width: 1px; border: none; background-color: #006699" />
+          </th>
+          <th scope="col" jhiSortBy="productCode">
+            <span>Mã sản phẩm</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="productCode"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              (change)="findFucntion()"
+            />
+          </th>
+          <th scope="col" jhiSortBy="productName">
+            <span>Tên sản phẩm</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="productName"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              (change)="findFucntion()"
+            />
+          </th>
+          <th scope="col" jhiSortBy="createdAt">
+            <span>Thời gian tạo</span>
+            <input
+              #searchInput
+              type="date"
+              [(ngModel)]="createdAt"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              (change)="findFucntion()"
+            />
+          </th>
+          <th scope="col" jhiSortBy="updatedAt">
+            <span>Thời gian cập nhật</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="updatedAt"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              disabled
+            />
+          </th>
+          <th scope="col" jhiSortBy="username">
+            <span>Người cập nhật</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="username"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              (change)="findFucntion()"
+            />
+          </th>
+          <th scope="col" jhiSortBy="productStatus">
+            <span>Trạng thái</span>
+            <input
+              #searchInput
+              type="text"
+              [(ngModel)]="productStatus"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Tìm kiếm"
+              (change)="findFucntion()"
+            />
+          </th>
+          <th scope="col" jhiSortBy="">
+            <span>Options</span>
+            <input type="text" style="width: 1px; border: none; background-color: #006699" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listOfProduct | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.productCode }}</td>
+          <td>{{ item.productName }}</td>
+          <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td>{{ item.updatedAt }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.productStatus }}</td>
+          <td>
+            <div class="btn-group">
+              <button type="submit" class="btn btn-info btn-sm" (click)="openPopupKhaiBaoProfile(i, item.productId)">
+                <fa-icon icon="eye"></fa-icon>
+              </button>
 
-                <button type="submit" class="btn btn-danger btn-sm">
-                  <fa-icon icon="times"></fa-icon>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
+              <button type="submit" class="btn btn-danger btn-sm">
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div class="paginate" *ngIf="listOfProduct && listOfProduct.length > 0">
-    <div class="paginate-container">
-      <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
-        <option value="10">10</option>
-        <option value="30">30</option>
-        <option value="50">50</option>
-      </select>
+    <div style="display: flex; justify-content: space-between">
+      <div>
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage" (change)="findFucntion()">
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
 
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
-    </div>
-  </div>
-</div>
-
-<!-- popup khai báo profile -->
-<div class="table-responsive popup-background" role="dialog" *ngIf="popupKhaiBaoProfile === true">
-  <div>
-    <span class="close-btn" (click)="closePopupKhaiBaoProfile()">&times;</span>
-    <div>
-      <div class="popup-khai-bao-profile">
-        <h2>Khai báo Profile</h2>
-        <div class="table-container">
-          <div class="table-header">
-            <table class="table table-striped" aria-describedby="page-heading">
-              <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                  <th scope="col">Mã sản phẩm</th>
-                  <th scope="col">Tên sản phẩm</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ product.productCode }}</td>
-                  <td>{{ product.productName }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <br /><br /><br /><br />
-
-          <div class="table-body">
-            <div class="table-body-container">
-              <div class="table-body-container-first">
-                <h2>Thông tin nhóm máy theo version</h2>
-                <div class="d-flex justify-content-end">
-                  <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowGroupMachine()">
-                    <fa-icon icon="add"></fa-icon>
-                    <span>Thêm mới</span>
-                  </button>
-                </div>
-                <hr />
-                <table class="table table-striped" aria-describedby="page-heading">
-                  <thead>
-                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                      <th scope="col">Version</th>
-                      <th scope="col">Nhóm máy</th>
-                      <th scope="col">Options</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input type="text" [(ngModel)]="product.productVersion" /></td>
-                      <td>
-                        <select class="form-select">
-                          <option value="">Chọn 1</option>
-
-                          <option value="">Chọn 2</option>
-                          <option value="">Chọn 3</option>
-                        </select>
-                      </td>
-                      <td>
-                        <div class="btn-group">
-                          <button type="submit" class="btn btn-info btn-sm">
-                            <fa-icon icon="pencil"></fa-icon>
-                          </button>
-
-                          <button type="submit" class="btn btn-danger btn-sm">
-                            <fa-icon icon="times"></fa-icon>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="table-body-container-second">
-                <h2>Thông tin chi tiết các máy</h2>
-                <div class="d-flex justify-content-end">
-                  <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowChiTietMay()">
-                    <fa-icon icon="add"></fa-icon>
-                    <span>Thêm mới</span>
-                  </button>
-                </div>
-                <hr />
-                <table class="table table-striped" aria-describedby="page-heading">
-                  <thead>
-                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                      <th scope="col">STT</th>
-                      <th scope="col">Mã máy</th>
-                      <th scope="col">Vị trí</th>
-                      <th scope="col">Giá trị</th>
-                      <th scope="col">Thông tin check</th>
-                      <th scope="col">Trạng thái</th>
-                      <th scope="col">Options</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let data of listOfMaMay; let i = index">
-                      <td>{{ i + 1 }}</td>
-                      <td><input type="text" [(ngModel)]="data.machineName" [ngModelOptions]="{ standalone: true }" /></td>
-                      <td><input type="text" [(ngModel)]="data.posotion" [ngModelOptions]="{ standalone: true }" /></td>
-                      <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
-                      <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
-                      <td>
-                        <input type="checkbox" class="ui-checkbox" [(ngModel)]="data.checkStatus" [ngModelOptions]="{ standalone: true }" />
-                      </td>
-                      <td>
-                        <div class="btn-group">
-                          <button type="submit" class="btn btn-info btn-sm">
-                            <fa-icon icon="pencil"></fa-icon>
-                          </button>
-
-                          <button type="submit" class="btn btn-danger btn-sm">
-                            <fa-icon icon="times"></fa-icon>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          type="button"
-          id="cancel-save"
-          data-cy="entityCreateCancelButton"
-          class="btn btn-secondary"
-          (click)="closePopupKhaiBaoProfile()"
-        >
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-        </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button>
+      <div style="display: flex">
+        <button class="pagination" (click)="firstPage()" [disabled]="firstPageBtn">Trang đầu</button>
+        <button class="pagination" (click)="backPage()" [disabled]="backPageBtn">Trang trước</button>
+        <button class="pagenumber">{{ pageNumber }}</button>
+        <button class="pagination" (click)="nextPage()" [disabled]="nextPageBtn">Trang sau</button>
+        <button class="pagination" (click)="lastPage()" [disabled]="lastPageBtn">Trang cuối</button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
-  <div>
-    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
-    <div class="btn-group-save">
-      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
-      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+  <!-- popup khai báo profile -->
+  <div class="table-responsive popup-background" role="dialog" *ngIf="popupKhaiBaoProfile === true">
+    <div>
+      <span class="close-btn" (click)="closePopupKhaiBaoProfile()">&times;</span>
+      <div>
+        <div class="popup-khai-bao-profile">
+          <h2>Khai báo Profile</h2>
+          <div class="table-container">
+            <div class="table-header">
+              <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                  <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Tên sản phẩm</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ product.productCode }}</td>
+                    <td>{{ product.productName }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <br /><br /><br /><br />
+
+            <div class="table-body">
+              <div class="table-body-container">
+                <div class="table-body-container-first">
+                  <h2>Thông tin nhóm máy theo version</h2>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowGroupMachine()">
+                      <fa-icon icon="add"></fa-icon>
+                      <span>Thêm mới</span>
+                    </button>
+                  </div>
+                  <hr />
+                  <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                        <th scope="col">Version</th>
+                        <th scope="col">Nhóm máy</th>
+                        <th scope="col">Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="text" [(ngModel)]="product.productVersion" /></td>
+                        <td>
+                          <select class="form-select">
+                            <option value="">Chọn 1</option>
+
+                            <option value="">Chọn 2</option>
+                            <option value="">Chọn 3</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="submit" class="btn btn-info btn-sm">
+                              <fa-icon icon="pencil"></fa-icon>
+                            </button>
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-body-container-second">
+                  <h2>Thông tin chi tiết các máy</h2>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowChiTietMay()">
+                      <fa-icon icon="add"></fa-icon>
+                      <span>Thêm mới</span>
+                    </button>
+                  </div>
+                  <hr />
+                  <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                        <th scope="col">STT</th>
+                        <th scope="col">Mã máy</th>
+                        <th scope="col">Vị trí</th>
+                        <th scope="col">Giá trị</th>
+                        <th scope="col">Thông tin check</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of listOfMaMay; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input type="text" [(ngModel)]="data.machineName" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.posotion" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="ui-checkbox"
+                            [(ngModel)]="data.checkStatus"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="submit" class="btn btn-info btn-sm">
+                              <fa-icon icon="pencil"></fa-icon>
+                            </button>
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="cancel-save"
+            data-cy="entityCreateCancelButton"
+            class="btn btn-secondary"
+            (click)="closePopupKhaiBaoProfile()"
+          >
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          </button>
+          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+    <div>
+      <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+      <div class="btn-group-save">
+        <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+        <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+      </div>
     </div>
   </div>
 </div>

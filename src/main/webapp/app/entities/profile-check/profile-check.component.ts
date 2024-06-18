@@ -157,22 +157,23 @@ export class ProfileCheckComponent implements OnInit {
   }
   getProductList(): void {
     this.http.post<any>(this.listOfProDuctPanigationURL, this.body).subscribe(res => {
-      // this.lenhSanXuats = res;
+      this.listOfProduct = res;
       console.log('tesst 1: ', this.pageNumber, res);
       setTimeout(() => {
         this.http.post<any>(this.totalItemURL, this.body).subscribe(res1 => {
           console.log('tongsoluong', res1);
+          this.totalData = res1;
         });
       }, 500);
     });
   }
   ngOnInit(): void {
     this.getProductList();
-    this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
-      this.listOfProduct = res;
-      console.log('thong tin chung', res);
-      // console.log(res);
-    });
+    // this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
+    //   this.listOfProduct = res;
+    //   console.log('thong tin chung', res);
+    //   // console.log(res);
+    // });
   }
 
   openPopupKhaiBaoProfile(index: any, groupId: any): void {

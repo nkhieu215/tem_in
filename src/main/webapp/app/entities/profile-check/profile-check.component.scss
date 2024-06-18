@@ -546,3 +546,46 @@ th[scope='col'].sorted-desc::after {
     }
   }
 }
+
+/* Phan trang */
+.pagination {
+  border: none;
+  background-color: #fff;
+  margin: auto;
+  padding: 1px 6px 1px 6px;
+}
+
+.pagination:hover {
+  background-color: #c7c7c7;
+  transition: background-color 0.3s;
+}
+
+.pagenumber {
+  height: 30px;
+  background-color: #bdc5b6;
+  width: 30px;
+  border: none;
+  border-radius: 8px;
+}
+
+/* table */
+.table-scroll {
+  overflow: auto;
+  height: 600px;
+}
+
+.frozen-header {
+  position: sticky;
+  top: 0;
+}
+
+.frozen-column {
+  position: sticky;
+  top: 0;
+}
+
+.trang-thai {
+  width: 100px;
+  text-align: center;
+  border-radius: 20px;
+}
