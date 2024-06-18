@@ -12,6 +12,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 })
 export class ProfileCheckComponent implements OnInit {
   listOfProDuctURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check');
+  versionURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/versions');
   listOfProDuctPanigationURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/panigation');
   totalItemURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/total');
   predicate!: string;
@@ -56,9 +57,11 @@ export class ProfileCheckComponent implements OnInit {
   listOfNhomMayVersion: any[] = [];
   listOfMaMay: any[] = [];
   listInfoMachineAdd: any[] = [];
+  listOfVersion: any[] = [];
   popupKhaiBaoProfile = false;
   popupConfirmSave = false;
   machines: any;
+  version: any;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -188,6 +191,12 @@ export class ProfileCheckComponent implements OnInit {
       this.listOfMaMay = res;
     });
 
+    const item = sessionStorage.getItem('productId');
+    this.http.get<any>(`${this.versionURL}/${groupId as string}`).subscribe(resVer => {
+      this.listOfVersion = resVer;
+      console.log('version', resVer);
+    });
+
     console.log('machine', this.machines);
   }
 
@@ -212,11 +221,11 @@ export class ProfileCheckComponent implements OnInit {
   addRowGroupMachine(): void {
     const newRow = {
       id: 0,
-      productVersion: null,
+      version: null,
       groupName: null,
     };
-    this.listOfNhomMayVersion = [...this.listOfNhomMayVersion, newRow];
-    // console.log('them dong', this.listOfNhomMayVersion);
+    this.listOfVersion = [...this.listOfVersion, newRow];
+    console.log('them dong', this.listOfVersion);
   }
 
   addRowChiTietMay(): void {
@@ -231,4 +240,16 @@ export class ProfileCheckComponent implements OnInit {
     this.listOfMaMay = [...this.listOfMaMay, newRow];
     // console.log('them dong 2', this.listOfMaMay);
   }
+
+  updateVersionProfile(): void {
+    const item = sessionStorage.getItem('productId');
+    this.http.get<any>(`${this.versionURL}/${item as string}`).subscribe(res => {
+      this.listOfVersion = res;
+      console.log('version', res);
+    });
+  }
+
+  // updateChiTietMay(): void {
+
+  // }
 }

@@ -45,6 +45,23 @@
     display: flex;
     justify-content: space-between;
   }
+
+  button {
+    color: #fff;
+  }
+
+  input {
+    padding: 8px 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      border-color: #aaa;
+    }
+  }
 }
 
 .main-dashboard {

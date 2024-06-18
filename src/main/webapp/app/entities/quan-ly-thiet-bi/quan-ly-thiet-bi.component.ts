@@ -41,8 +41,9 @@ export class QuanLyThietBiComponent implements OnInit {
   // });
   // acount
   account: any;
+  currentDate: Date = new Date();
   @Input() groupName = '';
-  @Input() createdAt = '';
+  @Input() createAt = '';
   @Input() updatedAt = '';
   @Input() userName = '';
   @Input() groupStatus = 0;
@@ -129,9 +130,9 @@ export class QuanLyThietBiComponent implements OnInit {
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
 
-    this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
-      console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
-    });
+    // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
+    //   console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
+    // });
 
     // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
     //   // console.log("them moi nhom thiet bi", this.listOfGroupMachineAdd)
@@ -202,12 +203,22 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupConfirmSave4(): void {
     this.popupConfirmSave4 = true;
-    this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
-      // console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
+    const dataToSend = {
+      groupName: this.groupName,
+      createAt: this.createAt,
+      updatedAt: this.updatedAt,
+      userName: this.userName,
+      groupStatus: this.groupStatus,
+      thietBis: this.listOfMachines,
+    };
+
+    this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
+      console.log('them moi nhom thiet bi', dataToSend);
     });
-    this.http.post<any>(this.listOfMachineURL, this.listOfMachineAdd).subscribe(() => {
-      // console.log('them moi thiet bi', this.listOfMachineAdd);
-    });
+
+    // this.http.post<any>(this.listOfMachineURL, this.listOfMachineAdd).subscribe(() => {
+    //   console.log('them moi thiet bi', this.listOfMachineAdd);
+    // });
   }
 
   closePopupConfirmSave4(): void {
@@ -234,6 +245,7 @@ export class QuanLyThietBiComponent implements OnInit {
     this.listOfMachines = [...this.selectedMachines];
     this.closePopupThemMoiThietBi();
     this.closePopupConfirmSave3();
+    this.addNewNhomThietBi;
     // this.openPopupThemMoiNhomThietBi();
   }
 
@@ -250,5 +262,20 @@ export class QuanLyThietBiComponent implements OnInit {
     this.http.put<any>(this.listOfGroupMachineURL, this.groupMachine).subscribe(() => {
       alert('update thành công');
     });
+  }
+
+  addNewNhomThietBi(): void {
+    const dataToSend = {
+      groupName: this.groupName,
+      createdAt: this.createAt,
+      updatedAt: this.updatedAt,
+      userName: this.userName,
+      groupStatus: this.groupStatus,
+      thietBis: this.listOfMachines,
+    };
+
+    // this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
+    console.log('them moi nhom thiet bi', dataToSend);
+    // });
   }
 }
