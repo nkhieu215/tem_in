@@ -209,6 +209,7 @@ export class ScanCheckComponent implements OnInit {
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
         this.listProfileCheck = res3;
         this.checkName = res3[0].recordName;
+        this.checkValue = res3[0].recordValue;
         console.log('profile', this.listProfileCheck);
       });
     });

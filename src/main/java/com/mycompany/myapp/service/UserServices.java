@@ -994,13 +994,15 @@ public class UserServices {
     }
 
     //?Thêm mới nhóm thiết bị
-    public void insertGroupMachines(groupMachineDTO scanGroupMachines) {
-        this.scanGroupMachinesRepository.insertGroupMachines(
-                scanGroupMachines.getGroupName(),
-                scanGroupMachines.getCreateAt(),
-                scanGroupMachines.getUsername(),
-                scanGroupMachines.getGroupStatus()
-            );
+    public scanGroupMachines insertGroupMachines(groupMachineDTO scanGroupMachines) {
+        scanGroupMachines scanGroupMachines1 =
+            this.scanGroupMachinesRepository.insertGroupMachines(
+                    scanGroupMachines.getGroupName(),
+                    scanGroupMachines.getCreateAt(),
+                    scanGroupMachines.getUsername(),
+                    scanGroupMachines.getGroupStatus()
+                );
+        return scanGroupMachines1;
     }
 
     //?Chỉnh sửa thông tin nhóm thiết bị

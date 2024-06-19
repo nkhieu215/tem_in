@@ -476,8 +476,9 @@ public class UserController {
     }
 
     @PostMapping("scan-group-machines")
-    public void insertGroupMachines(@RequestBody groupMachineDTO scanGroupMachines) {
-        this.userServices.insertGroupMachines(scanGroupMachines);
+    public scanGroupMachines insertGroupMachines(@RequestBody groupMachineDTO scanGroupMachines) {
+        scanGroupMachines scanGroupMachines1 = this.userServices.insertGroupMachines(scanGroupMachines);
+        return scanGroupMachines1;
     }
 
     @PutMapping("scan-group-machines")
