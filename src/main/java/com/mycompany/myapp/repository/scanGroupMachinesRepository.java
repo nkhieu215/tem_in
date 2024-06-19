@@ -23,4 +23,7 @@ public interface scanGroupMachinesRepository extends JpaRepository<scanGroupMach
         nativeQuery = true
     )
     public void putGroupMachines(String groupName, String updateAt, String username, Integer groupStatus, Long groupId);
+
+    @Query(value = " select group_id from Scan_groupMachines where group_name = ?1 ;", nativeQuery = true)
+    public Long getAllByGroupName(String groupName);
 }
