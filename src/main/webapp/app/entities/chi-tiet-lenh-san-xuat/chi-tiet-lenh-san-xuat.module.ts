@@ -7,9 +7,10 @@ import { ChiTietLenhSanXuatUpdateComponent } from './update/chi-tiet-lenh-san-xu
 import { ChiTietLenhSanXuatDeleteDialogComponent } from './delete/chi-tiet-lenh-san-xuat-delete-dialog.component';
 import { ChiTietLenhSanXuatRoutingModule } from './route/chi-tiet-lenh-san-xuat-routing.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  imports: [SharedModule, ChiTietLenhSanXuatRoutingModule, NgxPaginationModule, Ng2SearchPipeModule],
+  imports: [SharedModule, ChiTietLenhSanXuatRoutingModule, NgxPaginationModule, Ng2SearchPipeModule, FontAwesomeModule],
   declarations: [
     ChiTietLenhSanXuatComponent,
     ChiTietLenhSanXuatDetailComponent,

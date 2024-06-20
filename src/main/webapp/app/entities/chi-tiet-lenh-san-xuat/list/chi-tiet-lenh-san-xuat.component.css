@@ -255,7 +255,7 @@ ul.search-result {
 /* table */
 .table-scroll {
   overflow: auto;
-  height: 600px;
+  height: 700px;
 }
 
 .frozen-header {
@@ -272,4 +272,39 @@ ul.search-result {
   width: 100px;
   text-align: center;
   border-radius: 20px;
+}
+
+/* List show column */
+.toggle-columns {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 6;
+  background: #fff;
+  border: black solid 1px;
+  border-radius: 10px;
+  transition: height 0.5s;
+}
+
+.toggle-columns-item {
+  font-size: 19px;
+  margin-top: 3px;
+  margin-left: 7px;
+}
+
+.toggle-columns-container {
+  margin-top: 6px;
+  display: flex;
+  margin-left: 6px;
+}
+
+.toggle-columns-btn {
+  width: 188px;
+  border: #fff solid 1px;
+  margin-right: 32px;
+  background-color: #17a2b8;
+  color: #fff;
+  font-size: 23px;
+  height: 46px;
+  border-radius: 10px;
 }

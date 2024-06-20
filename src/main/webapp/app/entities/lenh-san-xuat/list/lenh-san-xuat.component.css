@@ -257,3 +257,11 @@ ul.search-result {
   text-align: center;
   border-radius: 20px;
 }
+
+.move-title {
+  font-size: 21px;
+  background-image: linear-gradient(to right, #0083b0, #00b4db);
+  margin-top: 61px;
+  max-width: 322px;
+  color: #fff;
+}
