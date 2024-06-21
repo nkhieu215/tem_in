@@ -347,6 +347,12 @@ public class UserController {
         return responseList;
     }
 
+    @PostMapping("nhom-thiet-bi")
+    public List<NhomThietBi> insertNhomThietBi(@RequestBody List<NhomThietBi> nhomThietBis) {
+        List<NhomThietBi> nhomThietBis1 = this.userServices.insertNhomThietBi(nhomThietBis);
+        return nhomThietBis1;
+    }
+
     //---------------------------------------------- *  ----------------------------------------------------------------
     //------------------------------------------------ Đơn vị ---------------------------------------------------
     @GetMapping("/don-vi")

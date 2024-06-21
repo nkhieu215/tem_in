@@ -716,6 +716,13 @@ public class UserServices {
         return nhomThietBis;
     }
 
+    public List<NhomThietBi> insertNhomThietBi(List<NhomThietBi> nhomThietBis) {
+        for (NhomThietBi nhomThietBi : nhomThietBis) {
+            this.nhomThietBiRepository.save(nhomThietBi);
+        }
+        return nhomThietBis;
+    }
+
     //------------------------------------------------------ *  --------------------------------------------------------
     //------------------------------------------------ Don vi---------------------------------------------------
     public List<DonVi> getAllDonVi() {

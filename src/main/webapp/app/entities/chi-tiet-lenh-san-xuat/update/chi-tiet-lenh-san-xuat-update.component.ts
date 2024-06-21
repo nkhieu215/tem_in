@@ -198,7 +198,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     // // console.log("test: ", this.storageUnit)
     for (let i = 0; i < this.chiTietLenhSanXuats.length; i++) {
       if (positionSL === -1) {
-        this.chiTietLenhSanXuats[i].storageUnit = storageUnit;
+        this.chiTietLenhSanXuats[i].storageUnit = this.storageUnit.slice(2);
       } else {
         this.chiTietLenhSanXuats[i].storageUnit = storageUnit;
         this.chiTietLenhSanXuats[i].subStorageUnit = subsStorageUnit;
@@ -587,8 +587,8 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   catchEventScanReelId(): void {
     const positionSL = this.storageUnit.indexOf('-SL');
     if (positionSL === -1) {
-      const item = { id: this.count, reelID: this.reelID, storageUnit: this.storageUnit.slice(2, positionSL), subStorageUnit: '' };
-      this.chiTietLenhSanXuatActive[this.index].storageUnit = this.storageUnit.slice(2, positionSL);
+      const item = { id: this.count, reelID: this.reelID, storageUnit: this.storageUnit.slice(2), subStorageUnit: '' };
+      this.chiTietLenhSanXuatActive[this.index].storageUnit = this.storageUnit.slice(2);
       this.dataMove.push(item);
       this.dataMove.sort((a: any, b: any) => b.id - a.id);
       setTimeout(() => {
