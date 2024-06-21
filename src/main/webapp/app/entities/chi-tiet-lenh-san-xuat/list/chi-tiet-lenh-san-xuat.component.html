@@ -3,6 +3,127 @@
     <span>Quản lý phê duyệt</span>
 
     <div class="d-flex justify-content-end">
+      <div>
+        <div>
+          <button class="toggle-columns-btn" (click)="toggleColumnsList()">
+            <span>Tùy chọn</span><fa-icon [icon]="faChevronDown"></fa-icon>
+          </button>
+        </div>
+        <div class="toggle-columns" id="toggle-columns" *ngIf="toggleColumns === true">
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableMaLenhSanXuat"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Lệnh sản xuất</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableSapCode"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Mã SAP</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableSapName"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Tên hàng hóa</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableGroup"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Tổ sản xuất</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableWorkOrderCode"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Mã WO</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableVersion"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Version</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableStorageCode"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Mã kho nhập</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableTotalQuantity"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Tổng nhập</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableDetailQuantity"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Chi tiết</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableCreateBy"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Nhân viên</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableEntryTime"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Ngày tạo tem</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableUpdateTime"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Ngày cập nhật</span>
+          </div>
+          <div class="toggle-columns-container">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableTrangThai"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Trạng thái</span>
+          </div>
+          <div class="toggle-columns-container" style="margin-bottom: 6px">
+            <input
+              type="checkbox"
+              [(ngModel)]="disableComment"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 30px; height: 30px"
+            /><span class="toggle-columns-item">Lưu ý</span>
+          </div>
+        </div>
+      </div>
       <button class="btn btn-info me-2" (click)="reloadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh List</span>
@@ -26,8 +147,8 @@
             <input type="text" style="width: 10px; border: none; background-color: #006699" />
           </th>
 
-          <th scope="col" jhiSortBy="reelID" style="position: sticky; top: 0">
-            <span>Mã lệnh sản xuất</span>
+          <th scope="col" jhiSortBy="reelID" style="position: sticky; top: 0" *ngIf="disableMaLenhSanXuat === true">
+            <span>Lệnh sản xuất</span>
             <input
               #searchInput
               type="text"
@@ -35,12 +156,12 @@
               [ngModelOptions]="{ standalone: true }"
               placeholder="search"
               list="maLenhSanXuat"
-              style="width: 8rem"
+              style="width: 6rem"
               (change)="findFucntion()"
             />
           </th>
 
-          <th scope="col" jhiSortBy="partNumber" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="partNumber" style="position: sticky; top: 0" *ngIf="disableSapCode === true">
             <span>Mã SAP</span>
             <input
               #searchInput
@@ -49,12 +170,12 @@
               [ngModelOptions]="{ standalone: true }"
               placeholder="search"
               list="sapCode"
-              style="width: 5rem"
+              style="width: 4rem"
               (change)="findFucntion()"
             />
           </th>
 
-          <th scope="col" jhiSortBy="sapName" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="sapName" style="position: sticky; top: 0" *ngIf="disableSapName === true">
             <span>Tên hàng hoá</span>
             <input
               #searchInput
@@ -66,11 +187,11 @@
               (change)="findFucntion()"
             />
           </th>
-          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0" *ngIf="disableGroup === true">
             <span>Tổ sản xuất</span>
             <input style="border: none; width: 3rem; background-color: #006699" disabled />
           </th>
-          <th scope="col" jhiSortBy="workOrderCode" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="workOrderCode" style="position: sticky; top: 0" *ngIf="disableWorkOrderCode === true">
             <span>Mã WO</span>
             <input
               #searchInput
@@ -84,7 +205,7 @@
             />
           </th>
 
-          <th scope="col" jhiSortBy="version" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="version" style="position: sticky; top: 0" *ngIf="disableVersion === true">
             <span>Version</span>
             <input
               #searchInput
@@ -93,12 +214,12 @@
               [ngModelOptions]="{ standalone: true }"
               placeholder="search"
               list="version"
-              style="width: 5rem"
+              style="width: 3rem"
               (change)="findFucntion()"
             />
           </th>
 
-          <th scope="col" jhiSortBy="storageCode" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="storageCode" style="position: sticky; top: 0" *ngIf="disableStorageCode === true">
             <span>Mã kho nhập</span>
             <input
               #searchInput
@@ -132,16 +253,16 @@
             </datalist>
           </th>
 
-          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0">
-            <span>Tổng số lượng nhập</span>
-            <input style="border: none; width: 10rem; background-color: #006699" disabled />
+          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0" *ngIf="disableTotalQuantity === true">
+            <span>Tổng nhập</span>
+            <input style="border: none; width: 5rem; background-color: #006699" disabled />
           </th>
-          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0" *ngIf="disableDetailQuantity === true">
             <span>Chi tiết</span>
             <input style="border: none; width: 10rem; background-color: #006699" disabled />
           </th>
-          <th scope="col" jhiSortBy="createBy" style="position: sticky; top: 0">
-            <span>Cập nhật bởi</span>
+          <th scope="col" jhiSortBy="createBy" style="position: sticky; top: 0" *ngIf="disableCreateBy === true">
+            <span>Nhân viên</span>
             <input
               #searchInput
               type="text"
@@ -149,22 +270,22 @@
               [ngModelOptions]="{ standalone: true }"
               placeholder="search"
               list="createBy"
-              style="width: 6rem"
+              style="width: 5rem"
               (change)="findFucntion()"
             />
           </th>
 
-          <th scope="col" jhiSortBy="entryTime" style="position: sticky; top: 0">
-            <span>Thời gian tạo tem</span>
+          <th scope="col" jhiSortBy="entryTime" style="position: sticky; top: 0" *ngIf="disableEntryTime === true">
+            <span>Ngày tạo tem</span>
             <input type="date" [(ngModel)]="entryTime" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" />
           </th>
 
-          <th scope="col" jhiSortBy="timeUpdate" style="position: sticky; top: 0">
-            <span>Thời gian cập nhật</span>
+          <th scope="col" jhiSortBy="timeUpdate" style="position: sticky; top: 0" *ngIf="disableUpdateTime === true">
+            <span>Ngày cập nhật</span>
             <input type="date" [(ngModel)]="timeUpdate" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" />
           </th>
 
-          <th scope="col" jhiSortBy="trangThai" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="trangThai" style="position: sticky; top: 0" *ngIf="disableTrangThai === true">
             <span>Trạng thái</span>
             <select
               class="form-control form-select"
@@ -180,13 +301,13 @@
             </select>
           </th>
 
-          <th scope="col" jhiSortBy="comment" style="position: sticky; top: 0">
+          <th scope="col" jhiSortBy="comment" style="position: sticky; top: 0" *ngIf="disableComment === true">
             <span>Lưu ý</span>
             <input style="border: none; width: 10rem; background-color: #006699" disabled />
           </th>
 
           <th scope="col" jhiSortBy="msdInitialFloorTime" style="position: sticky; top: 0; z-index: 5">
-            <span>Options</span>
+            <span>Tùy chọn</span>
             <input style="border: none; width: 70%; background-color: #006699" disabled />
           </th>
         </tr>
@@ -203,24 +324,24 @@
           <td>
             <a>{{ i + 1 }}</a>
           </td>
-          <td>{{ lenhSanXuat.maLenhSanXuat }}</td>
-          <td>{{ lenhSanXuat.sapCode }}</td>
-          <td>{{ lenhSanXuat.sapName }}</td>
-          <td>
+          <td *ngIf="disableMaLenhSanXuat === true">{{ lenhSanXuat.maLenhSanXuat }}</td>
+          <td *ngIf="disableSapCode === true">{{ lenhSanXuat.sapCode }}</td>
+          <td *ngIf="disableSapName === true">{{ lenhSanXuat.sapName }}</td>
+          <td *ngIf="disableGroup === true">
             <div [id]="lenhSanXuat.id" class="trang-thai">{{ lenhSanXuat.groupName }}</div>
           </td>
-          <td>{{ lenhSanXuat.workOrderCode }}</td>
-          <td>{{ lenhSanXuat.version }}</td>
-          <td>{{ lenhSanXuat.storageCode }}</td>
-          <td>{{ lenhSanXuat.totalQuantity }}</td>
-          <td>{{ lenhSanXuat.comment2 }}</td>
-          <td>{{ lenhSanXuat.createBy }}</td>
-          <td>{{ lenhSanXuat.entryTime | formatMediumDatetime }}</td>
-          <td>{{ lenhSanXuat.timeUpdate | formatMediumDatetime }}</td>
-          <td>
+          <td *ngIf="disableWorkOrderCode === true">{{ lenhSanXuat.workOrderCode }}</td>
+          <td *ngIf="disableVersion === true">{{ lenhSanXuat.version }}</td>
+          <td *ngIf="disableStorageCode === true">{{ lenhSanXuat.storageCode }}</td>
+          <td *ngIf="disableTotalQuantity === true">{{ lenhSanXuat.totalQuantity }}</td>
+          <td *ngIf="disableDetailQuantity === true">{{ lenhSanXuat.comment2 }}</td>
+          <td *ngIf="disableCreateBy === true">{{ lenhSanXuat.createBy }}</td>
+          <td *ngIf="disableEntryTime === true">{{ lenhSanXuat.entryTime | formatMediumDatetime }}</td>
+          <td *ngIf="disableUpdateTime === true">{{ lenhSanXuat.timeUpdate | formatMediumDatetime }}</td>
+          <td *ngIf="disableTrangThai === true">
             <div [id]="i" class="trang-thai">{{ lenhSanXuat.trangThai }}</div>
           </td>
-          <td>{{ lenhSanXuat.comment }}</td>
+          <td *ngIf="disableComment === true">{{ lenhSanXuat.comment }}</td>
 
           <td class="text-end">
             <div class="btn-group" *jhiHasAnyAuthority="'ROLE_ADMIN_QUAN_LY_PHE_DUYET'">

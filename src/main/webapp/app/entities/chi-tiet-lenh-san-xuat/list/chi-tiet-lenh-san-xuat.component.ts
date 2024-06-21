@@ -14,6 +14,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { ChiTietLenhSanXuatService } from '../service/chi-tiet-lenh-san-xuat.service';
 import { ChiTietLenhSanXuatDeleteDialogComponent } from '../delete/chi-tiet-lenh-san-xuat-delete-dialog.component';
 import { doc } from 'prettier';
+import { faSquare, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat',
@@ -40,6 +41,26 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     createBy: '',
     trangThai: '',
   });
+  //Ẩn hiện tùy chọn
+  toggleColumns = false;
+  //Danh sách các cột hiển thị defaut
+  disableMaLenhSanXuat = true;
+  disableSapCode = true;
+  disableSapName = true;
+  disableGroup = true;
+  disableWorkOrderCode = false;
+  disableVersion = true;
+  disableStorageCode = true;
+  disableTotalQuantity = true;
+  disableDetailQuantity = true;
+  disableCreateBy = true;
+  disableEntryTime = true;
+  disableUpdateTime = false;
+  disableTrangThai = true;
+  disableComment = true;
+  //tạo danh sách icon cần dùng
+  faSquare = faSquare;
+  faChevronDown = faChevronDown;
   // thông tin phân trang
   totalData = 0;
   nextPageBtn = false;
@@ -56,8 +77,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
   @Input() storageCode = '';
   @Input() createBy = '';
   @Input() trangThai = '';
-  @Input() entryTime = null;
-  @Input() timeUpdate = null;
+  @Input() entryTime: string | null = null;
+  @Input() timeUpdate: string | null = null;
   // body tim kiem + pagination
   body: {
     maLenhSanXuat: string;
@@ -145,6 +166,14 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
       }
     }
   }
+  toggleColumnsList(): void {
+    this.toggleColumns = !this.toggleColumns;
+    if (this.toggleColumns) {
+      document.getElementById('toggle-columns')!.style.height = '513px';
+    } else {
+      document.getElementById('toggle-columns')!.style.height = '0px';
+    }
+  }
   mappingBodySearchAndPagination(): void {
     this.body.maLenhSanXuat = this.maLenhSanXuat;
     this.body.sapCode = this.sapCode;
@@ -167,6 +196,7 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     this.firstPageBtn = false;
     if (this.pageNumber === Math.floor(this.totalData / this.itemPerPage) + 1) {
       this.nextPageBtn = true;
+      this.lastPageBtn = true;
     }
     this.getLenhSanXuatList();
   }
@@ -241,42 +271,38 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    // // console.log(this.body);
-    // this.http.post<any>(this.resourceUrlApprove, this.body).subscribe(res => {
-    //   this.lenhSanXuats = res;
-    //   // console.log('test', this.lenhSanXuats);
-    //   // if (this.lenhSanXuats) {
-    //   //   this.lenhSanXuats.sort((a, b) => {
-    //   //     if (
-    //   //       a.entryTime !== undefined &&
-    //   //       a.entryTime !== null &&
-    //   //       b.entryTime !== undefined &&
-    //   //       b.entryTime !== null &&
-    //   //       a.trangThai !== undefined &&
-    //   //       a.trangThai !== null &&
-    //   //       b.trangThai !== undefined &&
-    //   //       b.trangThai !== null
-    //   //     ) {
-    //   //       return (
-    //   //         a.trangThai.localeCompare(b.trangThai) ||
-    //   //         <any>new Date(dayjs(b.entryTime).format('MM/DD/YYYY HH:mm:ss')) -
-    //   //         <any>new Date(dayjs(a.entryTime).format('MM/DD/YYYY HH:mm:ss'))
-    //   //       );
-    //   //     }
-    //   //     return 0;
-    //   //   });
-    //   // }
-    // });
-    this.getTotalData();
-    this.getLenhSanXuatList();
+    const result = sessionStorage.getItem('tem-in-search-body');
+    if (result) {
+      this.body = JSON.parse(result);
+      this.maLenhSanXuat = this.body.maLenhSanXuat;
+      this.sapCode = this.body.sapCode;
+      this.sapName = this.body.sapName;
+      this.workOrderCode = this.body.workOrderCode;
+      this.version = this.body.version;
+      this.storageCode = this.body.storageCode;
+      this.createBy = this.body.createBy;
+      this.entryTime = this.body.timeUpdate;
+      this.timeUpdate = this.body.timeUpdate;
+      this.itemPerPage = this.body.itemPerPage;
+      this.pageNumber = this.body.pageNumber;
+      this.trangThai = this.body.trangThai;
+      console.log('have result!');
+      this.getTotalData();
+      this.getLenhSanXuatList();
+      if (this.pageNumber > 1) {
+        this.backPageBtn = false;
+        this.firstPageBtn = false;
+      }
+    } else {
+      console.log('no result');
+      this.getTotalData();
+      this.getLenhSanXuatList();
+    }
     this.createListOfMaLenhSanXuat();
     this.createListOfSapCode();
     this.createListOfSapName();
     this.createListOfVersion();
     this.createListOfWordOrderCode();
-    // setTimeout(() => {
-    //   this.changeColor();
-    // }, 500)
   }
   reloadPage(): void {
     window.location.reload();
@@ -293,6 +319,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
           }
         });
         this.changeColor();
+        // Lưu lại key word tìm kiếm
+        sessionStorage.setItem('tem-in-search-body', JSON.stringify(this.body));
       }, 500);
     });
   }

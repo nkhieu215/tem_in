@@ -68,8 +68,8 @@ export class LenhSanXuatComponent implements OnInit {
   @Input() storageCode = '';
   @Input() createBy = '';
   @Input() trangThai = '';
-  @Input() entryTime = null;
-  @Input() timeUpdate = null;
+  @Input() entryTime: string | null = null;
+  @Input() timeUpdate: string | null = null;
   @Input() groupName = '';
   // body tim kiem + pagination
   body: {
@@ -139,6 +139,7 @@ export class LenhSanXuatComponent implements OnInit {
     this.firstPageBtn = false;
     if (this.pageNumber === Math.floor(this.totalData / this.itemPerPage) + 1) {
       this.nextPageBtn = true;
+      this.lastPageBtn = true;
     }
     this.getLenhSanXuatList();
   }
@@ -243,8 +244,33 @@ export class LenhSanXuatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getLenhSanXuatList();
-    this.getTotalData();
+    const result = sessionStorage.getItem('tem-in-search-body');
+    if (result) {
+      this.body = JSON.parse(result);
+      this.maLenhSanXuat = this.body.maLenhSanXuat;
+      this.sapCode = this.body.sapCode;
+      this.sapName = this.body.sapName;
+      this.workOrderCode = this.body.workOrderCode;
+      this.version = this.body.version;
+      this.storageCode = this.body.storageCode;
+      this.createBy = this.body.createBy;
+      this.entryTime = this.body.timeUpdate;
+      this.timeUpdate = this.body.timeUpdate;
+      this.itemPerPage = this.body.itemPerPage;
+      this.pageNumber = this.body.pageNumber;
+      this.trangThai = this.body.trangThai;
+      console.log('have result!');
+      this.getTotalData();
+      this.getLenhSanXuatList();
+      if (this.pageNumber > 1) {
+        this.backPageBtn = false;
+        this.firstPageBtn = false;
+      }
+    } else {
+      console.log('no result');
+      this.getTotalData();
+      this.getLenhSanXuatList();
+    }
     this.createListOfMaLenhSanXuat();
     this.createListOfSapCode();
     this.createListOfSapName();
@@ -257,6 +283,8 @@ export class LenhSanXuatComponent implements OnInit {
       this.lenhSanXuats = res;
       setTimeout(() => {
         this.changeColor();
+        // Lưu lại key word tìm kiếm
+        sessionStorage.setItem('tem-in-search-body', JSON.stringify(this.body));
       }, 500);
     });
   }

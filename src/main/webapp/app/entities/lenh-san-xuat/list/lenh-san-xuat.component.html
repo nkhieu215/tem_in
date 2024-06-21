@@ -14,7 +14,7 @@
     <jhi-alert-error></jhi-alert-error>
 
     <!-- <div class="table-responsive" id="entities" *ngIf="lenhSanXuats && lenhSanXuats.length > 0"> -->
-    <div style="overflow: auto; height: 600px">
+    <div style="overflow: auto; height: 700px">
       <table class="table" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
@@ -24,7 +24,7 @@
             </th>
 
             <th scope="col" jhiSortBy="maLenhSanXuat" style="position: sticky; top: 0">
-              <span>Mã lệnh sản xuất</span>
+              <span>Lệnh sản xuất</span>
               <input
                 #searchInput
                 type="text"
@@ -32,7 +32,7 @@
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="search"
                 list="maLenhSanXuat"
-                style="width: 8rem"
+                style="width: 6rem"
                 (change)="findFucntion()"
               />
               <datalist id="maLenhSanXuat">
@@ -49,7 +49,7 @@
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="search"
                 list="sapCode"
-                style="width: 5rem"
+                style="width: 4rem"
                 (change)="findFucntion()"
               />
               <datalist id="sapCode">
@@ -102,7 +102,7 @@
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="search"
                 list="version"
-                style="width: 5rem"
+                style="width: 3rem"
                 (change)="findFucntion()"
               />
               <datalist id="version">
@@ -145,15 +145,15 @@
             </th>
 
             <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0">
-              <span>Tổng số lượng nhập</span>
-              <input style="border: none; width: 10rem; background-color: #006699" disabled />
+              <span>Tổng nhập</span>
+              <input style="border: none; width: 5rem; background-color: #006699" disabled />
             </th>
             <th scope="col" jhiSortBy="totalQuantity" style="position: sticky; top: 0">
               <span>Chi tiết</span>
               <input style="border: none; width: 10rem; background-color: #006699" disabled />
             </th>
             <th scope="col" jhiSortBy="createBy" style="position: sticky; top: 0">
-              <span>Cập nhật bởi</span>
+              <span>Nhân viên</span>
               <input
                 #searchInput
                 type="text"
@@ -161,18 +161,18 @@
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="search"
                 list="createBy"
-                style="width: 6rem"
+                style="width: 5rem"
                 (change)="findFucntion()"
               />
             </th>
 
             <th scope="col" jhiSortBy="entryTime" style="position: sticky; top: 0">
-              <span>Thời gian tạo tem</span>
+              <span>Ngayftạo tem</span>
               <input type="date" [(ngModel)]="entryTime" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" />
             </th>
 
             <th scope="col" jhiSortBy="timeUpdate" style="position: sticky; top: 0">
-              <span>Thời gian cập nhật</span>
+              <span>Ngày cập nhật</span>
               <input type="date" [(ngModel)]="timeUpdate" [ngModelOptions]="{ standalone: true }" (change)="findFucntion()" disabled />
             </th>
 
