@@ -15,6 +15,10 @@ export class ProfileCheckComponent implements OnInit {
   versionURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/versions');
   listOfProDuctPanigationURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/panigation');
   totalItemURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/total');
+  listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  // api them moi san pham
+  addNewProduct = this.applicationConfigService.getEndpointFor('api/add-new-product');
   predicate!: string;
   ascending!: boolean;
   page?: number;
@@ -58,8 +62,11 @@ export class ProfileCheckComponent implements OnInit {
   listOfMaMay: any[] = [];
   listInfoMachineAdd: any[] = [];
   listOfVersion: any[] = [];
+  listOfGroupMachine: any[] = [];
+
   popupKhaiBaoProfile = false;
   popupConfirmSave = false;
+  popupAddNewProduct = false;
   machines: any;
   version: any;
 
@@ -161,6 +168,9 @@ export class ProfileCheckComponent implements OnInit {
   getProductList(): void {
     this.http.post<any>(this.listOfProDuctPanigationURL, this.body).subscribe(res => {
       this.listOfProduct = res;
+      for (let i = 0; i < this.listOfProduct.length; i++) {
+        this.listOfProduct[i].productStatus = this.listOfProduct[i].productStatus === 1 ? 'Active' : 'Deactive';
+      }
       console.log('tesst 1: ', this.pageNumber, res);
       setTimeout(() => {
         this.http.post<any>(this.totalItemURL, this.body).subscribe(res1 => {
@@ -187,6 +197,7 @@ export class ProfileCheckComponent implements OnInit {
     // this.productName = this.listOfProduct[index].productName;
     // this.versions = this.listOfProduct[index].productVersion;
     // this.machines = this.listOfMaMay[index];
+    // console.log('machine', this.machines);
     this.http.get<any>(`${this.listOfProDuctURL}/${groupId as string}`).subscribe(res => {
       this.listOfMaMay = res;
     });
@@ -197,7 +208,10 @@ export class ProfileCheckComponent implements OnInit {
       console.log('version', resVer);
     });
 
-    console.log('machine', this.machines);
+    this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
+      this.listOfGroupMachine = res;
+    });
+    console.log('nhom may', this.listOfGroupMachine);
   }
 
   closePopupKhaiBaoProfile(): void {
@@ -221,8 +235,8 @@ export class ProfileCheckComponent implements OnInit {
   addRowGroupMachine(): void {
     const newRow = {
       id: 0,
-      version: null,
-      groupName: null,
+      productVersion: null,
+      groupMachine: null,
     };
     this.listOfVersion = [...this.listOfVersion, newRow];
     console.log('them dong', this.listOfVersion);
@@ -249,7 +263,11 @@ export class ProfileCheckComponent implements OnInit {
     });
   }
 
-  // updateChiTietMay(): void {
+  openPopupAddNewProduct(): void {
+    this.popupAddNewProduct = true;
+  }
 
-  // }
+  closePopupAddNewProduct(): void {
+    this.popupAddNewProduct = false;
+  }
 }

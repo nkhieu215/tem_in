@@ -2,6 +2,12 @@
   <h2 id="page-heading" data-cy="ProfileCheckHeading">
     <span>Quản lý trạm thông tin kiểm tra</span>
   </h2>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupAddNewProduct()">
+      <fa-icon icon="add"></fa-icon>
+      <span>Thêm mới</span>
+    </button>
+  </div>
 
   <div class="table-responsive">
     <table class="table" aria-describedby="page-heading">
@@ -175,14 +181,17 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input type="text" [(ngModel)]="product.productVersion" /></td>
                         <td>
-                          <select class="form-select">
-                            <option value="">Chọn 1</option>
-
-                            <option value="">Chọn 2</option>
-                            <option value="">Chọn 3</option>
-                          </select>
+                          <input type="text" list="productVersion" required />
+                          <datalist id="productVersion" class="form-datalist">
+                            <option value="{{ product.productVersion }}"></option>
+                          </datalist>
+                        </td>
+                        <td>
+                          <input type="text" list="groupMachine" required />
+                          <datalist id="groupMachine">
+                            <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupName }}"></option>
+                          </datalist>
                         </td>
                         <td>
                           <div class="btn-group">
@@ -212,10 +221,10 @@
                     <thead>
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                         <th scope="col">STT</th>
-                        <th scope="col">Mã máy</th>
+                        <th scope="col">Tên trạm</th>
                         <th scope="col">Vị trí</th>
                         <th scope="col">Giá trị</th>
-                        <th scope="col">Thông tin check</th>
+                        <th scope="col">Tiêu chí kiểm tra</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Options</th>
                       </tr>
@@ -225,8 +234,8 @@
                         <td>{{ i + 1 }}</td>
                         <td><input type="text" [(ngModel)]="data.machineName" [ngModelOptions]="{ standalone: true }" /></td>
                         <td><input type="text" [(ngModel)]="data.posotion" [ngModelOptions]="{ standalone: true }" /></td>
-                        <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
                         <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
                         <td>
                           <input
                             type="checkbox"
@@ -270,12 +279,154 @@
     </div>
   </div>
 
-  <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+  <div class="table-responsive popup-background" role="dialog" *ngIf="popupAddNewProduct === true">
     <div>
-      <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
-      <div class="btn-group-save">
-        <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
-        <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+      <span class="close-btn" (click)="closePopupAddNewProduct()">&times;</span>
+
+      <div>
+        <div class="popup-khai-bao-profile">
+          <h2>Thêm mới sản phẩm</h2>
+          <div class="table-container">
+            <div class="table-header">
+              <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                  <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" name="" id="" /></td>
+                    <td><input type="text" name="" id="" /></td>
+                    <td><input type="text" name="" id="" /></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="btn-group-save">
+                <button class="confirm-btn">Lưu</button>
+              </div>
+            </div>
+            <div class="table-body">
+              <div class="table-body-container">
+                <div class="table-body-container-first">
+                  <h2>Thông tin nhóm máy theo version</h2>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowGroupMachine()">
+                      <fa-icon icon="add"></fa-icon>
+                      <span>Thêm mới</span>
+                    </button>
+                  </div>
+                  <hr />
+                  <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                        <th scope="col">Version</th>
+                        <th scope="col">Nhóm máy</th>
+                        <th scope="col">Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <input type="text" list="productVersion" required />
+                          <datalist id="productVersion" class="form-datalist">
+                            <option value=""></option>
+                          </datalist>
+                        </td>
+                        <td>
+                          <input type="text" list="groupMachine" required />
+                          <datalist id="groupMachine">
+                            <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupMachine }}"></option>
+                          </datalist>
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="submit" class="btn btn-info btn-sm">
+                              <fa-icon icon="pencil"></fa-icon>
+                            </button>
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <br /><br /><br />
+
+                <div class="table-body-container-second">
+                  <h2>Thông tin chi tiết các máy</h2>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="addRowChiTietMay()">
+                      <fa-icon icon="add"></fa-icon>
+                      <span>Thêm mới</span>
+                    </button>
+                  </div>
+                  <hr />
+                  <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên trạm</th>
+                        <th scope="col">Vị trí</th>
+                        <th scope="col">Giá trị</th>
+                        <th scope="col">Tiêu chí kiểm tra</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of listOfMaMay; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input type="text" [(ngModel)]="data.machineName" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.posotion" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="ui-checkbox"
+                            [(ngModel)]="data.checkStatus"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="submit" class="btn btn-info btn-sm">
+                              <fa-icon icon="pencil"></fa-icon>
+                            </button>
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-group-save">
+            <button class="confirm-btn">Lưu</button>
+            <button class="cancel-btn">Hủy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+        <div>
+          <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+          <div class="btn-group-save">
+            <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+            <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

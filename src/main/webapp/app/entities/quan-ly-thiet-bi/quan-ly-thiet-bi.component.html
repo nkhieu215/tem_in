@@ -92,7 +92,7 @@
         <tr *ngFor="let item of listOfGroupMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ item.groupName }}</td>
-          <td>{{ item.createdAt }}</td>
+          <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
           <td>{{ item.updateAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
           <td>{{ item.username }}</td>
           <td>{{ item.statusName }}</td>
@@ -144,16 +144,16 @@
           </thead>
           <tbody style="background-color: #d3eefc">
             <td>
-              <span><input type="text" [(ngModel)]="groupName" [ngModelOptions]="{ standalone: true }" /></span>
+              <span><input type="text" [(ngModel)]="this.groupName" [ngModelOptions]="{ standalone: true }" /></span>
             </td>
             <td>
-              <span [(ngModel)]="createAt" [ngModelOptions]="{ standalone: true }"> {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+              <span [(ngModel)]="createAt" [ngModelOptions]="{ standalone: true }"> {{ createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
             </td>
             <td>
-              <span [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }"> {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+              <span [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }"> {{ updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
             </td>
             <td>
-              <span [(ngModel)]="userName" [ngModelOptions]="{ standalone: true }"></span>
+              <span [(ngModel)]="userName" [ngModelOptions]="{ standalone: true }">{{ userName }}</span>
             </td>
             <td>
               <select class="form-select" id="status" data-cy="status" [(ngModel)]="statusName" (change)="updateStatus()">
@@ -164,10 +164,9 @@
             </td>
           </tbody>
         </table>
-        <!-- <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary"
-          (click)="openPopupConfirmSave4()">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave2()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button> -->
+        </button>
 
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
@@ -243,9 +242,14 @@
           </thead>
           <tbody style="background-color: #d3eefc">
             <td>
-              <span>{{ groupMachine.groupName }}</span>
-              <!-- <span><input type="text" [(ngModel)]="groupMachine.groupName" [ngModelOptions]="{ standalone: true }"
-                  (change)="updateGroupMachine()" /></span> -->
+              <!-- <span>{{ groupMachine.groupName }}</span> -->
+              <span
+                ><input
+                  type="text"
+                  [(ngModel)]="groupMachine.groupName"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="updateGroupMachine()"
+              /></span>
               <!-- đặt hàm cập nhật nhóm thiết bị ở đây -> giảm bớt tiến trình ấn lưu thông tin nhóm thiết bị  -->
             </td>
             <td>
@@ -351,8 +355,8 @@
                 />
               </td>
               <td>{{ i + 1 }}</td>
-              <td>{{ item.machineId }}</td>
-              <td>{{ item.machineName }}</td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.maThietBi }}</td>
               <td></td>
             </tr>
           </tbody>
@@ -388,7 +392,7 @@
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
-      <button class="confirm-btn" (click)="closePopupConfirmSave2()">Xác nhận</button>
+      <button class="confirm-btn" (click)="addNewGroupMachine()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave2()">Hủy</button>
     </div>
   </div>
@@ -408,7 +412,7 @@
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
-      <button class="confirm-btn" (click)="closePopupConfirmSave4()">Xác nhận</button>
+      <button class="confirm-btn" (click)="addNewMachine()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave4()">Hủy</button>
     </div>
   </div>

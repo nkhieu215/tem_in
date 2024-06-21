@@ -99,7 +99,7 @@
           <tr>
             <th>STT</th>
             <th>Tên trạm</th>
-            <th>Thông tin kiểm tra</th>
+            <th>Tiêu chí kiểm tra</th>
             <th>Tổng lượt Scan</th>
             <th>Tổng Pass</th>
             <th>Tổng NG</th>
@@ -209,7 +209,7 @@
                     <input #searchInput type="text" [(ngModel)]="position" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
                   </th>
                   <th scope="col">
-                    <span>Thông tin check</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                    <span>Tiêu chí kiểm tra</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                   </th>
                   <th scope="col"><span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
                 </tr>
@@ -218,8 +218,8 @@
                 <tr *ngFor="let item of listProfileCheck">
                   <td>{{ item.machineName }}</td>
                   <td>{{ item.position }}</td>
-                  <td>{{ item.recordName }}</td>
                   <td style="text-align: left">{{ item.recordValue }}</td>
+                  <td style="text-align: left">{{ item.recordName }}</td>
                 </tr>
               </tbody>
             </table>
@@ -230,7 +230,7 @@
                 <thead>
                   <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                     <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #309acf" /></th>
-                    <th scope="col">
+                    <th scope="col" style="width: 10rem">
                       <span>Mã máy</span>
                       <input
                         #searchInput
@@ -244,7 +244,7 @@
                       <span>Serial</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
                     <th scope="col">
-                      <span>Thông tin check</span>
+                      <span>Tiêu chí kiểm tra</span>
                       <input
                         #searchInput
                         type="text"
@@ -253,13 +253,13 @@
                         placeholder="Tìm kiếm"
                       />
                     </th>
-                    <th scope="col">
+                    <th scope="col" style="width: 20rem">
                       <span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
                     <th scope="col">
                       <span>Vị trí</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
-                    <th scope="col">
+                    <th scope="col" style="width: 15rem">
                       <span>Result</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
                   </tr>

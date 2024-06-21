@@ -16,7 +16,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 export class QuanLyThietBiComponent implements OnInit {
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
   listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
-  listOfMachineAddURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/machine');
+  listOfMachineAddURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
+  addNewMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
   getListOfMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
   predicate!: string;
   ascending!: boolean;
@@ -42,13 +43,15 @@ export class QuanLyThietBiComponent implements OnInit {
   // acount
   account: any;
   currentDate: Date = new Date();
+  @Input() groupId = '';
   @Input() groupName = '';
-  @Input() createAt = '';
-  @Input() updatedAt = '';
+  @Input() createAt = this.currentDate;
+  @Input() updatedAt = this.currentDate;
   @Input() userName = '';
   @Input() groupStatus = 0;
   @Input() machineId = '';
   @Input() machineName = '';
+  @Input() statusMachine = '';
   @Input() itemPerPage = 10;
   @Input() statusName = '';
   //list goi y
@@ -143,21 +146,14 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupThemMoiNhomThietBi = false;
   }
 
-  openPopupNhomThietBi(index: any, id: any): void {
+  openPopupNhomThietBi(groupId: any, id: any): void {
     this.popupNhomThietBi = true;
-    this.groupMachine = this.listOfGroupMachine[index];
-    console.log('machine:', this.groupMachine);
+    this.groupMachine = this.listOfGroupMachine[groupId];
+    console.log('nhom machine:', this.groupMachine);
     this.http.get<any>(`${this.listOfMachineURL}/${id as string}`).subscribe(res => {
       this.listOfMachines = res;
       console.log('machine', this.listOfMachines);
     });
-    // this.http.put<any>(this.listOfMachineURL, this.listOfMachines).subscribe(() => {
-    //   // console.log('machine', this.listOfMachines);
-    // });
-
-    // this.http.put<any>(this.listOfGroupMachineURL, this.listOfGroupMachine).subscribe(() => {
-    //   // console.log('group machine', this.listOfGroupMachine);
-    // });
   }
 
   closePopupNhomThietBi(): void {
@@ -169,7 +165,7 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupThemMoiThietBi = true;
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
-      // console.log('machine:', res);
+      console.log('machine:', res);
     });
   }
 
@@ -203,22 +199,6 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupConfirmSave4(): void {
     this.popupConfirmSave4 = true;
-    const dataToSend = {
-      groupName: this.groupName,
-      createAt: this.createAt,
-      updatedAt: this.updatedAt,
-      userName: this.userName,
-      groupStatus: this.groupStatus,
-      thietBis: this.listOfMachines,
-    };
-
-    this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
-      console.log('them moi nhom thiet bi', dataToSend);
-    });
-
-    // this.http.post<any>(this.listOfMachineURL, this.listOfMachineAdd).subscribe(() => {
-    //   console.log('them moi thiet bi', this.listOfMachineAdd);
-    // });
   }
 
   closePopupConfirmSave4(): void {
@@ -237,20 +217,24 @@ export class QuanLyThietBiComponent implements OnInit {
     if (event.target.checked) {
       this.selectedMachines.push(machine);
     } else {
-      this.selectedMachines = this.selectedMachines.filter(m => m.machineId !== machine.machineId);
+      this.selectedMachines = this.selectedMachines.filter(m => m.id !== machine.id);
     }
+    console.log('select', this.selectedMachines);
   }
 
   saveSelectedMachines(): void {
-    this.listOfMachines = [...this.selectedMachines];
+    this.listOfMachines = this.selectedMachines.map(machine => ({
+      machineId: machine.id,
+      machineName: machine.maThietBi,
+    }));
     this.closePopupThemMoiThietBi();
     this.closePopupConfirmSave3();
-    this.addNewNhomThietBi;
-    // this.openPopupThemMoiNhomThietBi();
+    console.log('list machine', this.listOfMachines);
   }
 
   isMachineSelected(machine: any): any {
-    return this.selectedMachines.some(m => m.machineId === machine.machineId);
+    // console.log('machine', machine.machineId)
+    return this.selectedMachines.some(m => m.id === machine.id);
   }
   // cập nhật thông tin nhóm thiết bị
   updateGroupMachine(): void {
@@ -264,18 +248,34 @@ export class QuanLyThietBiComponent implements OnInit {
     });
   }
 
-  addNewNhomThietBi(): void {
+  addNewGroupMachine(): void {
     const dataToSend = {
       groupName: this.groupName,
-      createdAt: this.createAt,
-      updatedAt: this.updatedAt,
-      userName: this.userName,
+      createAt: this.currentDate,
+      updateAt: this.currentDate,
+      username: this.account.login,
       groupStatus: this.groupStatus,
       thietBis: this.listOfMachines,
     };
+    this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
+      console.log('them moi nhom thiet bi', dataToSend);
+    });
+    this.popupConfirmSave2 = false;
+  }
 
-    // this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
-    console.log('them moi nhom thiet bi', dataToSend);
-    // });
+  addNewMachine(): void {
+    this.http.post<any>(this.addNewMachineURL, this.listOfMachines).subscribe(() => {
+      console.log('them moi thiet bi', this.listOfMachines);
+    });
+    window.location.reload();
+  }
+
+  updateMachine(): void {
+    const currentTime = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
+    this.machines.updateAt = currentTime;
+    this.machines.username = this.account.login;
+    this.http.put<any>(this.addNewMachineURL, this.machines).subscribe(() => {
+      alert('update thành công');
+    });
   }
 }

@@ -554,6 +554,10 @@
         height: 80vh;
 
         .table-footer {
+          td {
+            text-align: left;
+          }
+
           .btn-footer {
             border-top: none;
             margin-top: 1rem;
