@@ -98,7 +98,7 @@
           <td>{{ item.statusName }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi(i, item.groupId)">
+              <button type="submit" class="btn btn-info btn-sm" (click)="openPopupNhomThietBi(item.groupId)">
                 <fa-icon icon="pencil"></fa-icon>
               </button>
 
@@ -147,10 +147,10 @@
               <span><input type="text" [(ngModel)]="this.groupName" [ngModelOptions]="{ standalone: true }" /></span>
             </td>
             <td>
-              <span [(ngModel)]="createAt" [ngModelOptions]="{ standalone: true }"> {{ createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+              <span [(ngModel)]="createAt" [ngModelOptions]="{ standalone: true }"> {{ createAt | date: 'dd/MM/yyyyHH:mm:ss' }}</span>
             </td>
             <td>
-              <span [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }"> {{ updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+              <span [(ngModel)]="updatedAt" [ngModelOptions]="{ standalone: true }"> {{ updatedAt | date: 'dd/MM/yyyyHH:mm:ss' }}</span>
             </td>
             <td>
               <span [(ngModel)]="userName" [ngModelOptions]="{ standalone: true }">{{ userName }}</span>
@@ -253,7 +253,7 @@
               <!-- đặt hàm cập nhật nhóm thiết bị ở đây -> giảm bớt tiến trình ấn lưu thông tin nhóm thiết bị  -->
             </td>
             <td>
-              <span>{{ groupMachine.createdAt }}</span>
+              <span>{{ groupMachine.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
             </td>
             <td>
               <span>{{ groupMachine.updateAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
@@ -293,7 +293,7 @@
             <tr *ngFor="let item of listOfMachines; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ item.machineId }}</td>
-              <td>{{ item.machineName }}</td>
+              <td style="text-align: left">{{ item.machineName }}</td>
               <!-- <td>
                 <div class="btn-group">
                   <button type="submit" class="btn btn-info btn-sm">

@@ -146,11 +146,17 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupThemMoiNhomThietBi = false;
   }
 
-  openPopupNhomThietBi(groupId: any, id: any): void {
+  openPopupNhomThietBi(groupId: any): void {
     this.popupNhomThietBi = true;
-    this.groupMachine = this.listOfGroupMachine[groupId];
+    //hàm trả về giá trị index của phần tử chứa thông tin group id truyền vào
+    const index = this.listOfGroupMachine.findIndex(item => item.groupId === groupId);
+    console.log('index', index);
+
+    // trả về thông tin phần tử tại vị trí  index
+    this.groupMachine = this.listOfGroupMachine[index];
     console.log('nhom machine:', this.groupMachine);
-    this.http.get<any>(`${this.listOfMachineURL}/${id as string}`).subscribe(res => {
+
+    this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
       this.listOfMachines = res;
       console.log('machine', this.listOfMachines);
     });
@@ -224,6 +230,7 @@ export class QuanLyThietBiComponent implements OnInit {
 
   saveSelectedMachines(): void {
     this.listOfMachines = this.selectedMachines.map(machine => ({
+      groupId: this.groupId,
       machineId: machine.id,
       machineName: machine.maThietBi,
     }));
@@ -257,8 +264,9 @@ export class QuanLyThietBiComponent implements OnInit {
       groupStatus: this.groupStatus,
       thietBis: this.listOfMachines,
     };
-    this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(() => {
-      console.log('them moi nhom thiet bi', dataToSend);
+    this.http.post<any>(this.listOfGroupMachineURL, dataToSend).subscribe(res => {
+      console.log('them moi nhom thiet bi', res);
+      this.groupId = res;
     });
     this.popupConfirmSave2 = false;
   }
@@ -267,7 +275,7 @@ export class QuanLyThietBiComponent implements OnInit {
     this.http.post<any>(this.addNewMachineURL, this.listOfMachines).subscribe(() => {
       console.log('them moi thiet bi', this.listOfMachines);
     });
-    window.location.reload();
+    // window.location.reload();
   }
 
   updateMachine(): void {
