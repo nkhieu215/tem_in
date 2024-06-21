@@ -305,7 +305,7 @@
                 </tbody>
               </table>
               <div class="btn-group-save">
-                <button class="confirm-btn">Lưu</button>
+                <button class="btn btn-primary confirm-btn">Lưu</button>
               </div>
             </div>
             <div class="table-body">
@@ -332,13 +332,13 @@
                         <td>
                           <input type="text" list="productVersion" required />
                           <datalist id="productVersion" class="form-datalist">
-                            <option value=""></option>
+                            <option value="{{ product.productVersion }}"></option>
                           </datalist>
                         </td>
                         <td>
                           <input type="text" list="groupMachine" required />
                           <datalist id="groupMachine">
-                            <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupMachine }}"></option>
+                            <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupName }}"></option>
                           </datalist>
                         </td>
                         <td>
@@ -375,6 +375,7 @@
                         <th scope="col">Vị trí</th>
                         <th scope="col">Giá trị</th>
                         <th scope="col">Tiêu chí kiểm tra</th>
+                        <th scope="col">Version</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Options</th>
                       </tr>
@@ -386,6 +387,8 @@
                         <td><input type="text" [(ngModel)]="data.posotion" [ngModelOptions]="{ standalone: true }" /></td>
                         <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
                         <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td><input type="text" [(ngModel)]="data.recordValue" [ngModelOptions]="{ standalone: true }" /></td>
+
                         <td>
                           <input
                             type="checkbox"
@@ -412,10 +415,18 @@
               </div>
             </div>
           </div>
-          <div class="btn-group-save">
-            <button class="confirm-btn">Lưu</button>
-            <button class="cancel-btn">Hủy</button>
-          </div>
+          <button
+            type="button"
+            id="cancel-save"
+            data-cy="entityCreateCancelButton"
+            class="btn btn-secondary"
+            (click)="closePopupKhaiBaoProfile()"
+          >
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          </button>
+          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+          </button>
         </div>
       </div>
 
@@ -428,6 +439,26 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupSaveThemMoiSanPham === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupSaveThemMoiThongTinSanPham === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="closePopupConfirmSave()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave()">Hủy</button>
     </div>
   </div>
 </div>

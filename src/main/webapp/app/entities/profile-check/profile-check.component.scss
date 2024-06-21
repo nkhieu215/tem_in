@@ -289,6 +289,13 @@ th[scope='col'].sorted-desc::after {
     .popup-khai-bao-profile {
       width: 90vw;
       height: 90vh;
+
+      .btn-group-save {
+        .confirm-btn {
+          background-color: #007bff;
+          color: #fff;
+        }
+      }
     }
 
     .close-btn {

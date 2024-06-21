@@ -67,6 +67,8 @@ export class ProfileCheckComponent implements OnInit {
   popupKhaiBaoProfile = false;
   popupConfirmSave = false;
   popupAddNewProduct = false;
+  popupSaveThemMoiSanPham = false;
+  popupSaveThemMoiThongTinSanPham = false;
   machines: any;
   version: any;
 
