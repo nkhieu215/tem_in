@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Scan_product")
+@Table(name = "Scan_products")
 public class scanProduct {
 
     @Id
@@ -22,10 +22,10 @@ public class scanProduct {
     private String productVersion;
 
     @Column(name = "created_at")
-    private ZonedDateTime createAt;
+    private String createAt;
 
     @Column(name = "update_at")
-    private ZonedDateTime updateAt;
+    private String updateAt;
 
     @Column(name = "username")
     private String username;
@@ -38,8 +38,8 @@ public class scanProduct {
         String productCode,
         String productName,
         String productVersion,
-        ZonedDateTime createAt,
-        ZonedDateTime updateAt,
+        String createAt,
+        String updateAt,
         String username,
         Integer productStatus
     ) {
@@ -87,19 +87,19 @@ public class scanProduct {
         this.productVersion = productVersion;
     }
 
-    public ZonedDateTime getCreateAt() {
+    public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(ZonedDateTime createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 
-    public ZonedDateTime getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(ZonedDateTime updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 

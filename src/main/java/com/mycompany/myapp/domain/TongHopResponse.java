@@ -7,4 +7,17 @@ public interface TongHopResponse {
     String getRecordName();
     String getPosition();
     String getMachineName();
+    //    tổng hợp xuất file excel
+    String getTenThietBi();
+    String getTenNhomThietBi();
+    String getMaSanPham();
+    String getTenSanPham();
+    String getVersion();
+    String getTieuChiKiemTra();
+    String getNoiDungDoiChieu();
+    String getKetQuaCheck();
+    String getKetLuan();
+    String getViTri();
+    String getNhanVien();
+    String getThoiGianCheck();
 }

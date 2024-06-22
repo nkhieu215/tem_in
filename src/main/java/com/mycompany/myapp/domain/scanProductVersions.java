@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "scan_productVersions")
+@Table(name = "scan_product_versions")
 public class scanProductVersions {
 
     @Id
@@ -19,12 +19,45 @@ public class scanProductVersions {
     private Long productId;
 
     @Column(name = "create_at")
-    private ZonedDateTime create;
+    private String create;
 
     @Column(name = "update_at")
-    private ZonedDateTime updateAt;
+    private String updateAt;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "version_status")
+    private Integer versionStatus;
+
+    @Column(name = "group_id")
+    private Integer groupId;
 
     public scanProductVersions() {}
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionSratus(Integer versionStatus) {
+        this.versionStatus = versionStatus;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
 
     public Long getVersionId() {
         return versionId;
@@ -50,19 +83,19 @@ public class scanProductVersions {
         this.productId = productId;
     }
 
-    public ZonedDateTime getCreate() {
+    public String getCreate() {
         return create;
     }
 
-    public void setCreate(ZonedDateTime create) {
+    public void setCreate(String create) {
         this.create = create;
     }
 
-    public ZonedDateTime getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(ZonedDateTime updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 }

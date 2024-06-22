@@ -10,6 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 // ! chưa làm được
@@ -1157,12 +1158,21 @@ public class UserServices {
             );
     }
 
+    // * ------------------------------------------ Version ----------------------------
     //☺ Lấy thông tin version theo productId
     public List<scanProductVersions> getListVersionsByProductId(Long productId) {
         List<scanProductVersions> scanProductVersionsList = this.scanProductVersionRepository.getAllByProductId(productId);
         return scanProductVersionsList;
     }
 
+    //☺ Them moi thong tin version
+    public scanProductVersions createVersion(scanProductVersions scanProductVersionsList) {
+        this.scanProductVersionRepository.save(scanProductVersionsList);
+
+        return scanProductVersionsList;
+    }
+
+    //☺ Lấy thông tin version theo productId và versionId
     // * ------------------------- Quản lý trạm thông tin kiểm tra ------------------
     //☺ Lấy danh sách sản phẩm + phân trang + lọc
     public List<scanProduct> getListProduct(scanProductDTO scanProductDTO) {
@@ -1265,5 +1275,50 @@ public class UserServices {
                     scanWorkOrderDTO.getItemPerPage()
                 );
         return detailCheckResponses;
+    }
+
+    // * ---------------------------- Profile check ----------------------------
+    //☺ Thêm mới sản phẩm
+    public scanProduct createProduct(scanProduct scanProduct) {
+        this.scanProductRepository.save(scanProduct);
+        return scanProduct;
+    }
+
+    // * ------------------------- Product version ---------------------------------
+    //☺ Lấy danh sách profile theo product
+    public List<ProfileCheckResponse> getProfileCheckInfo(Long productId) {
+        List<ProfileCheckResponse> profileCheckResponses = this.scanprofileCheckRepository.getProfileCheckInfo(productId);
+        return profileCheckResponses;
+    }
+
+    //☺ Lấy danh sách profile theo product và version
+    public List<ProfileCheckResponse> getProfileCheckInfoWithVersionId(ScanPprofileCheck scanPprofileCheck) {
+        List<ProfileCheckResponse> profileCheckResponses =
+            this.scanprofileCheckRepository.getProfileCheckInfoWithVersionId(
+                    scanPprofileCheck.getProductId(),
+                    scanPprofileCheck.getVersionId()
+                );
+        return profileCheckResponses;
+    }
+
+    //☺ Thêm mới profile check
+    public void insertProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
+        for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
+            this.scanprofileCheckRepository.insertProfileCheck(
+                    scanPprofileCheck.getProductId(),
+                    scanPprofileCheck.getCheckName(),
+                    scanPprofileCheck.getCheckValue(),
+                    scanPprofileCheck.getCheckStatus(),
+                    scanPprofileCheck.getPosition(),
+                    scanPprofileCheck.getVersionId(),
+                    scanPprofileCheck.getMachineId()
+                );
+        }
+    }
+
+    // * ---------------------------- export -----------------------
+    public List<TongHopResponse> getExportInfo(Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.scanDetailCheckRepository.getExportInfo(orderId);
+        return tongHopResponses;
     }
 }

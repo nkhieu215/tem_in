@@ -623,4 +623,47 @@ public class UserController {
         List<DetailCheckResponse> detailCheckResponses = this.userServices.getTotalPassNg(scanWorkOrderDTO);
         return detailCheckResponses;
     }
+
+    // * ---------------------------- Profile check ----------------------------
+    //☺ Thêm mới sản phẩm
+    @PostMapping("scan-product")
+    public scanProduct createProduct(@RequestBody scanProduct scanProduct) {
+        scanProduct scanProduct1 = this.userServices.createProduct(scanProduct);
+        return scanProduct1;
+    }
+
+    // * ------------------------------- version ---------------------
+    @PostMapping("scan-profile-check/create-version")
+    public scanProductVersions createVersion(@RequestBody scanProductVersions scanProductVersions) {
+        scanProductVersions scanProductVersionsList = this.userServices.createVersion(scanProductVersions);
+        return scanProductVersionsList;
+    }
+
+    // * ------------------------- Product version ---------------------------------
+    //☺ Lấy danh sách profile theo product
+    @GetMapping("profile-checks/{productId}")
+    public List<ProfileCheckResponse> getProfileCheckInfo(@PathVariable Long productId) {
+        List<ProfileCheckResponse> profileCheckResponses = this.userServices.getProfileCheckInfo(productId);
+        return profileCheckResponses;
+    }
+
+    //☺ Lấy danh sách profile theo product và version
+    @PostMapping("profile-checks")
+    public List<ProfileCheckResponse> getProfileCheckInfoWithVersionId(@RequestBody ScanPprofileCheck scanPprofileCheck) {
+        List<ProfileCheckResponse> profileCheckResponses = this.userServices.getProfileCheckInfoWithVersionId(scanPprofileCheck);
+        return profileCheckResponses;
+    }
+
+    //☺ THêm mới profile check
+    @PostMapping("profile-checks/insert")
+    public void insertProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
+        this.userServices.insertProfileCheck(scanPprofileChecks);
+    }
+
+    // * ----------------------- Export -------------------------
+    @GetMapping("scan-check-export/{orderId}")
+    public List<TongHopResponse> getExportInfo(@PathVariable Long orderId) {
+        List<TongHopResponse> tongHopResponses = this.userServices.getExportInfo(orderId);
+        return tongHopResponses;
+    }
 }

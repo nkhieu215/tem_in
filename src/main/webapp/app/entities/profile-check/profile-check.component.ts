@@ -1,8 +1,10 @@
+import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { AccountService } from 'app/core/auth/account.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 @Component({
@@ -13,17 +15,22 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 export class ProfileCheckComponent implements OnInit {
   listOfProDuctURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check');
   versionURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/versions');
+  postVersionURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/create-version');
   listOfProDuctPanigationURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/panigation');
   totalItemURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/total');
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
   listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
   // api them moi san pham
-  addNewProduct = this.applicationConfigService.getEndpointFor('api/add-new-product');
+  addNewProductURL = this.applicationConfigService.getEndpointFor('api/scan-product');
+  showProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks');
+  insertProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks/insert');
   predicate!: string;
   ascending!: boolean;
-  page?: number;
   versions: any;
   product: any;
+  productId = 0;
+  groupId = 0;
+  groupName = '';
   @Input() productCode = '';
   @Input() productName = '';
   @Input() createdAt = null;
@@ -33,7 +40,8 @@ export class ProfileCheckComponent implements OnInit {
   @Input() itemPerPage = 10;
   //phân trang
   pageNumber = 1;
-  itemsPerPage = ITEMS_PER_PAGE;
+  itemsPerPage = 5;
+  page?: number;
   // thông tin phân trang
   totalData = 0;
   nextPageBtn = false;
@@ -63,7 +71,11 @@ export class ProfileCheckComponent implements OnInit {
   listInfoMachineAdd: any[] = [];
   listOfVersion: any[] = [];
   listOfGroupMachine: any[] = [];
-
+  listOfMachine: any[] = [
+    { machineId: 1, machineName: 'machine1' },
+    { machineId: 2, machineName: 'machine2' },
+    { machineId: 3, machineName: 'machine3' },
+  ];
   popupKhaiBaoProfile = false;
   popupConfirmSave = false;
   popupAddNewProduct = false;
@@ -71,15 +83,22 @@ export class ProfileCheckComponent implements OnInit {
   popupSaveThemMoiThongTinSanPham = false;
   machines: any;
   version: any;
-
+  versionId: any;
+  account: any;
+  //body profile check by version and product
+  profileInfo: any;
+  machineName: any;
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
     protected applicationConfigService: ApplicationConfigService,
-    protected http: HttpClient
+    protected http: HttpClient,
+    protected accountService: AccountService
   ) {}
-
+  trackId(_index: number, item: any): number {
+    return item.id! as number;
+  }
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
     // const pageToLoad: number = page ?? this.page ?? 1;
@@ -115,6 +134,7 @@ export class ProfileCheckComponent implements OnInit {
     this.firstPageBtn = false;
     if (this.pageNumber === Math.floor(this.totalData / this.itemPerPage) + 1) {
       this.nextPageBtn = true;
+      this.lastPageBtn = true;
     }
     this.getProductList();
   }
@@ -183,37 +203,36 @@ export class ProfileCheckComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    console.log(this.listOfMachine);
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      // console.log('acc', this.account);
+    });
     this.getProductList();
-    // this.http.get<any>(this.listOfProDuctURL).subscribe(res => {
-    //   this.listOfProduct = res;
-    //   console.log('thong tin chung', res);
-    //   // console.log(res);
-    // });
+    this.getListGroupMachines();
   }
-
-  openPopupKhaiBaoProfile(index: any, groupId: any): void {
+  getListGroupMachines(): void {
+    this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
+      this.listOfGroupMachine = res;
+      console.log('nhom may', this.listOfGroupMachine);
+    });
+  }
+  openPopupKhaiBaoProfile(index: any, productId: any): void {
     this.popupKhaiBaoProfile = true;
     console.log('product', this.listOfProduct[index]);
     this.product = this.listOfProduct[index];
-    // this.productCode = this.listOfProduct[index].productCode;
-    // this.productName = this.listOfProduct[index].productName;
-    // this.versions = this.listOfProduct[index].productVersion;
-    // this.machines = this.listOfMaMay[index];
-    // console.log('machine', this.machines);
-    this.http.get<any>(`${this.listOfProDuctURL}/${groupId as string}`).subscribe(res => {
+    // this.http.get<any>(`${this.listOfProDuctURL}/${productId as string}`).subscribe(res => {
+    //   this.listOfMaMay = res;
+    // });
+    this.http.get<any>(`${this.showProfileURL}/${productId as string}`).subscribe(res => {
       this.listOfMaMay = res;
+      console.log('product', res);
     });
-
     const item = sessionStorage.getItem('productId');
-    this.http.get<any>(`${this.versionURL}/${groupId as string}`).subscribe(resVer => {
+    this.http.get<any>(`${this.versionURL}/${productId as string}`).subscribe(resVer => {
       this.listOfVersion = resVer;
       console.log('version', resVer);
     });
-
-    this.http.get<any>(this.listOfGroupMachineURL).subscribe(res => {
-      this.listOfGroupMachine = res;
-    });
-    console.log('nhom may', this.listOfGroupMachine);
   }
 
   closePopupKhaiBaoProfile(): void {
@@ -222,39 +241,65 @@ export class ProfileCheckComponent implements OnInit {
 
   openPopupConfirmSave(): void {
     this.popupConfirmSave = true;
-    this.http.post<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
-      // console.log('post profile', this.listInfoMachineAdd);
-    });
-    this.http.put<any>(this.listOfProDuctURL, this.listInfoMachineAdd).subscribe(() => {
-      // console.log('put profile', this.listInfoMachineAdd);
-    });
   }
 
-  closePopupConfirmSave(): void {
-    this.popupConfirmSave = false;
+  closePopupConfirmSave(message: string): void {
+    if (message === 'confirm') {
+      this.popupConfirmSave = false;
+      this.listOfMaMay = this.listOfMaMay.filter(item => item.checked === false);
+      this.http.post<any>(this.insertProfileURL, this.listOfMaMay).subscribe();
+      console.log(this.listOfMaMay);
+    } else if (message === 'cancel') {
+      this.popupConfirmSave = false;
+    }
   }
 
-  addRowGroupMachine(): void {
-    const newRow = {
-      id: 0,
-      productVersion: null,
-      groupMachine: null,
+  addRowListVersion(): void {
+    const item = {
+      versionId: null,
+      groupId: 0,
+      version: '1.1',
+      productId: this.productId,
+      create: formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US'),
+      username: this.account.login,
+      versionStatus: 1,
     };
-    this.listOfVersion = [...this.listOfVersion, newRow];
+    this.listOfVersion = [item, ...this.listOfVersion];
     console.log('them dong', this.listOfVersion);
   }
 
-  addRowChiTietMay(): void {
-    const newRow = {
-      id: 0,
-      machineId: '',
-      posotion: '',
-      recordValue: '',
-      checkName: '',
-      checkStatus: '',
-    };
-    this.listOfMaMay = [...this.listOfMaMay, newRow];
-    // console.log('them dong 2', this.listOfMaMay);
+  addRowProfileCheck(): void {
+    if (this.listOfMaMay.length === 0) {
+      const newRow = {
+        version: this.version,
+        checked: false,
+        profileId: 0,
+        machineId: 0,
+        posotion: 0,
+        checkValue: '',
+        checkName: '',
+        versionId: this.versionId,
+        productId: this.productId,
+        checkStatus: 'Active',
+      };
+      this.listOfMaMay = [newRow, ...this.listOfMaMay];
+    } else {
+      const newRow = {
+        version: this.version,
+        checked: false,
+        profileId: this.listOfMaMay[this.listOfMaMay.length - 1].profileId++,
+        machineId: 0,
+        posotion: 0,
+        checkValue: '',
+        checkName: '',
+        versionId: this.versionId,
+        productId: this.productId,
+        checkStatus: 'Active',
+      };
+      this.listOfMaMay = [newRow, ...this.listOfMaMay];
+      // console.log('them dong 2', this.listOfMaMay);
+      console.log(this.listOfMaMay);
+    }
   }
 
   updateVersionProfile(): void {
@@ -266,10 +311,96 @@ export class ProfileCheckComponent implements OnInit {
   }
 
   openPopupAddNewProduct(): void {
+    this.listOfVersion = [];
+    this.listOfMaMay = [];
+    this.productCode = '';
+    this.productName = '';
     this.popupAddNewProduct = true;
+    const item = {
+      versionId: null,
+      groupId: 0,
+      version: '1.1',
+      productId: this.productId,
+      create: formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US'),
+      username: this.account.login,
+      versionStatus: 1,
+    };
+    this.listOfVersion = [item, ...this.listOfVersion];
   }
 
   closePopupAddNewProduct(): void {
     this.popupAddNewProduct = false;
+  }
+  addNewProduct(): void {
+    const item = {
+      productCode: this.productCode,
+      productName: this.productName,
+      productVersion: '1.1',
+      createAt: formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US'),
+      username: this.account.login,
+      productStatus: 1,
+    };
+    this.http.post<any>(this.addNewProductURL, item).subscribe(res => {
+      this.productId = res.productId;
+      alert('thêm mới sản phẩm thành công');
+      console.log('product id: ', this.productId);
+    });
+  }
+  getGroupId(groupName: any, index: any): void {
+    this.listOfVersion[index].groupId =
+      this.listOfGroupMachine[this.listOfGroupMachine.findIndex(item => item.groupName === groupName)].groupId;
+    // console.log("select group id: ", this.groupId)
+    this.listOfVersion[index].productId = this.productId;
+    this.groupId = this.listOfGroupMachine[this.listOfGroupMachine.findIndex(item => item.groupName === groupName)].groupId;
+    console.log('list version: ', this.listOfVersion);
+
+    //get danh sách các trạm ( thiết bị)
+    this.http.get<any>(`${this.listOfMachineURL}/${this.groupId.toString()}`).subscribe(res1 => {
+      console.log('list machine', res1);
+      this.listOfMachine = res1;
+    });
+  }
+  getListProfile(index: any): void {
+    // thêm mới version
+    this.http.post<any>(this.postVersionURL, this.listOfVersion[index]).subscribe(res => {
+      this.profileInfo = res;
+      console.log('them moi version: ', this.profileInfo);
+      this.versionId = res.versionId;
+      this.version = res.version;
+      const item = { versionId: this.versionId, product: this.productId };
+      this.http.post<any>(this.showProfileURL, item).subscribe(res1 => {
+        this.listOfMaMay = res1;
+        console.log('list profile', res1);
+        if (this.listOfMaMay.length === 0) {
+          const newRow = {
+            version: this.version,
+            checked: false,
+            profileId: 0,
+            machineId: 0,
+            posotion: 0,
+            checkValue: '',
+            checkName: '',
+            versionId: this.versionId,
+            productId: this.productId,
+            checkStatus: 'Active',
+          };
+          this.listOfMaMay = [newRow, ...this.listOfMaMay];
+        }
+      });
+    });
+  }
+  // bắt sự kiện thay đổi tên trạm
+  catchEventSetMachineName(machineName: any, profileId: any): void {
+    this.listOfMaMay[this.listOfMaMay.findIndex(item => item.profileId === profileId)].machineId =
+      this.listOfMachine[this.listOfMachine.findIndex(item => item.machineName === machineName)].machineId;
+    console.log(this.listOfMaMay);
+  }
+  // Xóa thông tin profile thêm mới
+  deleteProfileInfo(profileId: any): void {
+    this.listOfMaMay = this.listOfMaMay.filter(item => item.profileId !== profileId);
+    console.log(this.listOfMaMay);
+  }
+  getVersion(index: any): void {
+    this.version = this.listOfVersion[index].version;
   }
 }
