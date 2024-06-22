@@ -514,10 +514,10 @@ public class UserController {
         this.userServices.insertScanProfileCheck(scanPprofileChecks);
     }
 
-    @PutMapping("scan-profile-check")
-    public void updateScanProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
-        this.userServices.insertScanProfileCheck(scanPprofileChecks);
-    }
+    //    @PutMapping("scan-profile-check")
+    //    public void updateScanProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
+    //        this.userServices.insertScanProfileCheck(scanPprofileChecks);
+    //    }
 
     @PostMapping("scan-work-order/detail")
     public void insertDetailCheck(@RequestBody List<detailCheckDTO> scanDetailChecks) {
@@ -658,6 +658,12 @@ public class UserController {
     @PostMapping("profile-checks/insert")
     public void insertProfileCheck(@RequestBody List<ScanPprofileCheck> scanPprofileChecks) {
         this.userServices.insertProfileCheck(scanPprofileChecks);
+    }
+
+    //☺ Chỉnh sửa profile
+    @PostMapping("profile-checks/update")
+    public void updateScanProfileCheck(@RequestBody List<ProfileCheckDTO> profileCheckDTOS) {
+        this.userServices.updateScanProfileCheck(profileCheckDTOS);
     }
 
     // * ----------------------- Export -------------------------

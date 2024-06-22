@@ -1058,18 +1058,30 @@ public class UserServices {
     }
 
     //? chỉnh sửa thông tin tiêu chí khai báo cho sản phẩm
-    public void updateScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
-        for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
-            this.scanprofileCheckRepository.updateScanProfileCheck(
-                    scanPprofileCheck.getProductId(),
-                    scanPprofileCheck.getCheckName(),
-                    scanPprofileCheck.getCheckValue(),
-                    scanPprofileCheck.getCheckStatus(),
-                    scanPprofileCheck.getPosition(),
-                    scanPprofileCheck.getVersionId(),
-                    scanPprofileCheck.getMachineId(),
-                    scanPprofileCheck.getProfileId()
-                );
+    public void updateScanProfileCheck(List<ProfileCheckDTO> scanPprofileChecks) {
+        for (ProfileCheckDTO scanPprofileCheck : scanPprofileChecks) {
+            if (scanPprofileCheck.getChecked() != null) {
+                this.scanprofileCheckRepository.insertProfileCheck(
+                        scanPprofileCheck.getProductId(),
+                        scanPprofileCheck.getCheckName(),
+                        scanPprofileCheck.getCheckValue(),
+                        scanPprofileCheck.getCheckStatus(),
+                        scanPprofileCheck.getPosition(),
+                        scanPprofileCheck.getVersionId(),
+                        scanPprofileCheck.getMachineId()
+                    );
+            } else {
+                this.scanprofileCheckRepository.updateScanProfileCheck(
+                        scanPprofileCheck.getProductId(),
+                        scanPprofileCheck.getCheckName(),
+                        scanPprofileCheck.getCheckValue(),
+                        scanPprofileCheck.getCheckStatus(),
+                        scanPprofileCheck.getPosition(),
+                        scanPprofileCheck.getVersionId(),
+                        scanPprofileCheck.getMachineId(),
+                        scanPprofileCheck.getProfileId()
+                    );
+            }
         }
     }
 

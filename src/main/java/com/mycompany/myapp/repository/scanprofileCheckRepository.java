@@ -45,8 +45,8 @@ public interface scanprofileCheckRepository extends JpaRepository<ScanPprofileCh
 
     @Modifying
     @Query(
-        value = "update Scan_profileCheck set product_id =?1, check_name=?2 , check_value=?3, check_status=?4," +
-        "position=?5, version_id=?6,machine_id=?7 where profile_id=?9;",
+        value = "update Scan_profileCheck set product_id = ?1 , check_name= ?2 , check_value= ?3 , check_status= ?4 ," +
+        "position= ?5 , version_id= ?6 ,machine_id= ?7 where profile_id= ?8 ;",
         nativeQuery = true
     )
     public void updateScanProfileCheck(

@@ -24,6 +24,7 @@ export class ProfileCheckComponent implements OnInit {
   addNewProductURL = this.applicationConfigService.getEndpointFor('api/scan-product');
   showProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks');
   insertProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks/insert');
+  updateProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks/update');
   predicate!: string;
   ascending!: boolean;
   versions: any;
@@ -42,6 +43,7 @@ export class ProfileCheckComponent implements OnInit {
   pageNumber = 1;
   itemsPerPage = 5;
   page?: number;
+  page1?: number;
   // thông tin phân trang
   totalData = 0;
   nextPageBtn = false;
@@ -231,6 +233,12 @@ export class ProfileCheckComponent implements OnInit {
     const item = sessionStorage.getItem('productId');
     this.http.get<any>(`${this.versionURL}/${productId as string}`).subscribe(resVer => {
       this.listOfVersion = resVer;
+      setTimeout(() => {
+        for (let i = 0; i < this.listOfVersion.length; i++) {
+          this.listOfVersion[i].groupName =
+            this.listOfGroupMachine[this.listOfGroupMachine.findIndex(item1 => item1.groupId === this.listOfVersion[i].groupId)].groupName;
+        }
+      }, 50);
       console.log('version', resVer);
     });
   }
@@ -251,6 +259,9 @@ export class ProfileCheckComponent implements OnInit {
       console.log(this.listOfMaMay);
     } else if (message === 'cancel') {
       this.popupConfirmSave = false;
+    } else if (message === 'update') {
+      this.http.post<any>(this.updateProfileURL, this.listOfMaMay).subscribe();
+      console.log(this.listOfMaMay);
     }
   }
 
@@ -360,6 +371,7 @@ export class ProfileCheckComponent implements OnInit {
       this.listOfMachine = res1;
     });
   }
+  //Lấy thông tin profile khi thêm mới
   getListProfile(index: any): void {
     // thêm mới version
     this.http.post<any>(this.postVersionURL, this.listOfVersion[index]).subscribe(res => {
@@ -367,7 +379,7 @@ export class ProfileCheckComponent implements OnInit {
       console.log('them moi version: ', this.profileInfo);
       this.versionId = res.versionId;
       this.version = res.version;
-      const item = { versionId: this.versionId, product: this.productId };
+      const item = { versionId: this.versionId, productId: this.productId };
       this.http.post<any>(this.showProfileURL, item).subscribe(res1 => {
         this.listOfMaMay = res1;
         console.log('list profile', res1);
@@ -402,5 +414,21 @@ export class ProfileCheckComponent implements OnInit {
   }
   getVersion(index: any): void {
     this.version = this.listOfVersion[index].version;
+  }
+  //Lấy thông tin profile theo version và group khi chỉnh sửa / view
+  getProfileInfo(versionId: any, productId: any, version: any, groupId: any): void {
+    this.versionId = versionId;
+    this.productId = productId;
+    this.version = version;
+    const item = { versionId: versionId, productId: productId };
+    this.http.post<any>(this.showProfileURL, item).subscribe(res1 => {
+      this.listOfMaMay = res1;
+      console.log(item);
+    });
+    //get danh sách các trạm ( thiết bị)
+    this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res1 => {
+      console.log('list machine', res1);
+      this.listOfMachine = res1;
+    });
   }
 }

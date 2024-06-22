@@ -180,24 +180,33 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <input type="text" list="productVersion" [(ngModel)]="version" [ngModelOptions]="{ standalone: true }" required />
-                          <datalist id="productVersion" class="form-datalist">
-                            <option *ngFor="let item of listOfVersion" value="{{ item.version }}"></option>
-                          </datalist>
+                      <tr *ngFor="let item of listOfVersion">
+                        <td (click)="getProfileInfo(item.versionId, item.productId, item.version, item.groupId)">
+                          <input
+                            type="text"
+                            list="productVersion"
+                            [(ngModel)]="item.version"
+                            [ngModelOptions]="{ standalone: true }"
+                            required
+                          />
                         </td>
                         <td>
-                          <input type="text" list="groupMachine" [(ngModel)]="groupName" [ngModelOptions]="{ standalone: true }" required />
+                          <input
+                            type="text"
+                            list="groupMachine"
+                            [(ngModel)]="item.groupName"
+                            [ngModelOptions]="{ standalone: true }"
+                            required
+                          />
                           <datalist id="groupMachine">
                             <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupName }}"></option>
                           </datalist>
                         </td>
                         <td>
                           <div class="btn-group">
-                            <button type="submit" class="btn btn-info btn-sm">
+                            <!-- <button type="submit" class="btn btn-info btn-sm">
                               <fa-icon icon="pencil"></fa-icon>
-                            </button>
+                            </button> -->
 
                             <button type="submit" class="btn btn-danger btn-sm">
                               <fa-icon icon="times"></fa-icon>
@@ -231,7 +240,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of listOfMaMay; let i = index">
+                      <tr *ngFor="let data of listOfMaMay | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index">
                         <td>{{ i + 1 }}</td>
                         <td>
                           <input
@@ -266,6 +275,7 @@
                       </tr>
                     </tbody>
                   </table>
+                  <pagination-controls (pageChange)="page1 = $event" style="float: right"></pagination-controls>
                 </div>
               </div>
             </div>
@@ -282,6 +292,16 @@
           <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave()">
             <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
           </button>
+        </div>
+      </div>
+      <!-- popup phần chỉnh sửa profile check-->
+      <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
+        <div>
+          <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+          <div class="btn-group-save">
+            <button class="confirm-btn" (click)="closePopupConfirmSave('update')">Xác nhận</button>
+            <button class="cancel-btn" (click)="closePopupConfirmSave('cancel')">Hủy</button>
+          </div>
         </div>
       </div>
     </div>
@@ -453,7 +473,7 @@
           </button>
         </div>
       </div>
-
+      <!-- popup phần thêm mới -->
       <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
         <div>
           <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
@@ -466,17 +486,17 @@
     </div>
   </div>
 </div>
-
+<!-- popup phần chỉnh sửa profile check-->
 <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupSaveThemMoiSanPham === true">
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
-      <button class="confirm-btn">Xác nhận</button>
-      <button class="cancel-btn">Hủy</button>
+      <button class="confirm-btn" (click)="closePopupConfirmSave('confirm')">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave('cancel')">Hủy</button>
     </div>
   </div>
 </div>
-
+<!-- popup phần thêm mới -->
 <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupSaveThemMoiThongTinSanPham === true">
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
