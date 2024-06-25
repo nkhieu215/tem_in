@@ -145,8 +145,8 @@
               <table class="table table-striped" aria-describedby="page-heading">
                 <thead>
                   <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                    <th scope="col">Mã sản phẩm</th>
-                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Mã sản phẩm <b style="color: red">(*)</b></th>
+                    <th scope="col">Tên sản phẩm <b style="color: red">(*)</b></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -174,8 +174,8 @@
                   <table class="table table-striped" aria-describedby="page-heading">
                     <thead>
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                        <th scope="col">Version</th>
-                        <th scope="col">Nhóm máy</th>
+                        <th scope="col">Version <b style="color: red">(*)</b></th>
+                        <th scope="col">Nhóm máy <b style="color: red">(*)</b></th>
                         <th scope="col">Options</th>
                       </tr>
                     </thead>
@@ -230,7 +230,7 @@
                     <thead>
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                         <th scope="col">STT</th>
-                        <th scope="col">Tên trạm</th>
+                        <th scope="col">Tên trạm <b style="color: red">(*)</b></th>
                         <th scope="col">Vị trí</th>
                         <th scope="col">Tiêu chí kiểm tra</th>
                         <th scope="col">Giá trị</th>
@@ -240,7 +240,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of listOfMaMay | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index">
+                      <tr *ngFor="let data of listOfMaMay | paginate: { itemsPerPage: itemsPerPage, currentPage: page1 }; let i = index">
                         <td>{{ i + 1 }}</td>
                         <td>
                           <input
@@ -249,6 +249,7 @@
                             [(ngModel)]="data.machineName"
                             [ngModelOptions]="{ standalone: true }"
                             required
+                            (change)="catchEventSetMachineName(data.machineName, data.profileId)"
                           />
                           <datalist id="machines">
                             <option *ngFor="let item1 of listOfMachine" value="{{ item1.machineName }}"></option>
@@ -319,8 +320,8 @@
               <table class="table table-striped" aria-describedby="page-heading">
                 <thead>
                   <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                    <th scope="col">Mã sản phẩm</th>
-                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Mã sản phẩm <b style="color: red">(*)</b></th>
+                    <th scope="col">Tên sản phẩm <b style="color: red">(*)</b></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -350,8 +351,8 @@
                   <table class="table table-striped" aria-describedby="page-heading">
                     <thead>
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-                        <th scope="col">Version</th>
-                        <th scope="col">Nhóm máy</th>
+                        <th scope="col">Version <b style="color: red">(*)</b></th>
+                        <th scope="col">Nhóm máy <b style="color: red">(*)</b></th>
                         <th scope="col">Options</th>
                       </tr>
                     </thead>
@@ -409,7 +410,7 @@
                     <thead>
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                         <th scope="col">STT</th>
-                        <th scope="col">Tên trạm</th>
+                        <th scope="col">Tên trạm <b style="color: red">(*)</b></th>
                         <th scope="col">Vị trí</th>
                         <th scope="col">Tiêu chí kiểm tra</th>
                         <th scope="col">Giá trị</th>

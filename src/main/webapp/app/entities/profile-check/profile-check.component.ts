@@ -260,8 +260,10 @@ export class ProfileCheckComponent implements OnInit {
     } else if (message === 'cancel') {
       this.popupConfirmSave = false;
     } else if (message === 'update') {
+      this.popupConfirmSave = false;
       this.http.post<any>(this.updateProfileURL, this.listOfMaMay).subscribe();
       console.log(this.listOfMaMay);
+      alert('Thêm mới tiêu chí thành công !');
     }
   }
 
