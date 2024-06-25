@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface scanProductVersionRepository extends JpaRepository<scanProductVersions, Long> {
     @Query(value = "select * from scan_product_versions where product_id = ?1", nativeQuery = true)
     public List<scanProductVersions> getAllByProductId(Long productId);
+
+    @Query(value = "select * from scan_product_versions where version_id = ?1 ;", nativeQuery = true)
+    public scanProductVersions getAllByVersionId(Long versionId);
 }

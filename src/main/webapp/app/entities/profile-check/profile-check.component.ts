@@ -50,6 +50,7 @@ export class ProfileCheckComponent implements OnInit {
   lastPageBtn = false;
   backPageBtn = true;
   firstPageBtn = true;
+  updateVersionInfoBtn = false;
   //Dữ liệu tìm kiếm
   body: {
     productCode: string;
@@ -87,6 +88,7 @@ export class ProfileCheckComponent implements OnInit {
   version: any;
   versionId: any;
   account: any;
+  // body them moi version
   //body profile check by version and product
   profileInfo: any;
   machineName: any;
@@ -221,6 +223,7 @@ export class ProfileCheckComponent implements OnInit {
   }
   openPopupKhaiBaoProfile(index: any, productId: any): void {
     this.popupKhaiBaoProfile = true;
+    this.productId = productId;
     console.log('product', this.listOfProduct[index]);
     this.product = this.listOfProduct[index];
     // this.http.get<any>(`${this.listOfProDuctURL}/${productId as string}`).subscribe(res => {
@@ -366,7 +369,8 @@ export class ProfileCheckComponent implements OnInit {
     this.listOfVersion[index].productId = this.productId;
     this.groupId = this.listOfGroupMachine[this.listOfGroupMachine.findIndex(item => item.groupName === groupName)].groupId;
     console.log('list version: ', this.listOfVersion);
-
+    // cập nhật thông tin version
+    this.getListProfile(index);
     //get danh sách các trạm ( thiết bị)
     this.http.get<any>(`${this.listOfMachineURL}/${this.groupId.toString()}`).subscribe(res1 => {
       console.log('list machine', res1);
@@ -381,6 +385,7 @@ export class ProfileCheckComponent implements OnInit {
       console.log('them moi version: ', this.profileInfo);
       this.versionId = res.versionId;
       this.version = res.version;
+      this.listOfVersion[index].versionId = res.versionId;
       const item = { versionId: this.versionId, productId: this.productId };
       this.http.post<any>(this.showProfileURL, item).subscribe(res1 => {
         this.listOfMaMay = res1;
@@ -400,6 +405,8 @@ export class ProfileCheckComponent implements OnInit {
           };
           this.listOfMaMay = [newRow, ...this.listOfMaMay];
         }
+        // thông báo cập nhật version
+        alert('Cập nhật version thành công');
       });
     });
   }
@@ -432,5 +439,21 @@ export class ProfileCheckComponent implements OnInit {
       console.log('list machine', res1);
       this.listOfMachine = res1;
     });
+  }
+  //Yêu cầu chọn trạm trước khi điền thông tin chi tiết
+  machineOutPutAlert(machineId: any): void {
+    if (machineId === 0) {
+      alert('Xin vui lòng chọn trạm kiểm tra');
+    }
+  }
+  //Bắt sự kiện thay đổi version
+  catchChangeVersionEvent(version: any, index: any): void {
+    this.updateVersionInfoBtn = true;
+    this.listOfVersion[index].updateAt = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
+    this.listOfMaMay.forEach((item: any) => {
+      item.version = version;
+    });
+    this.getListProfile(index);
+    this.version = version;
   }
 }

@@ -180,7 +180,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let item of listOfVersion">
+                      <tr *ngFor="let item of listOfVersion; let i = index">
                         <td (click)="getProfileInfo(item.versionId, item.productId, item.version, item.groupId)">
                           <input
                             type="text"
@@ -188,6 +188,7 @@
                             [(ngModel)]="item.version"
                             [ngModelOptions]="{ standalone: true }"
                             required
+                            (change)="catchChangeVersionEvent(item.version, i)"
                           />
                         </td>
                         <td>
@@ -197,6 +198,7 @@
                             [(ngModel)]="item.groupName"
                             [ngModelOptions]="{ standalone: true }"
                             required
+                            (change)="getGroupId(item.groupName, i)"
                           />
                           <datalist id="groupMachine">
                             <option *ngFor="let item of listOfGroupMachine" value="{{ item.groupName }}"></option>
@@ -204,9 +206,14 @@
                         </td>
                         <td>
                           <div class="btn-group">
-                            <!-- <button type="submit" class="btn btn-info btn-sm">
+                            <button
+                              type="submit"
+                              class="btn btn-info btn-sm"
+                              (click)="getListProfile(i)"
+                              *ngIf="updateVersionInfoBtn === true"
+                            >
                               <fa-icon icon="pencil"></fa-icon>
-                            </button> -->
+                            </button>
 
                             <button type="submit" class="btn btn-danger btn-sm">
                               <fa-icon icon="times"></fa-icon>
@@ -255,9 +262,30 @@
                             <option *ngFor="let item1 of listOfMachine" value="{{ item1.machineName }}"></option>
                           </datalist>
                         </td>
-                        <td><input type="text" [(ngModel)]="data.position" [ngModelOptions]="{ standalone: true }" /></td>
-                        <td><input type="text" [(ngModel)]="data.checkName" [ngModelOptions]="{ standalone: true }" /></td>
-                        <td><input type="text" [(ngModel)]="data.checkValue" [ngModelOptions]="{ standalone: true }" /></td>
+                        <td>
+                          <input
+                            type="text"
+                            [(ngModel)]="data.position"
+                            [ngModelOptions]="{ standalone: true }"
+                            (change)="machineOutPutAlert(data.machineId)"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            [(ngModel)]="data.checkName"
+                            [ngModelOptions]="{ standalone: true }"
+                            (change)="machineOutPutAlert(data.machineId)"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            [(ngModel)]="data.checkValue"
+                            [ngModelOptions]="{ standalone: true }"
+                            (change)="machineOutPutAlert(data.machineId)"
+                          />
+                        </td>
                         <td><input type="text" [(ngModel)]="data.version" [ngModelOptions]="{ standalone: true }" /></td>
                         <td>
                           <input type="text" [(ngModel)]="data.checkStatus" [ngModelOptions]="{ standalone: true }" />

@@ -1179,8 +1179,17 @@ public class UserServices {
 
     //☺ Them moi thong tin version
     public scanProductVersions createVersion(scanProductVersions scanProductVersionsList) {
-        this.scanProductVersionRepository.save(scanProductVersionsList);
-
+        scanProductVersions scanProductVersions =
+            this.scanProductVersionRepository.getAllByVersionId(scanProductVersionsList.getVersionId());
+        if (scanProductVersions == null) {
+            this.scanProductVersionRepository.save(scanProductVersionsList);
+        } else {
+            scanProductVersions.setVersion(scanProductVersionsList.getVersion());
+            scanProductVersions.setUpdateAt(scanProductVersionsList.getUpdateAt());
+            scanProductVersions.setUsername(scanProductVersionsList.getUsername());
+            scanProductVersions.setGroupId(scanProductVersionsList.getGroupId());
+            this.scanProductVersionRepository.save(scanProductVersions);
+        }
         return scanProductVersionsList;
     }
 
