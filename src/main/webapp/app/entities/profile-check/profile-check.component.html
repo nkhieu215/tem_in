@@ -97,7 +97,7 @@
           <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
           <td>{{ item.updatedAt }}</td>
           <td>{{ item.username }}</td>
-          <td>{{ item.productStatus }}</td>
+          <td>{{ item.nameStatus }}</td>
           <td>
             <div class="btn-group">
               <button type="submit" class="btn btn-info btn-sm" (click)="openPopupKhaiBaoProfile(i, item.productId)">
@@ -151,8 +151,22 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{ product.productCode }}</td>
-                    <td>{{ product.productName }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        [(ngModel)]="product.productCode"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="updateProduct()"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        [(ngModel)]="product.productName"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="updateProduct()"
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </table>

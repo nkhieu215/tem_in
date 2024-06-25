@@ -195,7 +195,7 @@ export class ProfileCheckComponent implements OnInit {
     this.http.post<any>(this.listOfProDuctPanigationURL, this.body).subscribe(res => {
       this.listOfProduct = res;
       for (let i = 0; i < this.listOfProduct.length; i++) {
-        this.listOfProduct[i].productStatus = this.listOfProduct[i].productStatus === 1 ? 'Active' : 'Deactive';
+        this.listOfProduct[i].nameStatus = this.listOfProduct[i].productStatus === 1 ? 'Active' : 'Deactive';
       }
       console.log('tesst 1: ', this.pageNumber, res);
       setTimeout(() => {
@@ -360,6 +360,13 @@ export class ProfileCheckComponent implements OnInit {
       this.productId = res.productId;
       alert('thêm mới sản phẩm thành công');
       console.log('product id: ', this.productId);
+    });
+  }
+  updateProduct(): void {
+    this.http.post<any>(this.addNewProductURL, this.product).subscribe(res => {
+      this.productId = res.productId;
+      alert('Cập nhật sản phẩm thành công');
+      console.log('product id: ', this.product);
     });
   }
   getGroupId(groupName: any, index: any): void {
