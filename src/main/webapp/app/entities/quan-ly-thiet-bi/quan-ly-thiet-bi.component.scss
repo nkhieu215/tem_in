@@ -318,7 +318,7 @@ th[scope='col'].sorted-desc::after {
 
             span {
               font-weight: bold;
-              display: block;
+              display: flex;
             }
 
             input {
@@ -333,6 +333,12 @@ th[scope='col'].sorted-desc::after {
                 outline: none;
                 border-color: #aaa;
               }
+            }
+
+            p {
+              color: red;
+              padding-left: 10px;
+              font-size: 15px;
             }
           }
         }
@@ -358,6 +364,9 @@ th[scope='col'].sorted-desc::after {
             // &:last-child {
             //   text-align: center;
             // }
+            select {
+              background-color: #fff;
+            }
           }
         }
       }

@@ -135,11 +135,21 @@
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
-              <th scope="col"><span>Nhóm thiết bị</span></th>
+              <th scope="col">
+                <span
+                  >Nhóm thiết bị
+                  <p>*</p></span
+                >
+              </th>
               <th scope="col"><span>Ngày tạo</span></th>
               <th scope="col"><span>Thời gian cập nhật</span></th>
               <th scope="col"><span>Người cập nhật</span></th>
-              <th scope="col"><span>Trạng thái</span></th>
+              <th scope="col">
+                <span
+                  >Trạng thái
+                  <p>*</p></span
+                >
+              </th>
             </tr>
           </thead>
           <tbody style="background-color: #d3eefc">
@@ -312,6 +322,17 @@
             </tr>
           </tbody>
         </table>
+        <div class="paginate" *ngIf="listOfMachines && listOfMachines.length > 0">
+          <div class="paginate-container">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPageThietBi">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="{{ listOfMachines.length }}">All</option>
+            </select>
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </div>
         <!-- <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
           (click)="closePopupNhomThietBi()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
@@ -349,7 +370,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of listOfMachineAdd; let i = index">
+            <tr
+              *ngFor="
+                let item of listOfMachineAdd | paginate: { itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page };
+                let i = index
+              "
+            >
               <td>
                 <input
                   type="checkbox"
@@ -365,6 +391,17 @@
             </tr>
           </tbody>
         </table>
+        <div class="paginate" *ngIf="listOfMachineAdd && listOfMachineAdd.length > 0">
+          <div class="paginate-container">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPageThietBiKhaiBao">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="{{ listOfMachineAdd.length }}">All</option>
+            </select>
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </div>
         <button
           type="button"
           id="cancel-save"

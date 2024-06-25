@@ -7,11 +7,32 @@ import { DoiChieuLenhSanXuatComponent } from './doi-chieu-lenh-san-xuat.componen
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { HttpClient } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { ChartOptions } from 'chart.js';
 import { GoogleChartInterface, GoogleChartType } from 'ng2-google-charts';
 import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
 import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
+// export interface dataExcelCustom {
+//   ketLuan: string;
+//   ketQuaCheck: string;
+//   maSanPham: number;
+//   machineName: string;
+//   nhanVien: string;
+//   noiDungDoiChieu: string;
+//   position: string;
+//   recordName: string;
+//   recordValue: string;
+//   result: string;
+//   tenNhomThietBi: string;
+//   tenSanPham: string;
+//   tenThietBi: string;
+//   thoiGianCheck: string;
+//   tieuChiKiemTra: string;
+//   tongSoLuong: number;
+//   version: string;
+//   viTri: string;
+// }
 @Component({
   selector: 'jhi-scan-check',
   templateUrl: './scan-check.component.html',
@@ -26,6 +47,7 @@ export class ScanCheckComponent implements OnInit {
   profileURL = this.applicationConfigService.getEndpointFor('api/profile-check');
   postUserLoginURL = this.applicationConfigService.getEndpointFor('api/login-history');
   updateWorkingURL = this.applicationConfigService.getEndpointFor('api/work-order-working');
+  scanCheckExportUrl = this.applicationConfigService.getEndpointFor('api/scan-check-export');
   //
   chartSeries: ApexNonAxisChartSeries = [1, 0];
 
@@ -125,6 +147,36 @@ export class ScanCheckComponent implements OnInit {
   // Thiet bi
   listOfMachines: any[] = [];
   infoCheckMachine: any[] = [];
+  listDataScanCheck: any[] = [];
+
+  dataExcel: any[] = [
+    {
+      WorkOrder: '',
+      maSanPham: '',
+      tenSanPham: '',
+      nhomMay: '',
+      version: '',
+      soLo: '',
+      trangThai: '',
+      thoiGianChay: '',
+      sanLuongKeHoach: '',
+      tongKiemTra: '',
+      tiLeHoanThanh: '',
+      tenTram: '',
+      tieuChiKiemTra: '',
+      tongLuotScan: '',
+      tongPass: '',
+      tongNG: '',
+      tenNguoiDung: '',
+      serial: '',
+      nhomThietBi: '',
+      ketLuan: '',
+      viTri: '',
+      nhanVien: '',
+      thoiGianCheck: '',
+    },
+  ];
+
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -212,6 +264,12 @@ export class ScanCheckComponent implements OnInit {
         this.checkValue = res3[0].recordValue;
         console.log('profile', this.listProfileCheck);
       });
+    });
+    this.http.get<any>(`${this.scanCheckExportUrl}/${item as string}`).subscribe(resExcel => {
+      this.listDataScanCheck = resExcel;
+      console.log('res data', this.listDataScanCheck);
+      this.dataExcel = resExcel;
+      // this.getDataExport(this.listDataScanCheck)
     });
   }
 
@@ -365,5 +423,161 @@ export class ScanCheckComponent implements OnInit {
 
   closePopupConfirmSave(): void {
     this.popupConfirmSave = false;
+  }
+
+  getDataExport(): void {
+    const item = sessionStorage.getItem('orderId');
+    this.http.get<any>(`${this.scanCheckExportUrl}/${item as string}`).subscribe(resExcel => {
+      this.listDataScanCheck = resExcel;
+      console.log('res data', this.listDataScanCheck);
+      this.dataExcel = resExcel;
+      console.log('res data 2', this.dataExcel);
+    });
+
+    this.dataExcel = this.listDataScanCheck.map((itemData: any) => ({
+      ketLuan: itemData.ketLuan,
+      ketQuaCheck: itemData.ketQuaCheck,
+      maSanPham: itemData.maSanPham,
+      machineName: itemData.machineName,
+      nhanVien: itemData.nhanVien,
+      noiDungDoiChieu: itemData.noiDung,
+      position: itemData.position,
+      recordName: itemData.recordName,
+      recordValue: itemData.recordValue,
+      result: itemData.result,
+      tenNhomThietBi: itemData.tenNhomThiet,
+      tenSanPham: itemData.tenSanPham,
+      tenThietBi: itemData.tenThietBi,
+      thoiGianCheck: itemData.thoiGianCheck,
+      tieuChiKiemTra: itemData.tieuChiKiem,
+      tongSoLuong: itemData.tongSoLuong,
+      version: itemData.version,
+      viTri: itemData.viTri,
+    }));
+
+    this.exportToExcel();
+  }
+
+  exportToExcel(): void {
+    const wsBC: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([
+      [
+        'Planning-WO',
+        'Poduct_Code',
+        'Running_Time',
+        'LOT',
+        'Product_Name',
+        'Stop_Time',
+        'San luong KH',
+        'Start_Time',
+        'Status',
+        'Version',
+        'Serial',
+        'Number_Product',
+        'tenThietBi',
+        'tenNhomThietBi',
+        'Planning-WO',
+        'maSanPham',
+        'tenSanPham',
+        'version',
+        'noiDungCheck',
+        'noiDungDoiChieu',
+        'ketQuaCheck',
+        'ketLuan',
+        'viTri',
+        'nguoiCheck',
+        'thoiGianCheck',
+      ],
+    ]);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataExcel, { skipHeader: true });
+    XLSX.utils.sheet_add_json(ws, this.dataExcel, { origin: 'A6', skipHeader: true });
+    const mergeRange = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 0 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 0 } },
+      { s: { r: 0, c: 2 }, e: { r: 0, c: 2 } },
+      { s: { r: 1, c: 2 }, e: { r: 1, c: 2 } },
+      { s: { r: 2, c: 2 }, e: { r: 2, c: 2 } },
+      { s: { r: 0, c: 4 }, e: { r: 0, c: 4 } },
+      { s: { r: 1, c: 4 }, e: { r: 1, c: 4 } },
+      { s: { r: 2, c: 4 }, e: { r: 2, c: 4 } },
+      { s: { r: 4, c: 0 }, e: { r: 4, c: 0 } },
+      { s: { r: 4, c: 1 }, e: { r: 4, c: 1 } },
+      { s: { r: 4, c: 2 }, e: { r: 4, c: 2 } },
+      { s: { r: 4, c: 3 }, e: { r: 4, c: 3 } },
+      { s: { r: 4, c: 4 }, e: { r: 4, c: 4 } },
+      { s: { r: 4, c: 5 }, e: { r: 4, c: 5 } },
+      { s: { r: 4, c: 6 }, e: { r: 4, c: 6 } },
+      { s: { r: 4, c: 7 }, e: { r: 4, c: 7 } },
+      { s: { r: 4, c: 8 }, e: { r: 4, c: 8 } },
+      { s: { r: 4, c: 9 }, e: { r: 4, c: 9 } },
+      { s: { r: 4, c: 10 }, e: { r: 4, c: 10 } },
+      { s: { r: 4, c: 11 }, e: { r: 4, c: 11 } },
+      { s: { r: 4, c: 12 }, e: { r: 4, c: 12 } },
+      { s: { r: 4, c: 13 }, e: { r: 4, c: 13 } },
+    ];
+    ws['!merges'] = mergeRange;
+    ws['A1'] = { t: 's', v: 'Planning - WO' };
+    ws['A2'] = { t: 's', v: 'Product_code' };
+    ws['A3'] = { t: 's', v: 'Running_Time' };
+    ws['C1'] = { t: 's', v: 'LOT' };
+    ws['C2'] = { t: 's', v: 'Product_Name' };
+    ws['C3'] = { t: 's', v: 'Stop_Time' };
+    ws['E1'] = { t: 's', v: 'San luong KH' };
+    ws['E2'] = { t: 's', v: 'Start_Time' };
+    ws['E3'] = { t: 's', v: 'Status' };
+    ws['G1'] = { t: 's', v: 'Version' };
+    ws['A5'] = { t: 's', v: 'Serial' };
+    ws['B5'] = { t: 's', v: 'Number_Product' };
+    ws['C5'] = { t: 's', v: 'Tên thiết bị' };
+    ws['D5'] = { t: 's', v: 'Tên nhóm thiết bị' };
+    ws['E5'] = { t: 's', v: 'Mã sản phẩm' };
+    ws['F5'] = { t: 's', v: 'Tên sản phẩm' };
+    ws['G5'] = { t: 's', v: 'Version' };
+    ws['H5'] = { t: 's', v: 'Tiêu chí kiểm tra' };
+    ws['I5'] = { t: 's', v: 'Nội dung đối chiếu' };
+    ws['J5'] = { t: 's', v: 'Kết quả check' };
+    ws['K5'] = { t: 's', v: 'Kết luận' };
+    ws['L5'] = { t: 's', v: 'Vị trí' };
+    ws['M5'] = { t: 's', v: 'Nhân viên' };
+    ws['N5'] = { t: 's', v: 'Thời gian check' };
+
+    const headerStyle = {
+      font: { bold: true },
+      aligment: { horizontal: 'center', vertical: 'center' },
+    };
+
+    const headers = [
+      'A1',
+      'A2',
+      'A3',
+      'C1',
+      'C2',
+      'C3',
+      'E1',
+      'E2',
+      'E3',
+      'G1',
+      'A5',
+      'B5',
+      'C5',
+      'D5',
+      'E5',
+      'F5',
+      'G5',
+      'H5',
+      'I5',
+      'J5',
+      'K5',
+      'L5',
+      'M5',
+      'N5',
+    ];
+    headers.forEach(header => {
+      ws[header].s = headerStyle;
+    });
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Bao cao');
+    XLSX.writeFile(wb, 'bao-cao.xlsx');
   }
 }

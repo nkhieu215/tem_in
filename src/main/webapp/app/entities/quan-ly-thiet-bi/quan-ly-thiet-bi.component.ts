@@ -53,6 +53,10 @@ export class QuanLyThietBiComponent implements OnInit {
   @Input() machineName = '';
   @Input() statusMachine = '';
   @Input() itemPerPage = 10;
+  @Input() itemPerPageThietBiAdd = 10;
+  @Input() itemPerPageThietBi = 10;
+  @Input() itemPerPageThietBiKhaiBao = 10;
+
   @Input() statusName = '';
   //list goi y
   listUsername: any[] = [];
@@ -158,7 +162,7 @@ export class QuanLyThietBiComponent implements OnInit {
 
     this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {
       this.listOfMachines = res;
-      console.log('machine', this.listOfMachines);
+      // console.log('machine', this.listOfMachines);
     });
   }
 

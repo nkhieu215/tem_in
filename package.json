@@ -114,6 +114,7 @@
     "chart.js": "^3.8.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "1.11.0",
+    "file-saver": "^2.0.5",
     "ng-apexcharts": "^1.7.0",
     "ng-multiselect-dropdown": "^0.3.9",
     "ng-multiselect-dropdown-angular-13": "^13.0.1",
@@ -127,6 +128,7 @@
     "rxjs": "7.5.5",
     "tslib": "^1.14.1",
     "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13",
     "yo": "^4.3.1",
     "zone.js": "0.11.4"
   },
@@ -139,6 +141,7 @@
     "@angular/compiler-cli": "13.3.1",
     "@angular/service-worker": "13.3.1",
     "@cypress/code-coverage": "3.9.12",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.26",
     "@typescript-eslint/eslint-plugin": "5.18.0",

@@ -290,6 +290,15 @@ th[scope='col'].sorted-desc::after {
       width: 90vw;
       height: 90vh;
 
+      span {
+        display: flex;
+
+        p {
+          color: red;
+          padding-left: 10px;
+        }
+      }
+
       .btn-group-save {
         .confirm-btn {
           background-color: #007bff;
