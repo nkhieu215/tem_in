@@ -163,6 +163,12 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
         document.getElementById(i.toString())!.style.backgroundColor = '#00FFFF';
       } else if (this.lenhSanXuats![i].trangThai === 'Từ chối') {
         document.getElementById(i.toString())!.style.backgroundColor = '#FFCC00';
+      } else if (this.lenhSanXuats![i].trangThai === 'Đã xuất csv') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#2D99AE';
+        document.getElementById(i.toString())!.style.color = '#fff';
+      } else if (this.lenhSanXuats![i].trangThai === 'Lỗi Panacim') {
+        document.getElementById(i.toString())!.style.backgroundColor = '#001C44';
+        document.getElementById(i.toString())!.style.color = '#fff';
       }
     }
   }

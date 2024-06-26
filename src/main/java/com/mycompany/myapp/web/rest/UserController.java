@@ -672,4 +672,11 @@ public class UserController {
         List<TongHopResponse> tongHopResponses = this.userServices.getExportInfo(orderId);
         return tongHopResponses;
     }
+
+    // * -------------------------- Quản lý phê duyệt ------------------------
+    //☺ Cập nhật trạng thái khi xuất file csv
+    @PostMapping("quan-ly-phe-duyet/trang-thai")
+    public void exportCsvStatus(@RequestBody LenhSanXuat lenhSanXuat) {
+        this.userServices.exportCsvStatus(lenhSanXuat);
+    }
 }

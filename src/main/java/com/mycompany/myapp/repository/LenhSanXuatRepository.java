@@ -170,4 +170,8 @@ public interface LenhSanXuatRepository extends JpaRepository<LenhSanXuat, Long> 
 
     @Query(value = "select DISTINCT version from lenh_san_xuat LenhSanXuat ", nativeQuery = true)
     public List<String> getListVersion();
+
+    @Modifying
+    @Query(value = "update lenh_san_xuat set trang_thai = ?1 where id = ?2 ;", nativeQuery = true)
+    public void exportCsvStatus(String trangThai, Long id);
 }
