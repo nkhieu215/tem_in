@@ -540,7 +540,7 @@
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    min-width: 90%;
+    min-width: 96%;
     min-height: 90%;
     overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -553,14 +553,19 @@
         width: 90vw;
         height: 80vh;
 
-        .table-footer {
-          td {
-            text-align: left;
-          }
+        .table-container-body {
+          display: flex;
+          justify-content: space-between;
 
-          .btn-footer {
-            border-top: none;
-            margin-top: 1rem;
+          .table-footer {
+            td {
+              text-align: left;
+            }
+
+            .btn-footer {
+              border-top: none;
+              margin-top: 1rem;
+            }
           }
         }
       }

@@ -10,7 +10,7 @@
       <button type="button" class="btn btn-success" (click)="btnStart()" [disabled]="disableStart">Start</button>
       <button type="button" class="btn btn-warning" (click)="btnPause()" [disabled]="disablePause">Pause</button>
       <button type="button" class="btn btn-primary" (click)="btnFinish()" [disabled]="disableFinish">Finish</button>
-      <button type="button" class="btn btn-secondary" (click)="exportToExcel()">Export</button>
+      <button type="button" class="btn btn-secondary" (click)="getDataExport()">Export</button>
       <button type="button" class="btn btn-info" (click)="openPopupChiTietThongTinScan()">View Detail Data</button>
       <div class="div-input">
         <input
@@ -99,7 +99,7 @@
           <tr>
             <th>STT</th>
             <th>Tên trạm</th>
-            <th>Tiêu chí kiểm tra</th>
+            <th>Giá trị kiểm tra</th>
             <th>Tổng lượt Scan</th>
             <th>Tổng Pass</th>
             <th>Tổng NG</th>
@@ -139,7 +139,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let element of dataUser | paginate: { itemsPerPage: itemPerPage, currentPage: page }">
+            <tr *ngFor="let element of dataUser | paginate: { id: 'paginate', itemsPerPage: itemPerPage, currentPage: page }">
               <td>{{ element.username }}</td>
               <td>{{ element.timeLogin }}</td>
             </tr>
@@ -154,7 +154,7 @@
             <option value="50">50</option>
           </select>
 
-          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          <pagination-controls id="paginate" (pageChange)="page = $event"></pagination-controls>
         </div>
       </div>
     </div>
@@ -194,7 +194,7 @@
                   <td>{{ element.version }}</td>
 
                   <td>{{ element.trangThai }}</td>
-                  <td>{{ element.sanLuong }}</td>
+                  <td style="text-align: left">{{ element.sanLuong }}</td>
                 </tr>
               </tbody>
             </table>
@@ -207,7 +207,7 @@
                     <th scope="col">
                       <span>Tên trạm</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
-                    <th scope="col">
+                    <th scope="col" style="width: 8rem">
                       <span>Vị trí</span>
                       <input
                         #searchInput
@@ -218,7 +218,7 @@
                       />
                     </th>
                     <th scope="col">
-                      <span>Tiêu chí kiểm tra</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                      <span>Nội dung kiểm tra</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                     </th>
                     <th scope="col">
                       <span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
@@ -226,14 +226,25 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of listProfileCheck">
+                  <tr *ngFor="let item of listProfileCheck | paginate: { id: 'paginate1', itemsPerPage: itemPerPage1, currentPage: page1 }">
                     <td>{{ item.machineName }}</td>
                     <td>{{ item.position }}</td>
-                    <td style="text-align: left">{{ item.recordValue }}</td>
                     <td style="text-align: left">{{ item.recordName }}</td>
+                    <td style="text-align: left">{{ item.recordValue }}</td>
                   </tr>
                 </tbody>
               </table>
+              <div class="paginate">
+                <div class="paginate-container">
+                  <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage1">
+                    <option value="10">20</option>
+                    <option value="15">30</option>
+                    <option value="50">50</option>
+                  </select>
+
+                  <pagination-controls id="paginate1" (pageChange)="page1 = $event"></pagination-controls>
+                </div>
+              </div>
             </div>
             <div class="table-footer">
               <div style="height: 324px">
@@ -255,11 +266,11 @@
                         <span>Serial</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                       </th>
                       <th scope="col">
-                        <span>Tiêu chí kiểm tra</span>
+                        <span>Nội dung kiểm tra</span>
                         <input
                           #searchInput
                           type="text"
-                          [(ngModel)]="checkValue"
+                          [(ngModel)]="tieuChiKiemTra"
                           [ngModelOptions]="{ standalone: true }"
                           placeholder="Tìm kiếm"
                         />
@@ -268,56 +279,45 @@
                         <span>Giá trị</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                       </th>
                       <th scope="col">
+                        <span>Thời gian</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
+                      </th>
+                      <th scope="col">
                         <span>Vị trí</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                       </th>
-                      <th scope="col" style="width: 15rem">
+                      <th scope="col" style="width: 8rem">
                         <span>Result</span><input type="text" style="width: 1px; border: none; background-color: #309acf" />
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of infoCheckMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page1 }; let i = index">
+                    <tr
+                      *ngFor="
+                        let item of infoCheckMachine | paginate: { id: 'paginate2', itemsPerPage: itemPerPage2, currentPage: page2 };
+                        let i = index
+                      "
+                    >
                       <td>{{ i + 1 }}</td>
-                      <td>{{ item.machineName }}</td>
+                      <td>{{ item.tenThietBi }}</td>
                       <td></td>
-                      <td>{{ item.recordName }}</td>
-                      <td>{{ item.recordValue }}</td>
-                      <td>{{ item.position }}</td>
-                      <td>{{ item.result }}</td>
+                      <td>{{ item.tieuChiKiemTra }}</td>
+                      <td>{{ item.noiDungDoiChieu }}</td>
+                      <td>{{ item.thoiGianCheck }}</td>
+                      <td>{{ item.viTri }}</td>
+                      <td>{{ item.ketLuan }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="paginate">
                 <div class="paginate-container">
-                  <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage">
+                  <select class="form-select" aria-label="Default select example" [(ngModel)]="itemPerPage2">
                     <option value="20">20</option>
                     <option value="30">30</option>
                     <option value="50">50</option>
                   </select>
 
-                  <pagination-controls (pageChange)="page1 = $event"></pagination-controls>
+                  <pagination-controls id="paginate2" (pageChange)="page2 = $event"></pagination-controls>
                 </div>
-              </div>
-              <div class="btn-footer">
-                <button
-                  type="button"
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  class="btn btn-secondary"
-                  (click)="closePopupChiTietThongTinScan()"
-                >
-                  <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-                </button>
-                <button
-                  type="submit"
-                  id="save-entity"
-                  data-cy="entityCreateSaveButton"
-                  class="btn btn-primary"
-                  (click)="openPopupConfirmSave()"
-                >
-                  <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-                </button>
               </div>
             </div>
           </div>

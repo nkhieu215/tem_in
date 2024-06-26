@@ -265,14 +265,14 @@ export class ProfileCheckComponent implements OnInit {
       this.listOfMaMay = this.listOfMaMay.filter(item => item.checked === false);
       this.http.post<any>(this.insertProfileURL, this.listOfMaMay).subscribe();
       console.log(this.listOfMaMay);
-      alert('Thêm mới thông tin profile thành công');
+      this.showSuccessModalAddNewProfile();
     } else if (message === 'cancel') {
       this.popupConfirmSave = false;
     } else if (message === 'update') {
       this.popupConfirmSave = false;
       this.http.post<any>(this.updateProfileURL, this.listOfMaMay).subscribe();
       console.log(this.listOfMaMay);
-      alert('Thêm mới tiêu chí thành công !');
+      this.showSuccessModalAddNewTieuChi();
       window.location.reload();
     }
   }
@@ -365,7 +365,7 @@ export class ProfileCheckComponent implements OnInit {
     };
     this.http.post<any>(this.addNewProductURL, item).subscribe(res => {
       this.productId = res.productId;
-      alert('thêm mới sản phẩm thành công');
+      this.showSuccessModalAddNewProduct();
       console.log('product id: ', this.productId);
     });
   }
@@ -373,7 +373,7 @@ export class ProfileCheckComponent implements OnInit {
     this.product.updateAt = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
     this.http.post<any>(this.addNewProductURL, this.product).subscribe(res => {
       this.productId = res.productId;
-      alert('Cập nhật sản phẩm thành công');
+      this.showSuccessModalUpdateProduct();
       console.log('product id: ', this.product);
     });
   }
@@ -421,7 +421,8 @@ export class ProfileCheckComponent implements OnInit {
           this.listOfMaMay = [newRow, ...this.listOfMaMay];
         }
         // thông báo cập nhật version
-        alert('Cập nhật version thành công');
+        // alert('Cập nhật version thành công');
+        this.showSuccessModalUPdateVersion();
       });
     });
   }
@@ -458,7 +459,7 @@ export class ProfileCheckComponent implements OnInit {
   //Yêu cầu chọn trạm trước khi điền thông tin chi tiết
   machineOutPutAlert(machineId: any): void {
     if (machineId === 0) {
-      alert('Xin vui lòng chọn trạm kiểm tra');
+      this.showModalSelect();
     }
   }
   //Bắt sự kiện thay đổi version
@@ -470,5 +471,119 @@ export class ProfileCheckComponent implements OnInit {
     });
     this.getListProfile(index);
     this.version = version;
+  }
+
+  showSuccessModalAddNewProfile(): void {
+    const modal = document.getElementById('successModalAddNewProfile');
+    const button = document.getElementsByClassName('closeAddNewProfile')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showSuccessModalAddNewTieuChi(): void {
+    const modal = document.getElementById('successModalAddNewTieuChi');
+    const button = document.getElementsByClassName('closeAddNewTieuChi')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showSuccessModalAddNewProduct(): void {
+    const modal = document.getElementById('successModalAddNewProduct');
+    const button = document.getElementsByClassName('closeAddNewProduct')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showSuccessModalUpdateProduct(): void {
+    const modal = document.getElementById('successModalUpdateProduct');
+    const button = document.getElementsByClassName('closeUpdateProduct')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showSuccessModalUPdateVersion(): void {
+    const modal = document.getElementById('successModalUPdateVersion');
+    const button = document.getElementsByClassName('closeUPdateVersion')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showModalSelect(): void {
+    const modal = document.getElementById('modalSelect');
+    const button = document.getElementsByClassName('closeModalSelect')[0] as HTMLElement;
+
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
   }
 }

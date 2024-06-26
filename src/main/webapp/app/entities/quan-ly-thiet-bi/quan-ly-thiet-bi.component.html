@@ -138,8 +138,8 @@
               <th scope="col">
                 <span
                   >Nhóm thiết bị
-                  <p>*</p></span
-                >
+                  <p>*</p>
+                </span>
               </th>
               <th scope="col"><span>Ngày tạo</span></th>
               <th scope="col"><span>Thời gian cập nhật</span></th>
@@ -147,8 +147,8 @@
               <th scope="col">
                 <span
                   >Trạng thái
-                  <p>*</p></span
-                >
+                  <p>*</p>
+                </span>
               </th>
             </tr>
           </thead>
@@ -181,7 +181,7 @@
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
+          <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupKhaiBaoThietBi()">
             <fa-icon icon="add"></fa-icon>
             <span>Khai báo</span>
           </button>
@@ -283,7 +283,7 @@
 
         <br /><br /><br /><br />
         <h2>Thiết bị</h2>
-        <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupThemMoiThietBi()">
+        <button class="btn btn-info me-2" style="padding: 10px 20px" (click)="openPopupKhaiBaoThietBi()">
           <fa-icon icon="add"></fa-icon>
           <span>Khai báo</span>
         </button>
@@ -347,12 +347,18 @@
 </div>
 
 <!-- popup thêm mới thiết bị -->
-<div class="table-responsive popup-background" role="dialog" *ngIf="popupThemMoiThietBi === true">
+<div class="table-responsive popup-background" role="dialog" *ngIf="popupKhaiBaoThietBi === true">
   <div>
-    <span class="close-btn" (click)="closePopupThemMoiThietBi()">&times;</span>
+    <span class="close-btn" (click)="closePopupKhaiBaoThietBi()">&times;</span>
     <div>
       <div class="popup-them-moi-ma-thiet-bi">
         <h2>Khai báo thiết bị</h2>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-info me-2" (click)="openPopupAddNewMachine()" style="padding: 10px 20px">
+            <fa-icon icon="add"></fa-icon>
+            <span>Thêm mới</span>
+          </button>
+        </div>
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
@@ -407,7 +413,7 @@
           id="cancel-save"
           data-cy="entityCreateCancelButton"
           class="btn btn-secondary"
-          (click)="closePopupThemMoiThietBi()"
+          (click)="closePopupKhaiBaoThietBi()"
         >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
@@ -415,6 +421,37 @@
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="popup-background" role="dialog" *ngIf="popupThemMoiThietBi === true">
+  <div>
+    <span class="close-btn" (click)="closePopupAddNewMachine()">&times;</span>
+    <div class="popup-them-moi-thiet-bi">
+      <h1>Thêm mới thiết bị</h1>
+      <div class="body-popup">
+        <!-- <div class="input-khai-bao">
+          <label>Mã thiết bị</label>
+          <input type="text" [(ngModel)]="id" [ngModelOptions]="{standalone:true}" hidden>
+        </div> -->
+        <div class="input-khai-bao">
+          <label>Tên thiết bị</label>
+          <input type="text" [(ngModel)]="maThietBi" [ngModelOptions]="{ standalone: true }" />
+        </div>
+      </div>
+      <button
+        type="button"
+        id="cancel-save"
+        data-cy="entityCreateCancelButton"
+        class="btn btn-secondary"
+        (click)="closePopupAddNewMachine()"
+      >
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+      </button>
+      <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="addNewMachine()">
+        <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+      </button>
     </div>
   </div>
 </div>
@@ -453,7 +490,7 @@
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
     <div class="btn-group-save">
-      <button class="confirm-btn" (click)="addNewMachine()">Xác nhận</button>
+      <button class="confirm-btn" (click)="addNewMachineListGroup()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmSave4()">Hủy</button>
     </div>
   </div>
@@ -466,5 +503,12 @@
       <button class="confirm-btn" (click)="closePopupConfirmDelete()">Xác nhận</button>
       <button class="cancel-btn" (click)="closePopupConfirmDelete()">Hủy</button>
     </div>
+  </div>
+</div>
+
+<div id="successModalAddNewMachine" class="modal">
+  <div class="modal-content">
+    <h2>Thêm mới thông tin profile thành công</h2>
+    <button class="closeAddNewMachine">OK</button>
   </div>
 </div>
