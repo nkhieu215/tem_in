@@ -95,7 +95,7 @@
           <td>{{ item.productCode }}</td>
           <td>{{ item.productName }}</td>
           <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-          <td>{{ item.updatedAt }}</td>
+          <td>{{ item.updateAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
           <td>{{ item.username }}</td>
           <td>{{ item.nameStatus }}</td>
           <td>
@@ -194,7 +194,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let item of listOfVersion; let i = index">
+                      <tr
+                        *ngFor="
+                          let item of listOfVersion | paginate: { id: 'panigation1', itemsPerPage: itemsPerPage2, currentPage: page3 };
+                          let i = index
+                        "
+                      >
                         <td (click)="getProfileInfo(item.versionId, item.productId, item.version, item.groupId)">
                           <input
                             type="text"
@@ -237,6 +242,7 @@
                       </tr>
                     </tbody>
                   </table>
+                  <pagination-controls id="panigation1" (pageChange)="page3 = $event" style="float: right"></pagination-controls>
                 </div>
                 <div class="table-body-container-second">
                   <h2>Thông tin chi tiết các máy</h2>
@@ -252,16 +258,21 @@
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                         <th scope="col">STT</th>
                         <th scope="col">Tên trạm <b style="color: red">(*)</b></th>
-                        <th scope="col">Vị trí</th>
-                        <th scope="col">Tiêu chí kiểm tra</th>
-                        <th scope="col">Giá trị</th>
-                        <th scope="col">Version</th>
+                        <th scope="col">Vị trí <b style="color: red">(*)</b></th>
+                        <th scope="col">Tiêu chí kiểm tra <b style="color: red">(*)</b></th>
+                        <th scope="col">Giá trị <b style="color: red">(*)</b></th>
+                        <th scope="col">Version <b style="color: red">(*)</b></th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Options</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of listOfMaMay | paginate: { itemsPerPage: itemsPerPage, currentPage: page1 }; let i = index">
+                      <tr
+                        *ngFor="
+                          let data of listOfMaMay | paginate: { id: 'panigation2', itemsPerPage: itemsPerPage, currentPage: page1 };
+                          let i = index
+                        "
+                      >
                         <td>{{ i + 1 }}</td>
                         <td>
                           <input
@@ -318,7 +329,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <pagination-controls (pageChange)="page1 = $event" style="float: right"></pagination-controls>
+                  <pagination-controls id="panigation2" (pageChange)="page1 = $event" style="float: right"></pagination-controls>
                 </div>
               </div>
             </div>
@@ -399,7 +410,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let item of listOfVersion; let i = index">
+                      <tr
+                        *ngFor="
+                          let item of listOfVersion | paginate: { id: 'panigation3', itemsPerPage: itemsPerPage3, currentPage: page2 };
+                          let i = index
+                        "
+                      >
                         <td>
                           <input
                             type="text"
@@ -436,6 +452,7 @@
                       </tr>
                     </tbody>
                   </table>
+                  <pagination-controls id="panigation3" (pageChange)="page2 = $event" style="float: right"></pagination-controls>
                 </div>
                 <br /><br /><br />
 
@@ -453,16 +470,21 @@
                       <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending">
                         <th scope="col">STT</th>
                         <th scope="col">Tên trạm <b style="color: red">(*)</b></th>
-                        <th scope="col">Vị trí</th>
-                        <th scope="col">Tiêu chí kiểm tra</th>
-                        <th scope="col">Giá trị</th>
-                        <th scope="col">Version</th>
+                        <th scope="col">Vị trí <b style="color: red">(*)</b></th>
+                        <th scope="col">Tiêu chí kiểm tra <b style="color: red">(*)</b></th>
+                        <th scope="col">Giá trị <b style="color: red">(*)</b></th>
+                        <th scope="col">Version <b style="color: red">(*)</b></th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Options</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of listOfMaMay | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index">
+                      <tr
+                        *ngFor="
+                          let data of listOfMaMay | paginate: { id: 'panigation4', itemsPerPage: itemsPerPage, currentPage: page };
+                          let i = index
+                        "
+                      >
                         <td>{{ i + 1 }}</td>
                         <td>
                           <input
@@ -497,7 +519,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <pagination-controls (pageChange)="page = $event" style="float: right"></pagination-controls>
+                  <pagination-controls id="panigation3" (pageChange)="page = $event" style="float: right"></pagination-controls>
                 </div>
               </div>
             </div>

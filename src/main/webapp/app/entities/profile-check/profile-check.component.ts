@@ -42,8 +42,13 @@ export class ProfileCheckComponent implements OnInit {
   //phân trang
   pageNumber = 1;
   itemsPerPage = 5;
+  itemsPerPage2 = 5;
+  itemsPerPage3 = 5;
+  itemsPerPage4 = 5;
   page?: number;
   page1?: number;
+  page2?: number;
+  page3?: number;
   // thông tin phân trang
   totalData = 0;
   nextPageBtn = false;
@@ -260,6 +265,7 @@ export class ProfileCheckComponent implements OnInit {
       this.listOfMaMay = this.listOfMaMay.filter(item => item.checked === false);
       this.http.post<any>(this.insertProfileURL, this.listOfMaMay).subscribe();
       console.log(this.listOfMaMay);
+      alert('Thêm mới thông tin profile thành công');
     } else if (message === 'cancel') {
       this.popupConfirmSave = false;
     } else if (message === 'update') {
@@ -267,6 +273,7 @@ export class ProfileCheckComponent implements OnInit {
       this.http.post<any>(this.updateProfileURL, this.listOfMaMay).subscribe();
       console.log(this.listOfMaMay);
       alert('Thêm mới tiêu chí thành công !');
+      window.location.reload();
     }
   }
 
@@ -363,6 +370,7 @@ export class ProfileCheckComponent implements OnInit {
     });
   }
   updateProduct(): void {
+    this.product.updateAt = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', 'en-US');
     this.http.post<any>(this.addNewProductURL, this.product).subscribe(res => {
       this.productId = res.productId;
       alert('Cập nhật sản phẩm thành công');
