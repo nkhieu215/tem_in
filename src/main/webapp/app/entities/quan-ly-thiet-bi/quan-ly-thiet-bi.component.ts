@@ -7,7 +7,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { includes } from 'cypress/types/lodash';
 
 @Component({
   selector: 'jhi-quan-ly-thiet-bi',
@@ -25,15 +24,22 @@ export class QuanLyThietBiComponent implements OnInit {
   ascending!: boolean;
   itemsPerPage = ITEMS_PER_PAGE;
   page?: number;
+  page2?: number;
+  page3?: number;
+  page4?: number;
+  page5?: number;
 
   popupThemMoiNhomThietBi = false;
   popupNhomThietBi = false;
   popupKhaiBaoThietBi = false;
   popupThemMoiThietBi = false;
+  popupChinhSuaThietBi = false;
   popupConfirmSave = false;
   popupConfirmSave2 = false;
   popupConfirmSave3 = false;
   popupConfirmSave4 = false;
+  popupConfirmSave5 = false;
+
   popupConfirmDelete = false;
 
   // formSearch = this.formBuilder.group({
@@ -79,6 +85,7 @@ export class QuanLyThietBiComponent implements OnInit {
   machines: any;
   selectedMachines: any[] = [];
   machinesList: any;
+  machinesList2: any[] = [];
   // sharedSelectedMachines: any[] = []
   // listOfMachinesInGroup: any[] = []
 
@@ -160,7 +167,13 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
-
+    this.listOfMachineAdd = [];
+    this.selectedMachines = [];
+    this.listOfMachines = [];
+    this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
+      this.listOfMachineAdd = res;
+      console.log('machine:', res);
+    });
     // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
     //   console.log('them moi nhom thiet bi', this.listOfGroupMachineAdd);
     // });
@@ -175,6 +188,7 @@ export class QuanLyThietBiComponent implements OnInit {
   }
 
   openPopupNhomThietBi(groupId: any): void {
+    this.groupId = groupId;
     this.popupNhomThietBi = true;
     //hàm trả về giá trị index của phần tử chứa thông tin group id truyền vào
     const index = this.listOfGroupMachine.findIndex(item => item.groupId === groupId);
@@ -205,6 +219,7 @@ export class QuanLyThietBiComponent implements OnInit {
           for (let j = 0; j < this.listOfMachines.length; j++) {
             if (this.listOfMachines[j].machineName === this.listOfMachineAdd[i].maThietBi) {
               this.listOfMachineAdd[i].checked = true;
+              this.selectedMachines.push(this.listOfMachineAdd[i]);
             }
           }
         }
@@ -249,6 +264,14 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupConfirmSave4 = false;
   }
 
+  openPopupConfirmSave5(): void {
+    this.popupConfirmSave5 = true;
+  }
+
+  closePopupConfirmSave5(): void {
+    this.popupConfirmSave5 = false;
+  }
+
   openPopupConfirmDelete(): void {
     this.popupConfirmDelete = true;
   }
@@ -289,7 +312,7 @@ export class QuanLyThietBiComponent implements OnInit {
     this.groupMachine.username = this.account.login;
     //api cập nhật thông tin nhóm thiết bị
     this.http.put<any>(this.listOfGroupMachineURL, this.groupMachine).subscribe(() => {
-      alert('update thành công');
+      this.showSuccessModalUpdateGroupMachine();
     });
   }
 
@@ -343,7 +366,8 @@ export class QuanLyThietBiComponent implements OnInit {
     this.machines.updateAt = currentTime;
     this.machines.username = this.account.login;
     this.http.put<any>(this.addNewMachineURL, this.machines).subscribe(() => {
-      alert('update thành công');
+      // alert('update thành công');
+      this.showSuccessModalUpdateMachine();
     });
   }
 
@@ -355,9 +379,55 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupThemMoiThietBi = false;
   }
 
-  showSuccessModalAddNewMachine(): void {
-    const modal = document.getElementById('successModalAddNewMachine');
-    const button = document.getElementsByClassName('closeAddNewMachine')[0] as HTMLElement;
+  openPopupChinhSuaThietBi(id: any): void {
+    this.popupChinhSuaThietBi = true;
+
+    const index = this.listOfMachineAdd.findIndex(item => item.id === id);
+    console.log('index', index);
+
+    this.machinesList = this.listOfMachineAdd[index];
+    console.log('ten thiet bi', this.machinesList);
+
+    this.http.get<any>(`${this.listOfMachineAddURL}/${id as string}`).subscribe(res => {
+      this.listOfMachineAdd = res;
+      console.log('machine by id', this.listOfMachineAdd);
+    });
+  }
+
+  closePopupChinhSuaThietBi(): void {
+    this.popupChinhSuaThietBi = false;
+  }
+
+  updateThietBi(): void {
+    this.machinesList2.push(this.machinesList);
+    console.log('testt', this.machinesList2);
+    this.http.post<any>(this.addNewMachineListURL, this.machinesList2).subscribe(() => {
+      // alert('update thành công');
+      this.showSuccessModalUpdateMachine();
+    });
+  }
+
+  showSuccessModalUpdateGroupMachine(): void {
+    const modal = document.getElementById('successModalUpdateGroupMachine');
+    const button = document.getElementsByClassName('closeUpdateGroupMachine')[0] as HTMLElement;
+    if (modal) {
+      modal.style.display = 'block';
+
+      button.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = event => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  showSuccessModalUpdateMachine(): void {
+    const modal = document.getElementById('successModalUpdateMachine');
+    const button = document.getElementsByClassName('closeUpdateMachine')[0] as HTMLElement;
     if (modal) {
       modal.style.display = 'block';
 

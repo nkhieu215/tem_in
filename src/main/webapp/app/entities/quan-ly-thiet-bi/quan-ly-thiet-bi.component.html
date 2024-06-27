@@ -309,7 +309,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of listOfMachines; let i = index">
+            <tr
+              *ngFor="
+                let item of listOfMachines | paginate: { id: 'paginate3', itemsPerPage: itemPerPageThietBi, currentPage: page2 };
+                let i = index
+              "
+            >
               <td>{{ i + 1 }}</td>
               <td>{{ item.machineId }}</td>
               <td style="text-align: left">{{ item.machineName }}</td>
@@ -335,7 +340,7 @@
               <option value="20">20</option>
               <option value="{{ listOfMachines.length }}">All</option>
             </select>
-            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            <pagination-controls id="paginate3" (pageChange)="page2 = $event"></pagination-controls>
           </div>
         </div>
         <button
@@ -347,7 +352,7 @@
         >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave2()">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave4()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
         </button>
       </div>
@@ -388,6 +393,7 @@
                   (change)="searchMachineName()"
                 />
               </th>
+              <th scope="col"><span>Options</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
               <!-- <th scope="col"><span>Trạng thái</span><input type="text"
                   style="width: 1px; border: none; background-color: #006699" /></th> -->
             </tr>
@@ -395,7 +401,7 @@
           <tbody>
             <tr
               *ngFor="
-                let item of listOfMachineAdd | paginate: { id: 'panigation1', itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page };
+                let item of listOfMachineAdd | paginate: { id: 'panigation1', itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page3 };
                 let i = index
               "
             >
@@ -405,7 +411,17 @@
               <td>{{ i + 1 }}</td>
               <td>{{ item.id }}</td>
               <td style="text-align: left">{{ item.maThietBi }}</td>
-              <!-- <td></td> -->
+              <td>
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-info btn-sm" (click)="openPopupChinhSuaThietBi(item.id)">
+                    <fa-icon icon="pencil"></fa-icon>
+                  </button>
+
+                  <button type="submit" class="btn btn-danger btn-sm" (click)="openPopupConfirmDelete()">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -417,7 +433,7 @@
               <option value="20">20</option>
               <option value="{{ listOfMachineAdd.length }}">All</option>
             </select>
-            <pagination-controls id="panigation1" (pageChange)="page = $event"></pagination-controls>
+            <pagination-controls id="panigation1" (pageChange)="page3 = $event"></pagination-controls>
           </div>
         </div>
         <button
@@ -468,6 +484,37 @@
   </div>
 </div>
 
+<div class="popup-background" role="dialog" *ngIf="popupChinhSuaThietBi === true">
+  <div>
+    <span class="close-btn" (click)="closePopupChinhSuaThietBi()">&times;</span>
+    <div class="popup-them-moi-thiet-bi">
+      <h1>Chỉnh sửa thiết bị</h1>
+      <div class="body-popup">
+        <!-- <div class="input-khai-bao">
+          <label>Mã thiết bị</label>
+          <input type="text" [(ngModel)]="id" [ngModelOptions]="{standalone:true}" hidden>
+        </div> -->
+        <div class="input-khai-bao">
+          <label>Tên thiết bị</label>
+          <input type="text" [(ngModel)]="machinesList.maThietBi" [ngModelOptions]="{ standalone: true }" />
+        </div>
+      </div>
+      <button
+        type="button"
+        id="cancel-save"
+        data-cy="entityCreateCancelButton"
+        class="btn btn-secondary"
+        (click)="closePopupChinhSuaThietBi()"
+      >
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+      </button>
+      <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="updateThietBi()">
+        <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="table-responsive popup-background popup-save-info" role="dialog" *ngIf="popupConfirmSave === true">
   <div>
     <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
@@ -508,6 +555,16 @@
   </div>
 </div>
 
+<div class="table-responsive popup-background popup-save-info3" role="dialog" *ngIf="popupConfirmSave5 === true">
+  <div>
+    <p>Bạn có chắc chắn muốn lưu thông tin này không?</p>
+    <div class="btn-group-save">
+      <button class="confirm-btn" (click)="updateMachine()">Xác nhận</button>
+      <button class="cancel-btn" (click)="closePopupConfirmSave5()">Hủy</button>
+    </div>
+  </div>
+</div>
+
 <div class="table-responsive popup-background popup-save-info3" role="dialog" *ngIf="popupConfirmDelete === true">
   <div>
     <p>Bạn có chắc chắn muốn xoá thông tin này không?</p>
@@ -518,16 +575,16 @@
   </div>
 </div>
 
-<div id="successModalAddNewMachine" class="modal">
+<div id="successModalUpdateGroupMachine" class="modal">
   <div class="modal-content">
-    <h2>Thêm mới thiết bị thành công</h2>
-    <button class="closeAddNewMachine">OK</button>
+    <h2>Cập nhật thông tin nhóm thiết bị thành công</h2>
+    <button class="closeUpdateGroupMachine">OK</button>
   </div>
 </div>
 
-<div id="successModalAddNewProfile" class="modal">
+<div id="successModalUpdateMachine" class="modal">
   <div class="modal-content">
-    <h2>Chỉnh sửa thông tin profile thành công</h2>
-    <button class="closeAddNewProfile">Đóng</button>
+    <h2>Cập nhật thông tin thiết bị thành công</h2>
+    <button class="closeUpdateMachine">Đóng</button>
   </div>
 </div>
