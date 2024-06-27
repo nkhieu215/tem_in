@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { includes } from 'cypress/types/lodash';
 
 @Component({
   selector: 'jhi-quan-ly-thiet-bi',
@@ -77,6 +78,7 @@ export class QuanLyThietBiComponent implements OnInit {
   listOfMachineAdd: any[] = [];
   machines: any;
   selectedMachines: any[] = [];
+  machinesList: any;
   // sharedSelectedMachines: any[] = []
   // listOfMachinesInGroup: any[] = []
 
@@ -135,6 +137,21 @@ export class QuanLyThietBiComponent implements OnInit {
     this.listOfGroupMachine = this.listOfNameGroupMachine.filter(
       item => item.groupName.includes(this.groupName) && item.username.includes(this.userName) && item.statusName.includes(this.statusName)
     );
+    console.log('danh sach tim kiem', this.listOfGroupMachine);
+  }
+
+  searchMachineName(): void {
+    console.log('Danh sách trước khi tìm kiếm', this.listOfMachineAdd);
+    console.log('Tìm kiếm với machineName:', this.machineName);
+    this.listOfMachineAdd = this.listOfMachineAdd.filter(
+      item2 => item2.maThietBi?.includes(this.machineName) && item2.id?.includes(this.id)
+    );
+    console.log('Sau khi tìm kiếm:', this.listOfMachineAdd);
+
+    // this.listOfMachineAdd = this.listOfMachineAdd.filter(
+    //   item2 => (item2.machineName && item2.machineName.includes(this.machineName)) &&
+    //     (item2.id && item2.id.includes(this.id))
+    // );
   }
   //Cập nhật trạng thái khi thêm mới nhóm thiết bị
   updateStatus(): void {
@@ -182,6 +199,16 @@ export class QuanLyThietBiComponent implements OnInit {
     this.popupKhaiBaoThietBi = true;
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
+      setTimeout(() => {
+        for (let i = 0; i < this.listOfMachineAdd.length; i++) {
+          this.listOfMachineAdd[i].checked = false;
+          for (let j = 0; j < this.listOfMachines.length; j++) {
+            if (this.listOfMachines[j].machineName === this.listOfMachineAdd[i].maThietBi) {
+              this.listOfMachineAdd[i].checked = true;
+            }
+          }
+        }
+      }, 200);
       console.log('machine:', res);
     });
   }
@@ -286,7 +313,13 @@ export class QuanLyThietBiComponent implements OnInit {
     this.http.post<any>(this.addNewMachineURL, this.listOfMachines).subscribe(() => {
       console.log('them moi thiet bi danh sach', this.listOfMachines);
     });
-    // window.location.reload();
+    window.location.reload();
+  }
+
+  updateMachineListGroup(): void {
+    this.http.put<any>(this.addNewMachineURL, this.machinesList).subscribe(() => {
+      console.log('them moi thiet bi danh sach', this.machinesList);
+    });
   }
 
   addNewMachine(): void {

@@ -373,6 +373,16 @@ export class ScanCheckComponent implements OnInit {
     this.http.put<any>(this.updateWorkingURL, working).subscribe();
   }
 
+  searchChiTiet1(): void {
+    this.listProfileCheck = this.listProfileCheck.filter(item => item.position.includes(this.position));
+  }
+
+  searchChiTiet2(): void {
+    this.infoCheckMachine = this.infoCheckMachine.filter(
+      item2 => item2.machineId.includes(this.machineId) && item2.tieuChiKiemTra.includes(this.tieuChiKiemTra)
+    );
+  }
+
   openPopupChiTietThongTinScan(): void {
     const groupId = sessionStorage.getItem('groupId');
     this.http.get<any>(`${this.listOfMachineURL}/${groupId as string}`).subscribe(res => {

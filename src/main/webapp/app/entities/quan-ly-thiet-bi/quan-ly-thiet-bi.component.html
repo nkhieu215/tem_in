@@ -89,7 +89,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of listOfGroupMachine | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index">
+        <tr
+          *ngFor="
+            let item of listOfGroupMachine | paginate: { id: 'paginate2', itemsPerPage: itemPerPage, currentPage: page };
+            let i = index
+          "
+        >
           <td>{{ i + 1 }}</td>
           <td>{{ item.groupName }}</td>
           <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
@@ -119,7 +124,7 @@
         <option value="20">20</option>
         <option value="{{ listOfGroupMachine.length }}">All</option>
       </select>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <pagination-controls id="paginate2" (pageChange)="page = $event"></pagination-controls>
     </div>
   </div>
 </div>
@@ -333,14 +338,18 @@
             <pagination-controls (pageChange)="page = $event"></pagination-controls>
           </div>
         </div>
-        <!-- <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
-          (click)="closePopupNhomThietBi()">
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary"
+          (click)="closePopupNhomThietBi()"
+        >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary"
-          (click)="openPopupConfirmSave2()">
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary" (click)="openPopupConfirmSave2()">
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Lưu</span>
-        </button> -->
+        </button>
       </div>
     </div>
   </div>
@@ -370,30 +379,33 @@
               </th>
               <th scope="col">
                 <span>Tên thiết bị</span>
-                <input #searchInput type="text" [(ngModel)]="machineName" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+                <input
+                  #searchInput
+                  type="text"
+                  [(ngModel)]="machineName"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Tìm kiếm"
+                  (change)="searchMachineName()"
+                />
               </th>
-              <th scope="col"><span>Trạng thái</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
+              <!-- <th scope="col"><span>Trạng thái</span><input type="text"
+                  style="width: 1px; border: none; background-color: #006699" /></th> -->
             </tr>
           </thead>
           <tbody>
             <tr
               *ngFor="
-                let item of listOfMachineAdd | paginate: { itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page };
+                let item of listOfMachineAdd | paginate: { id: 'panigation1', itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page };
                 let i = index
               "
             >
               <td>
-                <input
-                  type="checkbox"
-                  class="ui-checkbox"
-                  [checked]="isMachineSelected(item)"
-                  (change)="updateSelectedMachines(item, $event)"
-                />
+                <input type="checkbox" class="ui-checkbox" [checked]="item.checked" (change)="updateSelectedMachines(item, $event)" />
               </td>
               <td>{{ i + 1 }}</td>
               <td>{{ item.id }}</td>
-              <td>{{ item.maThietBi }}</td>
-              <td></td>
+              <td style="text-align: left">{{ item.maThietBi }}</td>
+              <!-- <td></td> -->
             </tr>
           </tbody>
         </table>
@@ -405,7 +417,7 @@
               <option value="20">20</option>
               <option value="{{ listOfMachineAdd.length }}">All</option>
             </select>
-            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            <pagination-controls id="panigation1" (pageChange)="page = $event"></pagination-controls>
           </div>
         </div>
         <button
@@ -508,7 +520,14 @@
 
 <div id="successModalAddNewMachine" class="modal">
   <div class="modal-content">
-    <h2>Thêm mới thông tin profile thành công</h2>
+    <h2>Thêm mới thiết bị thành công</h2>
     <button class="closeAddNewMachine">OK</button>
+  </div>
+</div>
+
+<div id="successModalAddNewProfile" class="modal">
+  <div class="modal-content">
+    <h2>Chỉnh sửa thông tin profile thành công</h2>
+    <button class="closeAddNewProfile">Đóng</button>
   </div>
 </div>

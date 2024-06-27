@@ -212,9 +212,10 @@
                       <input
                         #searchInput
                         type="text"
-                        [(ngModel)]="position"
+                        [(ngModel)]="this.position"
                         [ngModelOptions]="{ standalone: true }"
                         placeholder="Tìm kiếm"
+                        (change)="searchChiTiet1()"
                       />
                     </th>
                     <th scope="col">
@@ -260,6 +261,7 @@
                           [(ngModel)]="machineId"
                           [ngModelOptions]="{ standalone: true }"
                           placeholder="Tìm kiếm"
+                          (change)="searchChiTiet2()"
                         />
                       </th>
                       <th scope="col">
@@ -273,6 +275,7 @@
                           [(ngModel)]="tieuChiKiemTra"
                           [ngModelOptions]="{ standalone: true }"
                           placeholder="Tìm kiếm"
+                          (change)="searchChiTiet2()"
                         />
                       </th>
                       <th scope="col" style="width: 20rem">
