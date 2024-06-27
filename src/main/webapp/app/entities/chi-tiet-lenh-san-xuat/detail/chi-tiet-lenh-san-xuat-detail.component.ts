@@ -16,6 +16,7 @@ import { IChiTietLenhSanXuat } from '../chi-tiet-lenh-san-xuat.model';
 })
 export class ChiTietLenhSanXuatDetailComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('/api/chi-tiet-lenh-san-xuat');
+  resource1Url = this.applicationConfigService.getEndpointFor('/api/quan-ly-phe-duyet/trang-thai');
 
   chiTietLenhSanXuat: IChiTietLenhSanXuat | null = null;
   lenhSanXuat: ILenhSanXuat | null = null;
@@ -68,7 +69,7 @@ export class ChiTietLenhSanXuatDetailComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lenhSanXuat }) => {
@@ -147,6 +148,8 @@ export class ChiTietLenhSanXuatDetailComponent implements OnInit {
     }
   }
   exportCSV(): void {
+    this.lenhSanXuat!.trangThai = 'Đã xuất csv';
+    this.http.post<any>(this.resource1Url, this.lenhSanXuat).subscribe();
     const options = {
       fieldSeparator: ',',
       quoteStrings: '',
@@ -198,7 +201,13 @@ export class ChiTietLenhSanXuatDetailComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'ChiTietSanXuatHangNgay');
     XLSX.writeFile(wb, `${this.fileName}.xlsx`);
   }
-
+  panacimError(): void {
+    this.lenhSanXuat!.trangThai = 'Lỗi Panacim';
+    this.http.post<any>(this.resource1Url, this.lenhSanXuat).subscribe(() => {
+      alert('Cập nhật lỗi thành công');
+      window.history.back();
+    });
+  }
   previousState(): void {
     window.history.back();
   }

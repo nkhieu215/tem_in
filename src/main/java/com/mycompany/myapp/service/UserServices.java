@@ -814,7 +814,7 @@ public class UserServices {
         return entities;
     }
 
-    //? Lấy thông tin tổng dữ liệu
+    //☺ Lấy thông tin tổng dữ liệu
     public Integer totalData(TemInDTO temInDTO) {
         LocalDate date = LocalDate.now();
         LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
@@ -848,7 +848,7 @@ public class UserServices {
         return totalData;
     }
 
-    //? Tìm kiếm thông tin tem sản xuất đi kèm với phân trang
+    //☺ Tìm kiếm thông tin tem sản xuất đi kèm với phân trang
     public List<LenhSanXuat> timKiemThongTinTemSanXuat(TemInDTO temInDTO) {
         LocalDate date = LocalDate.now();
         LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
@@ -876,7 +876,7 @@ public class UserServices {
         return entities;
     }
 
-    //? Lấy thông tin tổng dữ liệu
+    //☺ Lấy thông tin tổng dữ liệu
     public Integer totalDataThongTinTemSanXuat(TemInDTO temInDTO) {
         LocalDate date = LocalDate.now();
         LocalDate firstDay = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
@@ -940,7 +940,7 @@ public class UserServices {
         }
     }
 
-    //lay danh sach ma lenh san xuat
+    //☺lay danh sach ma lenh san xuat
     public List<String> getListMaLenhSanXuat() {
         return this.lenhSanXuatRepository.getListMaLenhSanXuat();
     }
@@ -977,14 +977,14 @@ public class UserServices {
         return scanMachinesList;
     }
 
-    //?Thêm mới list thiết bị theo nhóm thiết bị
+    //☺Thêm mới list thiết bị theo nhóm thiết bị
     public void insertScanMachines(List<scanMachines> scanMachinesList) {
         for (scanMachines scanMachines : scanMachinesList) {
             this.scanMachinesRepository.postListMachines(scanMachines.getMachineName(), scanMachines.getGroupId());
         }
     }
 
-    //?Chỉnh sửa thông tin thiết bị theo nhóm thiết bị
+    //☺Chỉnh sửa thông tin thiết bị theo nhóm thiết bị
     public void putListMachines(List<scanMachines> scanMachinesList) {
         for (scanMachines scanMachines : scanMachinesList) {
             this.scanMachinesRepository.putListMachines(
@@ -995,13 +995,13 @@ public class UserServices {
         }
     }
 
-    //?Lấy danh sách nhóm thiết bị
+    //☺Lấy danh sách nhóm thiết bị
     public List<scanGroupMachines> groupMachinesList() {
         List<scanGroupMachines> scanGroupMachinesList = this.scanGroupMachinesRepository.groupMachinesList();
         return scanGroupMachinesList;
     }
 
-    //?Thêm mới nhóm thiết bị
+    //☺Thêm mới nhóm thiết bị
     public Long insertGroupMachines(groupMachineDTO scanGroupMachines) {
         this.scanGroupMachinesRepository.insertGroupMachines(
                 scanGroupMachines.getGroupName(),
@@ -1013,7 +1013,7 @@ public class UserServices {
         return groupId;
     }
 
-    //?Chỉnh sửa thông tin nhóm thiết bị
+    //☺Chỉnh sửa thông tin nhóm thiết bị
     public void putGroupMachines(groupMachineDTO scanGroupMachines) {
         this.scanGroupMachinesRepository.putGroupMachines(
                 scanGroupMachines.getGroupName(),
@@ -1024,25 +1024,25 @@ public class UserServices {
             );
     }
 
-    //?Lấy danh sách sản phẩm
+    //☺Lấy danh sách sản phẩm
     public List<scanProduct> listProduct() {
         List<scanProduct> scanProducts = this.scanProductRepository.listProduct();
         return scanProducts;
     }
 
-    //? Lấy danh sách machine
+    //☺ Lấy danh sách machine
     public List<scanMachines> listAllMachines() {
         List<scanMachines> scanMachinesList = this.scanMachinesRepository.listAllMachines();
         return scanMachinesList;
     }
 
-    //?Lấy danh sách tiêu chí đã khai báo theo sản phẩm
+    //☺Lấy danh sách tiêu chí đã khai báo theo sản phẩm
     public List<ScanPprofileCheck> listProfileCheckByProduct(Long productId) {
         List<ScanPprofileCheck> scanPprofileChecks = this.scanprofileCheckRepository.listProfileCheckByProduct(productId);
         return scanPprofileChecks;
     }
 
-    //?Thêm mới thông tin tiêu chí khai báo cho sản phẩm
+    //☺Thêm mới thông tin tiêu chí khai báo cho sản phẩm
     public void insertScanProfileCheck(List<ScanPprofileCheck> scanPprofileChecks) {
         for (ScanPprofileCheck scanPprofileCheck : scanPprofileChecks) {
             this.scanprofileCheckRepository.insertScanProfileCheck(
@@ -1057,7 +1057,7 @@ public class UserServices {
         }
     }
 
-    //? chỉnh sửa thông tin tiêu chí khai báo cho sản phẩm
+    //☺ chỉnh sửa thông tin tiêu chí khai báo cho sản phẩm
     public void updateScanProfileCheck(List<ProfileCheckDTO> scanPprofileChecks) {
         for (ProfileCheckDTO scanPprofileCheck : scanPprofileChecks) {
             if (scanPprofileCheck.getChecked() != null) {
@@ -1085,7 +1085,7 @@ public class UserServices {
         }
     }
 
-    //?Lưu thông tin kết quả scan theo chu kỳ ( 10 kết quả) theo id lệnh sản xuất (OrderID)
+    //☺Lưu thông tin kết quả scan theo chu kỳ ( 10 kết quả) theo id lệnh sản xuất (OrderID)
     public void insertDetailCheck(List<detailCheckDTO> scanDetailChecks) {
         for (detailCheckDTO scanDetailCheck1 : scanDetailChecks) {
             this.scanDetailCheckRepository.insertDetailCheck(
@@ -1101,36 +1101,36 @@ public class UserServices {
         }
     }
 
-    //?Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
+    //☺Lấy thông tin lịch sử đăng nhập theo lệnh sản xuất
     public List<scanLoginHistory> listLoginByWorkOrder(Long orderId) {
         List<scanLoginHistory> scanLoginHistories = this.scanLoginHistoryRepository.listLoginByWorkOrder(orderId);
         return scanLoginHistories;
     }
 
-    //?Lấy thông tin chi tiết scan sản phẩm theo lệnh sản xuất
+    //☺Lấy thông tin chi tiết scan sản phẩm theo lệnh sản xuất
     public List<TongHopResponse> listDetailCheckByWorkOrder(Long orderId) {
         List<TongHopResponse> scanDetailChecks = this.scanDetailCheckRepository.listDetailCheckByWorkOrder(orderId);
         return scanDetailChecks;
     }
 
-    //?Lấy thông tin lệnh sản xuất theo group máy
+    //☺Lấy thông tin lệnh sản xuất theo group máy
     public List<workOrderInfo> listWorkOrderByGroup() {
         List<workOrderInfo> scanWorkorders = this.scanWorkOrderRepository.listWorkOrderByGroup();
         return scanWorkorders;
     }
 
-    //?Cập nhật trạng thái lệnh sản xuất
+    //☺Cập nhật trạng thái lệnh sản xuất
     public void updateWorkingWorkOrder(scanWorkorder scanWorkorder) {
         this.scanWorkOrderRepository.updateWorkingWorkOrder(scanWorkorder.getWorking(), scanWorkorder.getOrderId());
     }
 
-    //?Lấy thông tin lệnh sản xuất theo orderId
+    //☺Lấy thông tin lệnh sản xuất theo orderId
     public workOrderInfo listWorkOrderByGroupById(Long orderId) {
         workOrderInfo workOrderInfo = this.scanWorkOrderRepository.listWorkOrderByGroupById(orderId);
         return workOrderInfo;
     }
 
-    //? lấy thông tin profile check
+    //☺ lấy thông tin profile check
     public List<TongHopResponse> listProfileCheck(Long productId) {
         List<TongHopResponse> scanPprofileCheck = this.scanprofileCheckRepository.listProfileCheck(productId);
         return scanPprofileCheck;
@@ -1341,5 +1341,11 @@ public class UserServices {
     public List<TongHopResponse> getExportInfo(Long orderId) {
         List<TongHopResponse> tongHopResponses = this.scanDetailCheckRepository.getExportInfo(orderId);
         return tongHopResponses;
+    }
+
+    // * -------------------------- Quản lý phê duyệt ------------------------
+    //☺ Cập nhật trạng thái khi xuất file csv/ báo lỗi panacim
+    public void exportCsvStatus(LenhSanXuat lenhSanXuat) {
+        this.lenhSanXuatRepository.exportCsvStatus(lenhSanXuat.getTrangThai(), lenhSanXuat.getId());
     }
 }
