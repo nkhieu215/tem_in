@@ -244,12 +244,12 @@ export class ScanCheckComponent implements OnInit {
       });
       //lấy thông tin trong giai đoạn 1
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
+        console.log('profile', res3);
         this.listProfileCheck = res3;
         this.stationName = res3[0].machineName;
         this.checkName = res3[0].recordName;
         this.checkValue = res3[0].recordValue;
         this.position = res3[0].position;
-        console.log('profile', this.listProfileCheck);
       });
     });
   }

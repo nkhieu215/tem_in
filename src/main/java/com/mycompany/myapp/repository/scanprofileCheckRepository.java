@@ -17,12 +17,12 @@ public interface scanprofileCheckRepository extends JpaRepository<ScanPprofileCh
 
     @Query(
         value = "select \n" +
-        "  mc.machine_name as machineName,\n" +
+        "  mc.ma_thiet_bi as machineName,\n" +
         "  pc.position as position,\n" +
         "  pc.check_name as recordName,\n" +
         "  pc.check_value as recordValue\n" +
         "  from Scan_profileCheck as pc  \n" +
-        "  inner join Scan_machines as mc on pc.machine_id = mc.machine_id\n" +
+        "  inner join nhom_thiet_bi as mc on pc.machine_id = mc.id\n" +
         "  where product_id = ?1 ",
         nativeQuery = true
     )
