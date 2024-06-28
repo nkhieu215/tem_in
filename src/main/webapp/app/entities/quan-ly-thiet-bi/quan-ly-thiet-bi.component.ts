@@ -82,6 +82,7 @@ export class QuanLyThietBiComponent implements OnInit {
   // Thiet bi
   listOfMachines: any[] = [];
   listOfMachineAdd: any[] = [];
+  listOfMachineAddGoc: any[] = [];
   machines: any;
   selectedMachines: any[] = [];
   machinesList: any;
@@ -146,12 +147,11 @@ export class QuanLyThietBiComponent implements OnInit {
     );
     console.log('danh sach tim kiem', this.listOfGroupMachine);
   }
-
   searchMachineName(): void {
     console.log('Danh sách trước khi tìm kiếm', this.listOfMachineAdd);
     console.log('Tìm kiếm với machineName:', this.machineName);
-    this.listOfMachineAdd = this.listOfMachineAdd.filter(
-      item2 => item2.maThietBi?.includes(this.machineName) && item2.id?.includes(this.id)
+    this.listOfMachineAdd = this.listOfMachineAddGoc.filter(item2 =>
+      item2.maThietBi?.toLowerCase().includes(this.machineName.toLowerCase())
     );
     console.log('Sau khi tìm kiếm:', this.listOfMachineAdd);
 
@@ -168,10 +168,12 @@ export class QuanLyThietBiComponent implements OnInit {
   openPopupThemMoiNhomThietBi(): void {
     this.popupThemMoiNhomThietBi = true;
     this.listOfMachineAdd = [];
+    this.listOfMachineAddGoc = [];
     this.selectedMachines = [];
     this.listOfMachines = [];
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
+      this.listOfMachineAddGoc = res;
       console.log('machine:', res);
     });
     // this.http.post<any>(this.listOfGroupMachineURL, this.listOfGroupMachineAdd).subscribe(() => {
@@ -210,10 +212,12 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupKhaiBaoThietBi(): void {
     this.listOfMachineAdd = [];
+    this.listOfMachineAddGoc = [];
     this.selectedMachines = [];
     this.popupKhaiBaoThietBi = true;
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
+      this.listOfMachineAddGoc = res;
       setTimeout(() => {
         for (let i = 0; i < this.listOfMachineAdd.length; i++) {
           this.listOfMachineAdd[i].checked = false;
@@ -357,6 +361,7 @@ export class QuanLyThietBiComponent implements OnInit {
     console.log('add new machine', dataMachine);
     this.http.post<any>(this.addNewMachineListURL, dataMachine).subscribe(res => {
       this.listOfMachineAdd.push(res);
+      this.listOfMachineAddGoc.push(res);
       console.log('them moi thiet bi', this.listOfMachineAdd);
     });
     window.location.reload();
@@ -391,6 +396,7 @@ export class QuanLyThietBiComponent implements OnInit {
 
     this.http.get<any>(`${this.listOfMachineAddURL}/${id as string}`).subscribe(res => {
       this.listOfMachineAdd = res;
+      this.listOfMachineAddGoc = res;
       console.log('machine by id', this.listOfMachineAdd);
     });
   }

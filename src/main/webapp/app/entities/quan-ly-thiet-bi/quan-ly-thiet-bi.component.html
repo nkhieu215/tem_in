@@ -380,7 +380,14 @@
               <th scope="col"><span>STT</span><input type="text" style="width: 1px; border: none; background-color: #006699" /></th>
               <th scope="col" jhiSortBy="machineId">
                 <span>Mã thiết bị</span>
-                <input #searchInput type="text" [(ngModel)]="machineId" [ngModelOptions]="{ standalone: true }" placeholder="Tìm kiếm" />
+                <input
+                  #searchInput
+                  type="text"
+                  [(ngModel)]="machineId"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Tìm kiếm"
+                  disabled
+                />
               </th>
               <th scope="col">
                 <span>Tên thiết bị</span>
