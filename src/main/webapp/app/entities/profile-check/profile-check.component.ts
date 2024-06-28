@@ -19,7 +19,7 @@ export class ProfileCheckComponent implements OnInit {
   listOfProDuctPanigationURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/panigation');
   totalItemURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check/total');
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
-  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi/get');
   // api them moi san pham
   addNewProductURL = this.applicationConfigService.getEndpointFor('api/scan-product');
   showProfileURL = this.applicationConfigService.getEndpointFor('api/profile-checks');
@@ -427,9 +427,9 @@ export class ProfileCheckComponent implements OnInit {
     });
   }
   // bắt sự kiện thay đổi tên trạm
-  catchEventSetMachineName(machineName: any, profileId: any): void {
+  catchEventSetMachineName(maThietBi: any, profileId: any): void {
     this.listOfMaMay[this.listOfMaMay.findIndex(item => item.profileId === profileId)].machineId =
-      this.listOfMachine[this.listOfMachine.findIndex(item => item.machineName === machineName)].machineId;
+      this.listOfMachine[this.listOfMachine.findIndex(item => item.maThietBi === maThietBi)].id;
     console.log(this.listOfMaMay);
   }
   // Xóa thông tin profile thêm mới

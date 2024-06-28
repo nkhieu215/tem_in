@@ -15,9 +15,9 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 })
 export class QuanLyThietBiComponent implements OnInit {
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');
-  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  listOfMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi/get');
   listOfMachineAddURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
-  addNewMachineURL = this.applicationConfigService.getEndpointFor('api/scan-machines');
+  addNewMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi/update');
   getListOfMachineURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
   addNewMachineListURL = this.applicationConfigService.getEndpointFor('api/nhom-thiet-bi');
   predicate!: string;
@@ -52,7 +52,7 @@ export class QuanLyThietBiComponent implements OnInit {
   // acount
   account: any;
   currentDate: Date = new Date();
-  @Input() groupId = '';
+  @Input() groupId = 0;
   @Input() groupName = '';
   @Input() createAt = this.currentDate;
   @Input() updatedAt = this.currentDate;
@@ -210,6 +210,7 @@ export class QuanLyThietBiComponent implements OnInit {
 
   openPopupKhaiBaoThietBi(): void {
     this.listOfMachineAdd = [];
+    this.selectedMachines = [];
     this.popupKhaiBaoThietBi = true;
     this.http.get<any>(this.listOfMachineAddURL).subscribe(res => {
       this.listOfMachineAdd = res;
@@ -217,7 +218,7 @@ export class QuanLyThietBiComponent implements OnInit {
         for (let i = 0; i < this.listOfMachineAdd.length; i++) {
           this.listOfMachineAdd[i].checked = false;
           for (let j = 0; j < this.listOfMachines.length; j++) {
-            if (this.listOfMachines[j].machineName === this.listOfMachineAdd[i].maThietBi) {
+            if (this.listOfMachines[j].maThietBi === this.listOfMachineAdd[i].maThietBi) {
               this.listOfMachineAdd[i].checked = true;
               this.selectedMachines.push(this.listOfMachineAdd[i]);
             }
@@ -292,8 +293,8 @@ export class QuanLyThietBiComponent implements OnInit {
   saveSelectedMachines(): void {
     this.listOfMachines = this.selectedMachines.map(machine => ({
       groupId: this.groupId,
-      machineId: machine.id,
-      machineName: machine.maThietBi,
+      id: machine.id,
+      maThietBi: machine.maThietBi,
     }));
     this.closePopupKhaiBaoThietBi();
     this.closePopupConfirmSave3();

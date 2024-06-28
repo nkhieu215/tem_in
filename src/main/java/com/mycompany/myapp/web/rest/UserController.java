@@ -353,6 +353,17 @@ public class UserController {
         return nhomThietBis1;
     }
 
+    @PostMapping("nhom-thiet-bi/update")
+    public void updateNhomThietBiNew(@RequestBody List<NhomThietBi> nhomThietBis) {
+        this.userServices.updateNhomThietBiNew(nhomThietBis);
+    }
+
+    @GetMapping("nhom-thiet-bi/get/{groupId}")
+    public List<NhomThietBi> getAllByGroupId(@PathVariable Long groupId) {
+        List<NhomThietBi> nhomThietBis = this.userServices.getAllByGroupId(groupId);
+        return nhomThietBis;
+    }
+
     //---------------------------------------------- *  ----------------------------------------------------------------
     //------------------------------------------------ Đơn vị ---------------------------------------------------
     @GetMapping("/don-vi")

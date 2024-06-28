@@ -22,11 +22,33 @@ public class NhomThietBi {
     @Column(name = "day_chuyen")
     private String dayChuyen;
 
+    @Column(name = "group_id")
+    private Long groupId;
+
+    @Column(name = "trang_thai")
+    private String trangThai;
+
     public NhomThietBi(Long id, String loaiThietBi, String maThietBi, String dayChuyen) {
         this.id = id;
         this.loaiThietBi = loaiThietBi;
         this.maThietBi = maThietBi;
         this.dayChuyen = dayChuyen;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public String getDayChuyen() {

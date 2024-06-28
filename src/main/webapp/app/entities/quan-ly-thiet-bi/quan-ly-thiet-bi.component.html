@@ -204,8 +204,8 @@
           <tbody>
             <tr *ngFor="let item of listOfMachines; let i = index">
               <td>{{ i + 1 }}</td>
-              <td>{{ item.machineId }}</td>
-              <td>{{ item.machineName }}</td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.maThietBi }}</td>
               <td>
                 <div class="btn-group">
                   <button type="submit" class="btn btn-info btn-sm" title="Chỉnh sửa">
@@ -316,8 +316,8 @@
               "
             >
               <td>{{ i + 1 }}</td>
-              <td>{{ item.machineId }}</td>
-              <td style="text-align: left">{{ item.machineName }}</td>
+              <td>{{ item.id }}</td>
+              <td style="text-align: left">{{ item.maThietBi }}</td>
               <!-- <td>
                 <div class="btn-group">
                   <button type="submit" class="btn btn-info btn-sm">

@@ -724,6 +724,19 @@ public class UserServices {
         return nhomThietBis;
     }
 
+    //☺ update nhom thiet bi
+    public void updateNhomThietBiNew(List<NhomThietBi> nhomThietBi) {
+        for (NhomThietBi nhomThietBi1 : nhomThietBi) {
+            this.nhomThietBiRepository.updateNhomThietBiNew(nhomThietBi1.getGroupId(), nhomThietBi1.getId());
+        }
+    }
+
+    //☺ Lấy danh sach thiet bi theo group id
+    public List<NhomThietBi> getAllByGroupId(Long groupId) {
+        List<NhomThietBi> nhomThietBis = this.nhomThietBiRepository.findAllByGroupId(groupId);
+        return nhomThietBis;
+    }
+
     //------------------------------------------------------ *  --------------------------------------------------------
     //------------------------------------------------ Don vi---------------------------------------------------
     public List<DonVi> getAllDonVi() {
