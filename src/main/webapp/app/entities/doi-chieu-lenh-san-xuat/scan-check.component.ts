@@ -84,7 +84,7 @@ export class ScanCheckComponent implements OnInit {
   scanHistory: {
     recordValue: string;
     status: string;
-    stationName: 'BG XK03';
+    stationName: string;
     machineId: number;
     recordName: string;
     result: string;
@@ -242,8 +242,10 @@ export class ScanCheckComponent implements OnInit {
         }
         // console.log('tonghop', this.totalFail, this.totalPass, this.totalScans);
       });
+      //lấy thông tin trong giai đoạn 1
       this.http.get<any>(`${this.profileURL}/${this.dataWorkOrder[0].productId as string}`).subscribe(res3 => {
         this.listProfileCheck = res3;
+        this.stationName = res3[0].machineName;
         this.checkName = res3[0].recordName;
         this.checkValue = res3[0].recordValue;
         this.position = res3[0].position;
@@ -261,7 +263,7 @@ export class ScanCheckComponent implements OnInit {
         {
           recordValue: this.scanValue,
           status,
-          stationName: 'BG XK03',
+          stationName: this.stationName,
           recordName: this.checkName,
           result: status,
           position: 1,

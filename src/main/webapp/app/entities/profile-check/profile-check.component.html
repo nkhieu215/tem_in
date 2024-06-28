@@ -278,10 +278,10 @@
                           <input
                             type="text"
                             list="machines"
-                            [(ngModel)]="data.maThietBi"
+                            [(ngModel)]="data.machineName"
                             [ngModelOptions]="{ standalone: true }"
                             required
-                            (change)="catchEventSetMachineName(data.maThietBi, data.profileId)"
+                            (change)="catchEventSetMachineName(data.machineName, data.profileId)"
                           />
                           <datalist id="machines">
                             <option *ngFor="let item1 of listOfMachine" value="{{ item1.maThietBi }}"></option>
