@@ -17,6 +17,7 @@ import { Account } from 'app/core/auth/account.model';
   selector: 'jhi-chi-tiet-lenh-san-xuat-update',
   templateUrl: './chi-tiet-lenh-san-xuat-update.component.html',
   styleUrls: ['./chi-tiet-lenh-san-xuat-update.component.css'],
+  standalone: false,
 })
 export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('/api/chi-tiet-lenh-san-xuat');

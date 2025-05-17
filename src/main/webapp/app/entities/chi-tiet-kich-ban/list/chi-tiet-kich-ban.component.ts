@@ -13,6 +13,7 @@ import { ChiTietKichBanDeleteDialogComponent } from '../delete/chi-tiet-kich-ban
 @Component({
   selector: 'jhi-chi-tiet-kich-ban',
   templateUrl: './chi-tiet-kich-ban.component.html',
+  standalone: false,
 })
 export class ChiTietKichBanComponent implements OnInit {
   chiTietKichBans?: IChiTietKichBan[];

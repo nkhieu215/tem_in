@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './san-xuat-hang-ngay-delete-dialog.component.html',
+  standalone: false,
 })
 export class SanXuatHangNgayDeleteDialogComponent {
   resourceUrlAdd = this.applicationConfigService.getEndpointFor('api/san-xuat-hang-ngay/del-kich-ban');

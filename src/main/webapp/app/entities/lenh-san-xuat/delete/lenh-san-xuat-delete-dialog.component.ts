@@ -6,6 +6,7 @@ import { LenhSanXuatService } from '../service/lenh-san-xuat.service';
 
 @Component({
   templateUrl: './lenh-san-xuat-delete-dialog.component.html',
+  standalone: false,
 })
 export class LenhSanXuatDeleteDialogComponent {
   lenhSanXuat?: ILenhSanXuat;

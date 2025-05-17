@@ -6,6 +6,7 @@ import { QuanLyThongSoService } from '../service/quan-ly-thong-so.service';
 
 @Component({
   templateUrl: './quan-ly-thong-so-delete-dialog.component.html',
+  standalone: false,
 })
 export class QuanLyThongSoDeleteDialogComponent {
   quanLyThongSo?: IQuanLyThongSo;

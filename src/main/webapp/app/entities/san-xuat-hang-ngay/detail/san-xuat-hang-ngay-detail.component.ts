@@ -12,6 +12,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
   selector: 'jhi-san-xuat-hang-ngay-detail',
   templateUrl: './san-xuat-hang-ngay-detail.component.html',
   styleUrls: ['./san-xuat-hang-ngay-detail.component.css'],
+  standalone: false,
 })
 export class SanXuatHangNgayDetailComponent implements OnInit {
   //---------------------- url lay thong tin chi tiet kich ban --------------------

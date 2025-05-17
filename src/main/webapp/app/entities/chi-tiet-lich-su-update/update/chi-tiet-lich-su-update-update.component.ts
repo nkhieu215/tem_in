@@ -13,6 +13,7 @@ import { LichSuUpdateService } from 'app/entities/lich-su-update/service/lich-su
 @Component({
   selector: 'jhi-chi-tiet-lich-su-update-update',
   templateUrl: './chi-tiet-lich-su-update-update.component.html',
+  standalone: false,
 })
 export class ChiTietLichSuUpdateUpdateComponent implements OnInit {
   isSaving = false;

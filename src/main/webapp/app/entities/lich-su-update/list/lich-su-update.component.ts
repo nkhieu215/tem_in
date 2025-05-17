@@ -13,6 +13,7 @@ import { LichSuUpdateDeleteDialogComponent } from '../delete/lich-su-update-dele
 @Component({
   selector: 'jhi-lich-su-update',
   templateUrl: './lich-su-update.component.html',
+  standalone: false,
 })
 export class LichSuUpdateComponent implements OnInit {
   lichSuUpdates?: ILichSuUpdate[];

@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './kich-ban-delete-dialog.component.html',
+  standalone: false,
 })
 export class KichBanDeleteDialogComponent {
   resourceUrlAdd = this.applicationConfigService.getEndpointFor('api/kich-ban/del-kich-ban');

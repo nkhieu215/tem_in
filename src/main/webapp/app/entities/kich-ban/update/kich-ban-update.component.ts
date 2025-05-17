@@ -21,6 +21,7 @@ import { IQuanLyThongSo } from 'app/entities/quan-ly-thong-so/quan-ly-thong-so.m
   selector: 'jhi-kich-ban-update',
   templateUrl: './kich-ban-update.component.html',
   styleUrls: ['./kich-ban-update.component.css'],
+  standalone: false,
 })
 export class KichBanUpdateComponent implements OnInit {
   //==============================================           URL          ================================

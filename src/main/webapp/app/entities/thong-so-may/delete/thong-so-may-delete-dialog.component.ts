@@ -6,6 +6,7 @@ import { ThongSoMayService } from '../service/thong-so-may.service';
 
 @Component({
   templateUrl: './thong-so-may-delete-dialog.component.html',
+  standalone: false,
 })
 export class ThongSoMayDeleteDialogComponent {
   thongSoMay?: IThongSoMay;

@@ -13,6 +13,7 @@ import { ChiTietSanXuatDeleteDialogComponent } from '../delete/chi-tiet-san-xuat
 @Component({
   selector: 'jhi-chi-tiet-san-xuat',
   templateUrl: './chi-tiet-san-xuat.component.html',
+  standalone: false,
 })
 export class ChiTietSanXuatComponent implements OnInit {
   chiTietSanXuats?: IChiTietSanXuat[];

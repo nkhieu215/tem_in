@@ -11,6 +11,7 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
   selector: 'jhi-lenh-san-xuat-detail',
   templateUrl: './lenh-san-xuat-detail.component.html',
   styleUrls: ['./lenh-san-xuat-detail.component.css'],
+  standalone: false,
 })
 export class LenhSanXuatDetailComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('/api/chi-tiet-lenh-san-xuat');
@@ -60,7 +61,7 @@ export class LenhSanXuatDetailComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lenhSanXuat }) => {

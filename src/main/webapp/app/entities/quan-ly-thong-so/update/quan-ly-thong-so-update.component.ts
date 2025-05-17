@@ -19,6 +19,7 @@ import { AccountService } from 'app/core/auth/account.service';
   selector: 'jhi-quan-ly-thong-so-update',
   templateUrl: './quan-ly-thong-so-update.component.html',
   styleUrls: ['./quan-ly-thong-so-update.css'],
+  standalone: false,
 })
 export class QuanLyThongSoUpdateComponent implements OnInit {
   isSaving = false;

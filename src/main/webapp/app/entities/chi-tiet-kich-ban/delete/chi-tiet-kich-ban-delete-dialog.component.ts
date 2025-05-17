@@ -6,6 +6,7 @@ import { ChiTietKichBanService } from '../service/chi-tiet-kich-ban.service';
 
 @Component({
   templateUrl: './chi-tiet-kich-ban-delete-dialog.component.html',
+  standalone: false,
 })
 export class ChiTietKichBanDeleteDialogComponent {
   chiTietKichBan?: IChiTietKichBan;

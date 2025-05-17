@@ -13,6 +13,7 @@ import { KichBanService } from 'app/entities/kich-ban/service/kich-ban.service';
 @Component({
   selector: 'jhi-chi-tiet-kich-ban-update',
   templateUrl: './chi-tiet-kich-ban-update.component.html',
+  standalone: false,
 })
 export class ChiTietKichBanUpdateComponent implements OnInit {
   isSaving = false;

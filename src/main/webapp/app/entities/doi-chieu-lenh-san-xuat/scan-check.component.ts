@@ -15,6 +15,7 @@ import * as XLSX from 'xlsx';
   selector: 'jhi-scan-check',
   templateUrl: './scan-check.component.html',
   styleUrls: ['./scan-check.component.scss'],
+  standalone: false,
 })
 export class ScanCheckComponent implements OnInit {
   WorkOrderDetailUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order');

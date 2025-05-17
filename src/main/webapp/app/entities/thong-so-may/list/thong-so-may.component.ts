@@ -15,6 +15,7 @@ import { ThongSoMayDeleteDialogComponent } from '../delete/thong-so-may-delete-d
 @Component({
   selector: 'jhi-thong-so-may',
   templateUrl: './thong-so-may.component.html',
+  standalone: false,
 })
 export class ThongSoMayComponent implements OnInit {
   searchKeyWord = '';

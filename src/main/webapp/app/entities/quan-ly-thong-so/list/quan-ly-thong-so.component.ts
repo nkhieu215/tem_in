@@ -18,6 +18,7 @@ import { QuanLyThongSoDeleteDialogComponent } from '../delete/quan-ly-thong-so-d
   selector: 'jhi-quan-ly-thong-so',
   templateUrl: './quan-ly-thong-so.component.html',
   styleUrls: ['./quan-ly-thong-so.component.css'],
+  standalone: false,
 })
 export class QuanLyThongSoComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/quan-ly-thong-so/tim-kiem');

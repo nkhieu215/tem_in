@@ -6,6 +6,7 @@ import { LichSuUpdateService } from '../service/lich-su-update.service';
 
 @Component({
   templateUrl: './lich-su-update-delete-dialog.component.html',
+  standalone: false,
 })
 export class LichSuUpdateDeleteDialogComponent {
   lichSuUpdate?: ILichSuUpdate;

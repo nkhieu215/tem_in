@@ -22,6 +22,7 @@ import { IQuanLyThongSo } from 'app/entities/quan-ly-thong-so/quan-ly-thong-so.m
   selector: 'jhi-san-xuat-hang-ngay-update',
   templateUrl: './san-xuat-hang-ngay-update.component.html',
   styleUrls: ['./san-xuat-hang-ngay-update.component.css'],
+  standalone: false,
 })
 export class SanXuatHangNgayUpdateComponent implements OnInit {
   //------------------- url lay danh sach thong so theo mã kịch bản --------------------

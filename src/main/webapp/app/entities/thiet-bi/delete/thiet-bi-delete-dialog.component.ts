@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './thiet-bi-delete-dialog.component.html',
+  standalone: false,
 })
 export class ThietBiDeleteDialogComponent {
   resourceUrlAdd = this.applicationConfigService.getEndpointFor('api/thiet-bi/del-thiet-bi');

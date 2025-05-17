@@ -12,6 +12,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
   selector: 'jhi-quan-ly-thiet-bi',
   templateUrl: './quan-ly-thiet-bi.component.html',
   styleUrls: ['./quan-ly-thiet-bi.component.scss'],
+  standalone: false,
 })
 export class QuanLyThietBiComponent implements OnInit {
   listOfGroupMachineURL = this.applicationConfigService.getEndpointFor('api/scan-group-machines');

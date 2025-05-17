@@ -11,6 +11,7 @@ import { SharedDataService } from './shared-data.service';
   selector: 'jhi-doi-chieu-lenh-san-xuat',
   templateUrl: './doi-chieu-lenh-san-xuat.component.html',
   styleUrls: ['./doi-chieu-lenh-san-xuat.component.scss'],
+  standalone: false,
 })
 export class DoiChieuLenhSanXuatComponent implements OnInit {
   doiChieuLenhSanXuatUrl = this.applicationConfigService.getEndpointFor('api/scan-work-order/groupId');

@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
   selector: 'jhi-kich-ban-detail',
   templateUrl: './kich-ban-detail.component.html',
   styleUrls: ['./kich-ban-detail.component.css'],
+  standalone: false,
 })
 export class KichBanDetailComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/kich-ban/thong-so-kich-ban');

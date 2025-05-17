@@ -17,6 +17,7 @@ import { SanXuatHangNgayDeleteDialogComponent } from '../delete/san-xuat-hang-ng
   selector: 'jhi-san-xuat-hang-ngay',
   templateUrl: './san-xuat-hang-ngay.component.html',
   styleUrls: ['./san-xuat-hang-ngay.component.css'],
+  standalone: false,
 })
 export class SanXuatHangNgayComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/san-xuat-hang-ngay/tim-kiem');

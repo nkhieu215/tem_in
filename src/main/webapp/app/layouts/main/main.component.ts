@@ -9,6 +9,7 @@ import { LoginService } from 'app/login/login.service';
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.component.html',
+  standalone: false,
 })
 export class MainComponent implements OnInit {
   inProduction?: boolean;

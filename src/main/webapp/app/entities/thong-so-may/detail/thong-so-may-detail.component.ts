@@ -6,6 +6,7 @@ import { IThongSoMay } from '../thong-so-may.model';
 @Component({
   selector: 'jhi-thong-so-may-detail',
   templateUrl: './thong-so-may-detail.component.html',
+  standalone: false,
 })
 export class ThongSoMayDetailComponent implements OnInit {
   thongSoMay: IThongSoMay | null = null;

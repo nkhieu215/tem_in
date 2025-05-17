@@ -6,6 +6,7 @@ import { ChiTietLichSuUpdateService } from '../service/chi-tiet-lich-su-update.s
 
 @Component({
   templateUrl: './chi-tiet-lich-su-update-delete-dialog.component.html',
+  standalone: false,
 })
 export class ChiTietLichSuUpdateDeleteDialogComponent {
   chiTietLichSuUpdate?: IChiTietLichSuUpdate;

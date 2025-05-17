@@ -13,6 +13,7 @@ import { IChiTietLenhSanXuat } from '../chi-tiet-lenh-san-xuat.model';
   selector: 'jhi-chi-tiet-lenh-san-xuat-detail',
   templateUrl: './chi-tiet-lenh-san-xuat-detail.component.html',
   styleUrls: ['./chi-tiet-lenh-san-xuat-detail.component.css'],
+  standalone: false,
 })
 export class ChiTietLenhSanXuatDetailComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('/api/chi-tiet-lenh-san-xuat');

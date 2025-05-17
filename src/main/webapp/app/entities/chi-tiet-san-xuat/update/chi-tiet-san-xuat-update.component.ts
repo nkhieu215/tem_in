@@ -13,6 +13,7 @@ import { SanXuatHangNgayService } from 'app/entities/san-xuat-hang-ngay/service/
 @Component({
   selector: 'jhi-chi-tiet-san-xuat-update',
   templateUrl: './chi-tiet-san-xuat-update.component.html',
+  standalone: false,
 })
 export class ChiTietSanXuatUpdateComponent implements OnInit {
   isSaving = false;

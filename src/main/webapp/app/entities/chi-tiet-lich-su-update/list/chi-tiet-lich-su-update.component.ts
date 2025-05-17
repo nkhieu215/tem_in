@@ -13,6 +13,7 @@ import { ChiTietLichSuUpdateDeleteDialogComponent } from '../delete/chi-tiet-lic
 @Component({
   selector: 'jhi-chi-tiet-lich-su-update',
   templateUrl: './chi-tiet-lich-su-update.component.html',
+  standalone: false,
 })
 export class ChiTietLichSuUpdateComponent implements OnInit {
   chiTietLichSuUpdates?: IChiTietLichSuUpdate[];

@@ -14,6 +14,7 @@ import { LichSuUpdateService } from '../service/lich-su-update.service';
 @Component({
   selector: 'jhi-lich-su-update-update',
   templateUrl: './lich-su-update-update.component.html',
+  standalone: false,
 })
 export class LichSuUpdateUpdateComponent implements OnInit {
   isSaving = false;

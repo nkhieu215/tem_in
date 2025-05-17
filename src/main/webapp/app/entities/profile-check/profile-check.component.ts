@@ -11,6 +11,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
   selector: 'jhi-profile-check',
   templateUrl: './profile-check.component.html',
   styleUrls: ['./profile-check.component.scss'],
+  standalone: false,
 })
 export class ProfileCheckComponent implements OnInit {
   listOfProDuctURL = this.applicationConfigService.getEndpointFor('api/scan-profile-check');

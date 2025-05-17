@@ -11,6 +11,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
   selector: 'jhi-thiet-bi-detail',
   templateUrl: './thiet-bi-detail.component.html',
   styleUrls: ['./thiet-bi-detail.component.css'],
+  standalone: false,
 })
 export class ThietBiDetailComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/thiet-bi/chi-tiet-thiet-bi');

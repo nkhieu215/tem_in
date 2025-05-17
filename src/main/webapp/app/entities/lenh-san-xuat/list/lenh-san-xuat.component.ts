@@ -17,6 +17,7 @@ import { LenhSanXuatDeleteDialogComponent } from '../delete/lenh-san-xuat-delete
   selector: 'jhi-lenh-san-xuat',
   templateUrl: './lenh-san-xuat.component.html',
   styleUrls: ['./lenh-san-xuat.component.css'],
+  standalone: false,
 })
 export class LenhSanXuatComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/lenh-san-xuat');

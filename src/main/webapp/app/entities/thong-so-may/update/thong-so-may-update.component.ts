@@ -17,6 +17,7 @@ import { ThietBiService } from 'app/entities/thiet-bi/service/thiet-bi.service';
   selector: 'jhi-thong-so-may-update',
   templateUrl: './thong-so-may-update.component.html',
   styleUrls: ['./thong-so-may-update.css'],
+  standalone: false,
 })
 export class ThongSoMayUpdateComponent implements OnInit {
   thongSoMays?: IThongSoMay[] = [

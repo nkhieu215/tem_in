@@ -6,6 +6,7 @@ import { ChiTietSanXuatService } from '../service/chi-tiet-san-xuat.service';
 
 @Component({
   templateUrl: './chi-tiet-san-xuat-delete-dialog.component.html',
+  standalone: false,
 })
 export class ChiTietSanXuatDeleteDialogComponent {
   chiTietSanXuat?: IChiTietSanXuat;

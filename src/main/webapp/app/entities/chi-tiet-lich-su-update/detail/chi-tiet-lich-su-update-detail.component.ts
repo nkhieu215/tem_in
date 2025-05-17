@@ -6,6 +6,7 @@ import { IChiTietLichSuUpdate } from '../chi-tiet-lich-su-update.model';
 @Component({
   selector: 'jhi-chi-tiet-lich-su-update-detail',
   templateUrl: './chi-tiet-lich-su-update-detail.component.html',
+  standalone: false,
 })
 export class ChiTietLichSuUpdateDetailComponent implements OnInit {
   chiTietLichSuUpdate: IChiTietLichSuUpdate | null = null;

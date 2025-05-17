@@ -19,6 +19,7 @@ import { IQuanLyThongSo } from 'app/entities/quan-ly-thong-so/quan-ly-thong-so.m
   selector: 'jhi-thiet-bi-update',
   templateUrl: './thiet-bi-update.component.html',
   styleUrls: ['./thiet-bi-update.component.css'],
+  standalone: false,
 })
 export class ThietBiUpdateComponent implements OnInit {
   //====================================================URL=================================

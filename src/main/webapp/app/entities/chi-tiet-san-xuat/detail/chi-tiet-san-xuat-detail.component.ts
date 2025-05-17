@@ -6,6 +6,7 @@ import { IChiTietSanXuat } from '../chi-tiet-san-xuat.model';
 @Component({
   selector: 'jhi-chi-tiet-san-xuat-detail',
   templateUrl: './chi-tiet-san-xuat-detail.component.html',
+  standalone: false,
 })
 export class ChiTietSanXuatDetailComponent implements OnInit {
   chiTietSanXuat: IChiTietSanXuat | null = null;

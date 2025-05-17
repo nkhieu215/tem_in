@@ -15,6 +15,7 @@ import { ThietBiDeleteDialogComponent } from '../delete/thiet-bi-delete-dialog.c
   selector: 'jhi-thiet-bi',
   templateUrl: './thiet-bi.component.html',
   styleUrls: ['./thiet-bi.component.css'],
+  standalone: false,
 })
 export class ThietBiComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/thiet-bis/tim-kiem');

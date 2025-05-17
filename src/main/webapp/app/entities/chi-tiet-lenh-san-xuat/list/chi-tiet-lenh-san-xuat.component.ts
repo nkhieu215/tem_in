@@ -20,6 +20,7 @@ import { faSquare, faChevronDown } from '@fortawesome/free-solid-svg-icons';
   selector: 'jhi-chi-tiet-lenh-san-xuat',
   templateUrl: './chi-tiet-lenh-san-xuat.component.html',
   styleUrls: ['./chi-tiet-lenh-san-xuat.component.css'],
+  standalone: false,
 })
 export class ChiTietLenhSanXuatComponent implements OnInit {
   resourceUrlApprove = this.applicationConfigService.getEndpointFor('api/quan-ly-phe-duyet');

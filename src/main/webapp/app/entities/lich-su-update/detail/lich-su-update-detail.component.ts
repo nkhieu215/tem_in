@@ -6,6 +6,7 @@ import { ILichSuUpdate } from '../lich-su-update.model';
 @Component({
   selector: 'jhi-lich-su-update-detail',
   templateUrl: './lich-su-update-detail.component.html',
+  standalone: false,
 })
 export class LichSuUpdateDetailComponent implements OnInit {
   lichSuUpdate: ILichSuUpdate | null = null;

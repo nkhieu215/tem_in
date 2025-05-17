@@ -6,6 +6,7 @@ import { IChiTietKichBan } from '../chi-tiet-kich-ban.model';
 @Component({
   selector: 'jhi-chi-tiet-kich-ban-detail',
   templateUrl: './chi-tiet-kich-ban-detail.component.html',
+  standalone: false,
 })
 export class ChiTietKichBanDetailComponent implements OnInit {
   chiTietKichBan: IChiTietKichBan | null = null;

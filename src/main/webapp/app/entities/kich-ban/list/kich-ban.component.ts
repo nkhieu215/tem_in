@@ -19,6 +19,7 @@ import { KichBanDeleteDialogComponent } from '../delete/kich-ban-delete-dialog.c
   selector: 'jhi-kich-ban',
   templateUrl: './kich-ban.component.html',
   styleUrls: ['./kich-ban.component.css'],
+  standalone: false,
 })
 export class KichBanComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/kich-bans/tim-kiem');
