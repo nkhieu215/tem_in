@@ -3,7 +3,7 @@ import { Account } from 'app/core/auth/account.model';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpResponse, HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -66,7 +66,7 @@ export class ThietBiUpdateComponent implements OnInit {
   listLoaiThietBi: { loaiThietBi: string }[] = [];
   listDayChuyen: { dayChuyen: string }[] = [];
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   listOfThietBi: {
     id: number | null | undefined;
     idThietBi: number | null | undefined;
@@ -105,7 +105,7 @@ export class ThietBiUpdateComponent implements OnInit {
   constructor(
     protected thietBiService: ThietBiService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
     protected accountService: AccountService

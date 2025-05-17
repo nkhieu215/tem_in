@@ -10,6 +10,5 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   imports: [SharedModule, LenhSanXuatRoutingModule, NgxPaginationModule, Ng2SearchPipeModule],
   declarations: [LenhSanXuatComponent, LenhSanXuatDetailComponent, LenhSanXuatUpdateComponent, LenhSanXuatDeleteDialogComponent],
-  entryComponents: [LenhSanXuatDeleteDialogComponent],
 })
 export class LenhSanXuatModule {}

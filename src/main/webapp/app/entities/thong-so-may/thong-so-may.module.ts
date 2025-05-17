@@ -10,6 +10,5 @@ import { ThongSoMayRoutingModule } from './route/thong-so-may-routing.module';
 @NgModule({
   imports: [SharedModule, ThongSoMayRoutingModule, ReactiveFormsModule],
   declarations: [ThongSoMayComponent, ThongSoMayDetailComponent, ThongSoMayUpdateComponent, ThongSoMayDeleteDialogComponent],
-  entryComponents: [ThongSoMayDeleteDialogComponent],
 })
 export class ThongSoMayModule {}

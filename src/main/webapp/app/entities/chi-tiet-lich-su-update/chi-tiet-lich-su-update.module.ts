@@ -14,6 +14,5 @@ import { ChiTietLichSuUpdateRoutingModule } from './route/chi-tiet-lich-su-updat
     ChiTietLichSuUpdateUpdateComponent,
     ChiTietLichSuUpdateDeleteDialogComponent,
   ],
-  entryComponents: [ChiTietLichSuUpdateDeleteDialogComponent],
 })
 export class ChiTietLichSuUpdateModule {}

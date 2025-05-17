@@ -3,7 +3,7 @@ import dayjs from 'dayjs/esm';
 import { ApplicationConfigService } from './../../../core/config/application-config.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpResponse, HttpClient } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -133,7 +133,7 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     protected chiTietLenhSanXuatService: ChiTietLenhSanXuatService,
     protected lenhSanXuatService: LenhSanXuatService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient,
     protected accountService: AccountService

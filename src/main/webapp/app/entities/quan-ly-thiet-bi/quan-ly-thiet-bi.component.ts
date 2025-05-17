@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
@@ -94,7 +94,7 @@ export class QuanLyThietBiComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
-    protected formBuilder: FormBuilder,
+    protected formBuilder: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
 

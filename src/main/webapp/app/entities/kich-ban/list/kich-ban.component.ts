@@ -1,7 +1,7 @@
 import { IChiTietSanXuat } from 'app/entities/chi-tiet-san-xuat/chi-tiet-san-xuat.model';
 import { ISanXuatHangNgay } from 'app/entities/san-xuat-hang-ngay/san-xuat-hang-ngay.model';
 import { IChiTietKichBan } from 'app/entities/chi-tiet-kich-ban/chi-tiet-kich-ban.model';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Component, OnInit, Input, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -135,7 +135,7 @@ export class KichBanComponent implements OnInit {
     protected modalService: NgbModal,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: UntypedFormBuilder
   ) {}
 
   timKiemKichBan(data: any): void {

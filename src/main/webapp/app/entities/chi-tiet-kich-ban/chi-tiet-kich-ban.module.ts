@@ -14,6 +14,5 @@ import { ChiTietKichBanRoutingModule } from './route/chi-tiet-kich-ban-routing.m
     ChiTietKichBanUpdateComponent,
     ChiTietKichBanDeleteDialogComponent,
   ],
-  entryComponents: [ChiTietKichBanDeleteDialogComponent],
 })
 export class ChiTietKichBanModule {}

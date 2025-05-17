@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE, DESC, ASC } from 'app/config/pagination.constants';
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class ThongSoMayUpdateComponent implements OnInit {
     // },
   ];
 
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
   isSaving = false;
   isLoading = false;
@@ -60,7 +60,7 @@ export class ThongSoMayUpdateComponent implements OnInit {
     protected thongSoMayService: ThongSoMayService,
     protected thietBiService: ThietBiService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected router: Router,
     protected modalService: NgbModal
   ) {}

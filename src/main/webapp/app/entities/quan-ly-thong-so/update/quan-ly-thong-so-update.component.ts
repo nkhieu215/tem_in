@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IThietBi } from 'app/entities/thiet-bi/thiet-bi.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -49,13 +49,13 @@ export class QuanLyThongSoUpdateComponent implements OnInit {
   thietBiQlyThongSo: IThietBi[] = [];
   qLyThongSo: IQuanLyThongSo[] = [];
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessage: string | null = null;
 
   constructor(
     protected quanLyThongSoService: QuanLyThongSoService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected modalService: NgbModal,
     protected accountService: AccountService
   ) {

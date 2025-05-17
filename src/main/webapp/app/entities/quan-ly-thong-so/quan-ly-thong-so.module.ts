@@ -11,6 +11,5 @@ import { QuanLyThongSoRoutingModule } from './route/quan-ly-thong-so-routing.mod
 @NgModule({
   imports: [SharedModule, QuanLyThongSoRoutingModule, NgxPaginationModule, NgSelectModule],
   declarations: [QuanLyThongSoComponent, QuanLyThongSoDetailComponent, QuanLyThongSoUpdateComponent, QuanLyThongSoDeleteDialogComponent],
-  entryComponents: [QuanLyThongSoDeleteDialogComponent],
 })
 export class QuanLyThongSoModule {}

@@ -13,6 +13,5 @@ const quanLyThietBiRoute: Routes = [
   imports: [SharedModule, RouterModule.forChild(quanLyThietBiRoute), NgxPaginationModule],
   declarations: [QuanLyThietBiComponent],
   exports: [RouterModule],
-  entryComponents: [],
 })
 export class QuanLyThietBiModule {}

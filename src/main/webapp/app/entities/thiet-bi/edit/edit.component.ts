@@ -7,7 +7,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { ThietBiService } from 'app/entities/thiet-bi/service/thiet-bi.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { IThietBi } from 'app/entities/thiet-bi/thiet-bi.model';
 import { Component, OnInit, Input } from '@angular/core';
 
@@ -43,7 +43,7 @@ export class EditComponent implements OnInit {
 
   searchResults: IThietBi[] = [];
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   listOfThietBi = [
     {
       id: '',
@@ -72,7 +72,7 @@ export class EditComponent implements OnInit {
   constructor(
     protected thietBiService: ThietBiService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService
   ) {

@@ -17,6 +17,5 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ChiTietLenhSanXuatUpdateComponent,
     ChiTietLenhSanXuatDeleteDialogComponent,
   ],
-  entryComponents: [ChiTietLenhSanXuatDeleteDialogComponent],
 })
 export class ChiTietLenhSanXuatModule {}

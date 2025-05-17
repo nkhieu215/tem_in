@@ -4,7 +4,7 @@ import { IChiTietKichBan } from 'app/entities/chi-tiet-kich-ban/chi-tiet-kich-ba
 import { IThietBi } from 'app/entities/thiet-bi/thiet-bi.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -139,7 +139,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
   constructor(
     protected sanXuatHangNgayService: SanXuatHangNgayService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
     protected accountService: AccountService

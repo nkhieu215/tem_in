@@ -3,7 +3,7 @@ import { Account } from 'app/core/auth/account.model';
 import { IThietBi } from 'app/entities/thiet-bi/thiet-bi.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -91,7 +91,7 @@ export class KichBanUpdateComponent implements OnInit {
   listDayChuyen: { dayChuyen: string }[] = [];
   listNhomSanPham: string[] = [];
   //---------------------------------------------------
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   listOfChiTietKichBan: {
     id: number;
     idKichBan: number | null | undefined;
@@ -126,7 +126,7 @@ export class KichBanUpdateComponent implements OnInit {
   constructor(
     protected kichBanService: KichBanService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
     protected accountService: AccountService

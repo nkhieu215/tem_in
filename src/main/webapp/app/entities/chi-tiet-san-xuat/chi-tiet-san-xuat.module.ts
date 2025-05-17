@@ -14,6 +14,5 @@ import { ChiTietSanXuatRoutingModule } from './route/chi-tiet-san-xuat-routing.m
     ChiTietSanXuatUpdateComponent,
     ChiTietSanXuatDeleteDialogComponent,
   ],
-  entryComponents: [ChiTietSanXuatDeleteDialogComponent],
 })
 export class ChiTietSanXuatModule {}

@@ -3,7 +3,7 @@ import { DATE_TIME_FORMAT } from './../../../config/input.constants';
 import { IChiTietLenhSanXuat } from './../../chi-tiet-lenh-san-xuat/chi-tiet-lenh-san-xuat.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -62,10 +62,10 @@ export class LenhSanXuatUpdateComponent implements OnInit {
   constructor(
     protected lenhSanXuatService: LenhSanXuatService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected applicationConfigService: ApplicationConfigService,
     protected http: HttpClient,
-    protected formBuilder: FormBuilder,
+    protected formBuilder: UntypedFormBuilder,
     protected accountService: AccountService
   ) {}
 

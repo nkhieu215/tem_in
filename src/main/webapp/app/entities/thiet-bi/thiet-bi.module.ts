@@ -12,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
 @NgModule({
   imports: [SharedModule, ThietBiRoutingModule, NgxPaginationModule, NgMultiSelectDropDownModule],
   declarations: [ThietBiComponent, ThietBiDetailComponent, ThietBiUpdateComponent, ThietBiDeleteDialogComponent, EditComponent],
-  entryComponents: [ThietBiDeleteDialogComponent],
   providers: [HttpClient],
 })
 export class ThietBiModule {}

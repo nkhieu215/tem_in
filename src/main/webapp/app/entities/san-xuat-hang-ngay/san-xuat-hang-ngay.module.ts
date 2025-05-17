@@ -16,6 +16,5 @@ import { SanXuatHangNgayRoutingModule } from './route/san-xuat-hang-ngay-routing
     SanXuatHangNgayUpdateComponent,
     SanXuatHangNgayDeleteDialogComponent,
   ],
-  entryComponents: [SanXuatHangNgayDeleteDialogComponent],
 })
 export class SanXuatHangNgayModule {}

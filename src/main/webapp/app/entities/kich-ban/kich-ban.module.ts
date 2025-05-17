@@ -11,6 +11,5 @@ import { KichBanRoutingModule } from './route/kich-ban-routing.module';
 @NgModule({
   imports: [SharedModule, KichBanRoutingModule, NgxPaginationModule, NgMultiSelectDropDownModule],
   declarations: [KichBanComponent, KichBanDetailComponent, KichBanUpdateComponent, KichBanDeleteDialogComponent],
-  entryComponents: [KichBanDeleteDialogComponent],
 })
 export class KichBanModule {}

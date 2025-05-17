@@ -1,5 +1,5 @@
 import { Account } from './../../../core/auth/account.model';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -86,7 +86,7 @@ export class QuanLyThongSoComponent implements OnInit {
     protected modalService: NgbModal,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: UntypedFormBuilder
   ) {}
 
   // ------------------------------------------- lay danh sach quan ly thong so

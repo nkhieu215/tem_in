@@ -1,6 +1,6 @@
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IThietBi } from 'app/entities/thiet-bi/thiet-bi.model';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { SanXuatHangNgayDeleteDialogComponent } from '../delete/san-xuat-hang-ng
 export class SanXuatHangNgayComponent implements OnInit {
   resourceUrl = this.applicationConfigService.getEndpointFor('api/san-xuat-hang-ngay/tim-kiem');
 
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
   formSearch = this.formBuilder.group({
     maKichBan: '',
@@ -85,10 +85,10 @@ export class SanXuatHangNgayComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: UntypedFormBuilder
   ) {}
 
   timKiemSanXuatHangNgay(data: any, page?: number, dontNavigate?: boolean): void {

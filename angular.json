@@ -99,7 +99,6 @@
       }
     }
   },
-  "defaultProject": "jhipster",
   "cli": {
     "analytics": false,
     "cache": {

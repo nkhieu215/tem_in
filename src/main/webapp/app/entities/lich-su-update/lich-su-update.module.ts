@@ -9,6 +9,5 @@ import { LichSuUpdateRoutingModule } from './route/lich-su-update-routing.module
 @NgModule({
   imports: [SharedModule, LichSuUpdateRoutingModule],
   declarations: [LichSuUpdateComponent, LichSuUpdateDetailComponent, LichSuUpdateUpdateComponent, LichSuUpdateDeleteDialogComponent],
-  entryComponents: [LichSuUpdateDeleteDialogComponent],
 })
 export class LichSuUpdateModule {}

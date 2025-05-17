@@ -1,5 +1,5 @@
 import dayjs from 'dayjs/esm';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
@@ -115,7 +115,7 @@ export class LenhSanXuatComponent implements OnInit {
     protected modalService: NgbModal,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: UntypedFormBuilder
   ) {}
   mappingBodySearchAndPagination(): void {
     this.body.maLenhSanXuat = this.maLenhSanXuat;

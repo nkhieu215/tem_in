@@ -1,4 +1,4 @@
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 // import { DataThongSoMay } from './../thong-so-may.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
@@ -57,7 +57,7 @@ export class ThongSoMayComponent implements OnInit {
     protected thongSoMayService: ThongSoMayService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected fb: FormBuilder,
+    protected fb: UntypedFormBuilder,
     protected modalService: NgbModal,
     private http: HttpClient
   ) {}
