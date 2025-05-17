@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { IChiTietKichBan, ChiTietKichBan } from '../chi-tiet-kich-ban.model';
 import { ChiTietKichBanService } from '../service/chi-tiet-kich-ban.service';
 
 @Injectable({ providedIn: 'root' })
-export class ChiTietKichBanRoutingResolveService implements Resolve<IChiTietKichBan> {
+export class ChiTietKichBanRoutingResolveService {
   constructor(protected service: ChiTietKichBanService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IChiTietKichBan> | Observable<never> {
