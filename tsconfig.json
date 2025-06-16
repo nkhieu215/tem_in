@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "esModuleInterop": true,
-    "target": "ES2022",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2020",
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "useDefineForClassFields": false
