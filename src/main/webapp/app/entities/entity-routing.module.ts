@@ -76,6 +76,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'Profile check' },
         loadChildren: () => import('./profile-check/profile-check.module').then(m => m.ProfileCheckModule),
       },
+      {
+        path: 'list-material',
+        data: { pageTitle: 'Danh sách vật tư' },
+        loadChildren: () => import('./profile-check/profile-check.module').then(m => m.ProfileCheckModule),
+      },
       // {
       //   path: 'scan-check',
       //   data: { pageTitle: 'Scan check' },

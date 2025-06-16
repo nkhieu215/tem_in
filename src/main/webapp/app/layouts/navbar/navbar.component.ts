@@ -92,6 +92,16 @@ export class NavbarComponent implements OnInit {
       ul.style.display = 'block';
     }
   }
+  toggleDropDownMaterial(): void {
+    const ul = document.querySelector('.nav-item-material.dropdown ul') as HTMLElement;
+
+    const displayValue = ul.style.display;
+    if (displayValue === 'block') {
+      ul.style.display = 'none';
+    } else {
+      ul.style.display = 'block';
+    }
+  }
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;

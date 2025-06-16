@@ -2,7 +2,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -41,7 +41,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
-    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     ReactiveFormsModule,
     NgxPaginationModule,
     NgSelectModule,
@@ -49,13 +48,14 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
     NgApexchartsModule,
+    HttpClientModule,
+    NgxWebstorageModule.forRoot(),
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
-    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class AppModule {
