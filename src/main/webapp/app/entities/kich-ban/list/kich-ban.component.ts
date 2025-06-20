@@ -14,6 +14,7 @@ import { IKichBan } from '../kich-ban.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { KichBanService } from '../service/kich-ban.service';
 import { KichBanDeleteDialogComponent } from '../delete/kich-ban-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-kich-ban',
@@ -128,7 +129,8 @@ export class KichBanComponent implements OnInit {
     updateBy: [],
     trangThai: [],
   });
-
+  pageSize = 10;
+  pageIndex = 0;
   constructor(
     protected kichBanService: KichBanService,
     protected activatedRoute: ActivatedRoute,
@@ -182,6 +184,11 @@ export class KichBanComponent implements OnInit {
 
   trackId(_index: number, item: IKichBan): number {
     return item.id!;
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
   }
 
   openModal(id: number | undefined, maKichBan: string | null | undefined, content: TemplateRef<any>): void {

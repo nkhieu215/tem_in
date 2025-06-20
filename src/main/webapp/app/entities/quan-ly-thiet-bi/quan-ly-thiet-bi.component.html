@@ -89,12 +89,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="
-            let item of listOfGroupMachine | paginate: { id: 'paginate2', itemsPerPage: itemPerPage, currentPage: page };
-            let i = index
-          "
-        >
+        <tr *ngFor="let item of listOfGroupMachine; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ item.groupName }}</td>
           <td>{{ item.createAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
@@ -124,7 +119,13 @@
         <option value="20">20</option>
         <option value="{{ listOfGroupMachine.length }}">All</option>
       </select>
-      <pagination-controls id="paginate2" (pageChange)="page = $event"></pagination-controls>
+      <mat-paginator
+        [length]="totalItems1"
+        [pageSize]="pageSize1"
+        [pageIndex]="pageIndex1"
+        [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange1($event)"
+      ></mat-paginator>
     </div>
   </div>
 </div>
@@ -309,12 +310,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="
-                let item of listOfMachines | paginate: { id: 'paginate3', itemsPerPage: itemPerPageThietBi, currentPage: page2 };
-                let i = index
-              "
-            >
+            <tr *ngFor="let item of listOfMachines; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ item.id }}</td>
               <td style="text-align: left">{{ item.maThietBi }}</td>
@@ -340,7 +336,13 @@
               <option value="20">20</option>
               <option value="{{ listOfMachines.length }}">All</option>
             </select>
-            <pagination-controls id="paginate3" (pageChange)="page2 = $event"></pagination-controls>
+            <mat-paginator
+              [length]="totalItems2"
+              [pageSize]="pageSize2"
+              [pageIndex]="pageIndex2"
+              [pageSizeOptions]="[5, 10, 20]"
+              (page)="onPageChange2($event)"
+            ></mat-paginator>
           </div>
         </div>
         <button
@@ -406,12 +408,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="
-                let item of listOfMachineAdd | paginate: { id: 'panigation1', itemsPerPage: itemPerPageThietBiKhaiBao, currentPage: page3 };
-                let i = index
-              "
-            >
+            <tr *ngFor="let item of listOfMachineAdd; let i = index">
               <td>
                 <input type="checkbox" class="ui-checkbox" [checked]="item.checked" (change)="updateSelectedMachines(item, $event)" />
               </td>
@@ -440,7 +437,13 @@
               <option value="20">20</option>
               <option value="{{ listOfMachineAdd.length }}">All</option>
             </select>
-            <pagination-controls id="panigation1" (pageChange)="page3 = $event"></pagination-controls>
+            <mat-paginator
+              [length]="totalItems3"
+              [pageSize]="pageSize3"
+              [pageIndex]="pageIndex3"
+              [pageSizeOptions]="[5, 10, 20]"
+              (page)="onPageChange3($event)"
+            ></mat-paginator>
           </div>
         </div>
         <button

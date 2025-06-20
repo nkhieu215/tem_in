@@ -10,7 +10,7 @@ import { SanXuatHangNgayService } from '../service/san-xuat-hang-ngay.service';
 import { ISanXuatHangNgay, SanXuatHangNgay } from '../san-xuat-hang-ngay.model';
 
 import { SanXuatHangNgayUpdateComponent } from './san-xuat-hang-ngay-update.component';
-import { SessionStorageService } from 'ngx-webstorage';
+// import { SessionStorageService } from 'ngx-webstorage';
 
 describe('SanXuatHangNgay Management Update Component', () => {
   let comp: SanXuatHangNgayUpdateComponent;
@@ -30,7 +30,7 @@ describe('SanXuatHangNgay Management Update Component', () => {
             params: from([{}]),
           },
         },
-        SessionStorageService,
+        // SessionStorageService,
       ],
     })
       .overrideTemplate(SanXuatHangNgayUpdateComponent, '')

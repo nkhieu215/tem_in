@@ -124,7 +124,14 @@
             <option value="50">50</option>
           </select>
 
-          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          <mat-paginator
+            [length]="totalItems"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 25]"
+            (page)="onPageChange($event)"
+            style="float: right"
+          >
+          </mat-paginator>
         </div>
       </div>
     </div>
@@ -139,7 +146,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let element of dataUser | paginate: { id: 'paginate', itemsPerPage: itemPerPage, currentPage: page }">
+            <!-- <tr *ngFor="let element of dataUser | paginate: { id: 'paginate', itemsPerPage: itemPerPage, currentPage: page }"> -->
+            <tr *ngFor="let element of dataUser">
               <td>{{ element.username }}</td>
               <td>{{ element.timeLogin }}</td>
             </tr>
@@ -154,7 +162,14 @@
             <option value="50">50</option>
           </select>
 
-          <pagination-controls id="paginate" (pageChange)="page = $event"></pagination-controls>
+          <mat-paginator
+            [length]="totalItems"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 25]"
+            (page)="onPageChange($event)"
+            style="float: right"
+          >
+          </mat-paginator>
         </div>
       </div>
     </div>
@@ -227,7 +242,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of listProfileCheck | paginate: { id: 'paginate1', itemsPerPage: itemPerPage1, currentPage: page1 }">
+                  <tr *ngFor="let item of listProfileCheck">
                     <td>{{ item.machineName }}</td>
                     <td>{{ item.position }}</td>
                     <td style="text-align: left">{{ item.recordName }}</td>
@@ -243,7 +258,14 @@
                     <option value="50">50</option>
                   </select>
 
-                  <pagination-controls id="paginate1" (pageChange)="page1 = $event"></pagination-controls>
+                  <mat-paginator
+                    [length]="totalItems"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="[5, 10, 25]"
+                    (page)="onPageChange($event)"
+                    style="float: right"
+                  >
+                  </mat-paginator>
                 </div>
               </div>
             </div>
@@ -293,12 +315,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="
-                        let item of infoCheckMachine | paginate: { id: 'paginate2', itemsPerPage: itemPerPage2, currentPage: page2 };
-                        let i = index
-                      "
-                    >
+                    <tr *ngFor="let item of infoCheckMachine; let i = index">
                       <td>{{ i + 1 }}</td>
                       <td>{{ item.tenThietBi }}</td>
                       <td></td>
@@ -319,7 +336,14 @@
                     <option value="50">50</option>
                   </select>
 
-                  <pagination-controls id="paginate2" (pageChange)="page2 = $event"></pagination-controls>
+                  <mat-paginator
+                    [length]="totalItems"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="[5, 10, 25]"
+                    (page)="onPageChange($event)"
+                    style="float: right"
+                  >
+                  </mat-paginator>
                 </div>
               </div>
             </div>

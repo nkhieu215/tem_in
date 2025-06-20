@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
@@ -29,6 +30,16 @@ export class QuanLyThietBiComponent implements OnInit {
   page3?: number;
   page4?: number;
   page5?: number;
+
+  totalItems1 = 0;
+  pageSize1 = 10;
+  pageIndex1 = 0;
+  totalItems2 = 0;
+  pageSize2 = 10;
+  pageIndex2 = 0;
+  totalItems3 = 0;
+  pageSize3 = 10;
+  pageIndex3 = 0;
 
   popupThemMoiNhomThietBi = false;
   popupNhomThietBi = false;
@@ -147,6 +158,21 @@ export class QuanLyThietBiComponent implements OnInit {
       item => item.groupName.includes(this.groupName) && item.username.includes(this.userName) && item.statusName.includes(this.statusName)
     );
     console.log('danh sach tim kiem', this.listOfGroupMachine);
+  }
+  onPageChange1(event: PageEvent): void {
+    this.pageIndex1 = event.pageIndex;
+    this.pageSize1 = event.pageSize;
+    this.loadPage();
+  }
+  onPageChange2(event: PageEvent): void {
+    this.pageIndex2 = event.pageIndex;
+    this.pageSize2 = event.pageSize;
+    this.loadPage();
+  }
+  onPageChange3(event: PageEvent): void {
+    this.pageIndex3 = event.pageIndex;
+    this.pageSize3 = event.pageSize;
+    this.loadPage();
   }
   searchMachineName(): void {
     console.log('Danh sách trước khi tìm kiếm', this.listOfMachineAdd);

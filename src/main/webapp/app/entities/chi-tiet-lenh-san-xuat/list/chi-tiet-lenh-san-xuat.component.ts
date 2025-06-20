@@ -13,8 +13,9 @@ import { IChiTietLenhSanXuat } from '../chi-tiet-lenh-san-xuat.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ChiTietLenhSanXuatService } from '../service/chi-tiet-lenh-san-xuat.service';
 import { ChiTietLenhSanXuatDeleteDialogComponent } from '../delete/chi-tiet-lenh-san-xuat-delete-dialog.component';
-import { doc } from 'prettier';
+// import { doc } from 'prettier';
 import { faSquare, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat',
@@ -128,7 +129,8 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-
+  pageSize = 10;
+  pageIndex = 0;
   constructor(
     protected chiTietLenhSanXuatService: ChiTietLenhSanXuatService,
     protected activatedRoute: ActivatedRoute,
@@ -196,6 +198,12 @@ export class ChiTietLenhSanXuatComponent implements OnInit {
     this.body.trangThai = this.trangThai;
     // // console.log('body: ', this.body);
   }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
+  }
+
   nextPage(): void {
     this.pageNumber++;
     this.mappingBodySearchAndPagination();

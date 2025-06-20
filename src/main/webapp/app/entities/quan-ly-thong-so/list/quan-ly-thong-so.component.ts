@@ -13,6 +13,7 @@ import { IQuanLyThongSo } from '../quan-ly-thong-so.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { QuanLyThongSoService } from '../service/quan-ly-thong-so.service';
 import { QuanLyThongSoDeleteDialogComponent } from '../delete/quan-ly-thong-so-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-quan-ly-thong-so',
@@ -50,7 +51,8 @@ export class QuanLyThongSoComponent implements OnInit {
   listQuanLyThongSo: IQuanLyThongSo[] = [];
 
   selectedStatus: string | null = null;
-
+  pageIndex = 0;
+  pageSize = 10;
   searchTerm = '';
   searchResult: any[] = [];
   // searchForm: FormGroup;
@@ -100,7 +102,11 @@ export class QuanLyThongSoComponent implements OnInit {
   onChangeSearch(): void {
     // // console.log('Selected Status:', this.selectedStatus);
   }
-
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
+  }
   onChangeQuanlyThongSo(): void {
     const results = this.listQuanLyThongSo.find((obj: IQuanLyThongSo) => obj.maThongSo === this.maThongSo);
   }

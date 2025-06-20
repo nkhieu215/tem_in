@@ -11,6 +11,7 @@ import { GoogleChartInterface, GoogleChartType } from 'ng2-google-charts';
 import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
 import { formatDate } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'jhi-scan-check',
   templateUrl: './scan-check.component.html',
@@ -95,6 +96,9 @@ export class ScanCheckComponent implements OnInit {
     timeRecorded: string;
     createAt: string;
   }[] = [];
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   public pieChart: GoogleChartInterface = {
     chartType: GoogleChartType.PieChart,
     dataTable: [
@@ -374,6 +378,11 @@ export class ScanCheckComponent implements OnInit {
     clearInterval(this.timer);
     const working = { working: this.dataWorkOrder[0].trangThai, runTime: this.elapsedTime, orderId: this.dataWorkOrder[0].orderId };
     this.http.put<any>(this.updateWorkingURL, working).subscribe();
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
   }
 
   searchChiTiet1(): void {

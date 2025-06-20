@@ -12,6 +12,7 @@ import { ISanXuatHangNgay } from '../san-xuat-hang-ngay.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { SanXuatHangNgayService } from '../service/san-xuat-hang-ngay.service';
 import { SanXuatHangNgayDeleteDialogComponent } from '../delete/san-xuat-hang-ngay-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-san-xuat-hang-ngay',
@@ -59,7 +60,8 @@ export class SanXuatHangNgayComponent implements OnInit {
     phanLoai: [],
     thietBi: [],
   });
-
+  pageSize = 10;
+  pageIndex = 0;
   searchResults: ISanXuatHangNgay[] = [];
 
   // lưu từ khóa tìm kiếm
@@ -100,7 +102,11 @@ export class SanXuatHangNgayComponent implements OnInit {
       this.sanXuatHangNgays = res;
     });
   }
-
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
+  }
   trackThietBiById(_index: number, item: IThietBi): number {
     return item.id!;
   }

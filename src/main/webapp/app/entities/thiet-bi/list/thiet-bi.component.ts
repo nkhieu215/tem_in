@@ -10,6 +10,7 @@ import { IThietBi } from '../thiet-bi.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ThietBiService } from '../service/thiet-bi.service';
 import { ThietBiDeleteDialogComponent } from '../delete/thiet-bi-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-thiet-bi',
@@ -62,6 +63,8 @@ export class ThietBiComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  pageSize = 10;
+  pageIndex = 0;
 
   searchResults: IThietBi[] = [];
 
@@ -123,6 +126,11 @@ export class ThietBiComponent implements OnInit {
       result.push('id');
     }
     return result;
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
   }
 
   handleNavigation(): void {

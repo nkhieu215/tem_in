@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
@@ -51,6 +52,9 @@ export class ProfileCheckComponent implements OnInit {
   page2?: number;
   page3?: number;
   // thông tin phân trang
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   totalData = 0;
   nextPageBtn = false;
   lastPageBtn = false;
@@ -196,6 +200,11 @@ export class ProfileCheckComponent implements OnInit {
       }
       // console.log('total data', res, Math.floor(this.totalData / this.itemPerPage));
     });
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
   }
   getProductList(): void {
     this.http.post<any>(this.listOfProDuctPanigationURL, this.body).subscribe(res => {

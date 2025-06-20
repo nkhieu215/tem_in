@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-  private previousUrlKey = 'previousUrl';
+  private readonly previousUrlKey = 'previousUrl';
 
-  constructor(private sessionStorageService: SessionStorageService) {}
-
+  /** Lưu URL vào sessionStorage */
   storeUrl(url: string): void {
-    this.sessionStorageService.store(this.previousUrlKey, url);
+    sessionStorage.setItem(this.previousUrlKey, url);
   }
 
+  /** Lấy URL từ sessionStorage (hoặc null nếu không có) */
   getUrl(): string | null {
-    return this.sessionStorageService.retrieve(this.previousUrlKey) as string | null;
+    return sessionStorage.getItem(this.previousUrlKey);
   }
 
+  /** Xóa URL đã lưu */
   clearUrl(): void {
-    this.sessionStorageService.clear(this.previousUrlKey);
+    sessionStorage.removeItem(this.previousUrlKey);
   }
 }

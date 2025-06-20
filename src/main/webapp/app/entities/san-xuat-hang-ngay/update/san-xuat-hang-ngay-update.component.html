@@ -42,17 +42,23 @@
               <input class="form-control" type="text" formControlName="loaiThietBi" required />
             </td>
             <td>
-              <ng-multiselect-dropdown
-                [placeholder]="'Search'"
-                [settings]="dropdownSettings"
-                [data]="listMaThietBi"
-                [(ngModel)]="selectedItems"
-                [ngModelOptions]="{ standalone: true }"
-                (onDeSelect)="onDeSelect($event)"
-                (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)"
-              >
-              </ng-multiselect-dropdown>
+              <!-- 1) Search box -->
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Tìm thiết bị</mat-label>
+                <input matInput [formControl]="searchCtrl" placeholder="Search..." />
+              </mat-form-field>
+
+              <!-- 2) Multi-select dropdown -->
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Chọn thiết bị</mat-label>
+                <mat-select [formControl]="selectCtrl" multiple>
+                  <mat-option *ngFor="let item of filteredList" [value]="item">
+                    {{ item.maThietBi }}
+                    <!-- – {{ item.name }} -->
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
               <!-- <tr *ngFor="let item of selectedItems">
                 <td><input type="text" [(ngModel)]="item.maThietBi" [ngModelOptions]="{ standalone: true }" required /></td>
               </tr> -->

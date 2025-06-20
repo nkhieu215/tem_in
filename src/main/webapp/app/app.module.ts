@@ -1,4 +1,4 @@
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -7,7 +7,7 @@ import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+// import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -25,9 +25,9 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { NgxPaginationModule } from 'ngx-pagination';
+// import { NgSelectModule } from '@ng-select/ng-select';
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 @NgModule({
@@ -42,14 +42,14 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     ReactiveFormsModule,
-    NgxPaginationModule,
-    NgSelectModule,
-    NgMultiSelectDropDownModule,
-    Ng2SearchPipeModule,
+    // NgxPaginationModule,
+    // NgSelectModule,
+    // NgMultiSelectDropDownModule,
+    // Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
     NgApexchartsModule,
     HttpClientModule,
-    NgxWebstorageModule.forRoot(),
+    // NgxWebstorageModule.forRoot(),
   ],
   providers: [
     Title,

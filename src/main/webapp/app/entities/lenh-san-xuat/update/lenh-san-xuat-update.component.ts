@@ -13,6 +13,7 @@ import { LenhSanXuatService } from '../service/lenh-san-xuat.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-lenh-san-xuat-update',
@@ -57,7 +58,9 @@ export class LenhSanXuatUpdateComponent implements OnInit {
     groupName: [],
     comment2: [],
   });
-
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   @Input() reelID = '';
   account: Account | null = null;
   constructor(
@@ -89,6 +92,10 @@ export class LenhSanXuatUpdateComponent implements OnInit {
       });
       this.updateForm(lenhSanXuat);
     });
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   trackId(_index: number, item: IChiTietLenhSanXuat): number {

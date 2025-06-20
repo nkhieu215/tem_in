@@ -256,7 +256,14 @@
                   <option value="50">50</option>
                 </select>
 
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                <mat-paginator
+                  [length]="totalItems"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="[5, 10, 25]"
+                  (page)="onPageChange($event)"
+                  style="float: right"
+                >
+                </mat-paginator>
               </div>
             </div>
           </div>

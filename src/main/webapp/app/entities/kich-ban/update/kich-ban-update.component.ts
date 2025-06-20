@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { FormControl } from '@angular/forms';
 
 import { IKichBan, KichBan } from '../kich-ban.model';
 import { KichBanService } from '../service/kich-ban.service';
@@ -91,6 +92,15 @@ export class KichBanUpdateComponent implements OnInit {
   listKichBan: IKichBan[] = [];
   listDayChuyen: { dayChuyen: string }[] = [];
   listNhomSanPham: string[] = [];
+
+  searchCtrl = new FormControl('');
+
+  // control cho mat-select
+  selectCtrl = new FormControl<IThietBi[]>([]);
+
+  // mảng đã lọc theo search
+  filteredList: IThietBi[] = [];
+
   //---------------------------------------------------
   form!: UntypedFormGroup;
   listOfChiTietKichBan: {
@@ -185,6 +195,23 @@ export class KichBanUpdateComponent implements OnInit {
         }
       });
       this.updateForm(kichBan);
+
+      // **Khởi tạo multi-select listMaThietBi và filteredList**
+      this.http.get<IThietBi[]>(this.listThietBiUrl).subscribe((list: IThietBi[]) => {
+        this.listMaThietBi = list.filter(tb => tb.maThietBi != null).map(tb => ({ maThietBi: tb.maThietBi as string }));
+        this.filteredList = [];
+      });
+      // **Thiết lập searchCtrl để filter danh sách**
+      this.searchCtrl.valueChanges.subscribe(text => {
+        const t = (text ?? '').toLowerCase();
+        this.filteredList = []; // hoặc ánh xạ sang IQuanLyThongSo[] nếu cần
+      });
+      // **Theo dõi selectCtrl để cập nhật onSelectItemRequest**
+      this.selectCtrl.valueChanges.subscribe(arr => {
+        this.onSelectItemRequest = (arr ?? [])
+          .map(item => item.maThietBi)
+          .filter((maThietBi): maThietBi is string => typeof maThietBi === 'string');
+      });
     });
 
     this.dropdownSettings = {

@@ -13,6 +13,7 @@ import { ILenhSanXuat, LenhSanXuat } from 'app/entities/lenh-san-xuat/lenh-san-x
 import { LenhSanXuatService } from 'app/entities/lenh-san-xuat/service/lenh-san-xuat.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat-update',
   templateUrl: './chi-tiet-lenh-san-xuat-update.component.html',
@@ -36,6 +37,9 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
   page3?: number;
   showScanInput = false;
 
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   sum = 0;
 
   isSaving = false;
@@ -190,6 +194,11 @@ export class ChiTietLenhSanXuatUpdateComponent implements OnInit {
     test = '';
     // console.log('test:', test);
   }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
+
   //Cập nhật tất cả mã kho panacim
   changeAllStorageUnit(): void {
     const positionSL = this.storageUnit.indexOf('-SL');

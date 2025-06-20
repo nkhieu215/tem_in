@@ -12,6 +12,7 @@ import { ILenhSanXuat } from '../lenh-san-xuat.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { LenhSanXuatService } from '../service/lenh-san-xuat.service';
 import { LenhSanXuatDeleteDialogComponent } from '../delete/lenh-san-xuat-delete-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-lenh-san-xuat',
@@ -108,6 +109,8 @@ export class LenhSanXuatComponent implements OnInit {
   listOfWorkOrderCode: string[] = [];
   listOfVersion: string[] = [];
   resultSearchDateTime = [];
+  pageSize = 10;
+  pageIndex = 0;
 
   constructor(
     protected lenhSanXuatService: LenhSanXuatService,
@@ -172,6 +175,11 @@ export class LenhSanXuatComponent implements OnInit {
     this.backPageBtn = true;
     this.firstPageBtn = true;
     this.getLenhSanXuatList();
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
   }
   findFucntion(): void {
     this.mappingBodySearchAndPagination();

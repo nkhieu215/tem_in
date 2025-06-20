@@ -138,10 +138,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let kichBan of kichBans | paginate: { itemsPerPage: itemPerPage, currentPage: page }; let i = index; trackBy: trackId"
-            data-cy="entityTable"
-          >
+          <tr *ngFor="let kichBan of kichBans; let i = index; trackBy: trackId" data-cy="entityTable">
             <td>
               <span>
                 {{ i + 1 }}
@@ -264,7 +261,14 @@
         <option value="all">All</option>
       </select>
 
-      <pagination-controls (pageChange)="page = $event" style="float: right"></pagination-controls>
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25]"
+        (page)="onPageChange($event)"
+        style="float: right"
+      >
+      </mat-paginator>
     </div>
   </div>
 </div>

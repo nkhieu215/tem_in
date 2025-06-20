@@ -6,6 +6,7 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { ScanCheckComponent } from './scan-check.component';
 import { SharedDataService } from './shared-data.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-doi-chieu-lenh-san-xuat',
@@ -54,6 +55,9 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
   lastPageBtn = false;
   backPageBtn = true;
   firstPageBtn = true;
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   //Dữ liệu tìm kiếm
   body: {
     workOrder: string;
@@ -74,6 +78,7 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     itemPerPage: this.itemPerPage,
     pageNumber: this.pageNumber,
   };
+
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -85,6 +90,11 @@ export class DoiChieuLenhSanXuatComponent implements OnInit {
     protected scanCheck: ScanCheckComponent // private scanCheck: ScanCheckComponent
   ) {}
 
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPage();
+  }
   loadPage(page?: number, dontNavigate?: boolean): void {
     // this.isLoading = true;
     // const pageToLoad: number = page ?? this.page ?? 1;

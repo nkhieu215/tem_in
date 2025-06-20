@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { ILenhSanXuat } from '../lenh-san-xuat.model';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-lenh-san-xuat-detail',
@@ -55,7 +56,9 @@ export class LenhSanXuatDetailComponent implements OnInit {
     partClass?: string | null;
     sapCode?: string | null;
   }[] = [];
-
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   @ViewChild('dvData') dvData!: ElementRef;
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -181,6 +184,10 @@ export class LenhSanXuatDetailComponent implements OnInit {
       ],
     };
     new ngxCsv(this.data, this.fileName, options);
+  }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   exportToExcel(): void {

@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as XLSX from 'xlsx';
 
 import { IChiTietLenhSanXuat } from '../chi-tiet-lenh-san-xuat.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-chi-tiet-lenh-san-xuat-detail',
@@ -27,7 +28,9 @@ export class ChiTietLenhSanXuatDetailComponent implements OnInit {
 
   @Input() itemPerPage = 10;
   page?: number;
-
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
   predicate!: string;
   ascending!: boolean;
 
@@ -84,6 +87,11 @@ export class ChiTietLenhSanXuatDetailComponent implements OnInit {
       });
     }
   }
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
+
   dataExport(list: IChiTietLenhSanXuat[]): void {
     for (let i = 0; i < this.chiTietLenhSanXuatExport.length; i++) {
       const data1: {
