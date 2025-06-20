@@ -28,8 +28,8 @@ import { ErrorComponent } from './layouts/error/error.component';
 // import { NgxPaginationModule } from 'ngx-pagination';
 // import { NgSelectModule } from '@ng-select/ng-select';
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { Ng2GoogleChartsModule } from 'ng2-google-charts';
-import { NgApexchartsModule } from 'ng-apexcharts';
+// import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+// import { NgApexchartsModule } from 'ng-apexcharts';
 @NgModule({
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],
@@ -46,8 +46,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     // NgSelectModule,
     // NgMultiSelectDropDownModule,
     // Ng2SearchPipeModule,
-    Ng2GoogleChartsModule,
-    NgApexchartsModule,
+    // Ng2GoogleChartsModule,
+    // NgApexchartsModule,
     HttpClientModule,
     // NgxWebstorageModule.forRoot(),
   ],
