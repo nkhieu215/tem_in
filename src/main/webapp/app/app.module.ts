@@ -9,7 +9,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { EntityRoutingModule } from './entities/entity-routing.module';
-// import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -39,22 +39,22 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     BrowserModule,
     SharedModule,
     HomeModule,
-    // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
-    // Set this to true to enable service worker (PWA)
     ReactiveFormsModule,
     EntityRoutingModule,
-    // NgxPaginationModule,
-    // NgSelectModule,
-    // NgMultiSelectDropDownModule,
-    // Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
     NgApexchartsModule,
     HttpClientModule,
     NgMultiSelectDropDownModule,
     NgxPaginationModule,
+    NgxWebstorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
-    // NgxWebstorageModule.forRoot(),
+    // jhipster-needle-angular-add-module JHipster will add new module here
+    // Set this to true to enable service worker (PWA)
+    // NgxPaginationModule,
+    // NgSelectModule,
+    // NgMultiSelectDropDownModule,
+    // Ng2SearchPipeModule,
   ],
   providers: [
     Title,

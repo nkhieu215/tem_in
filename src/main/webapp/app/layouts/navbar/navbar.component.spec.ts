@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-// import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 
 import { ProfileInfo } from 'app/layouts/profiles/profile-info.model';
 import { Account } from 'app/core/auth/account.model';
@@ -33,11 +33,7 @@ describe('Navbar Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes([]),
-        // NgxWebstorageModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), NgxWebstorageModule.forRoot()],
       declarations: [NavbarComponent],
       providers: [LoginService, MainComponent],
     })
@@ -91,7 +87,7 @@ describe('Navbar Component', () => {
     comp.ngOnInit();
 
     // THEN
-    expect(comp.account).equal(account);
+    expect(comp.account).toEqual(account);
 
     // WHEN
     accountService.authenticate(null);
