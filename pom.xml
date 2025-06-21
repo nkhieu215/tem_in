@@ -128,6 +128,31 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+
+        <!-- GraphQL Servlet -->
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-servlet</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+
+        <!-- GraphQL Spring Boot Starter -->
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>3.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+            <version>2.7.0</version> <!-- Replace with a valid version -->
+        </dependency>
+        <dependency>
             <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
         </dependency>
