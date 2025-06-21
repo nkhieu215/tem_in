@@ -32,13 +32,18 @@
               </datalist>
             </td>
             <td>
-              <!-- <input class="form-control" list="maThietBi" [(ngModel)]="maThietBi" [ngModelOptions]="{standalone: true}"
-                (change)="getThietBi()">
+              <input
+                class="form-control"
+                list="maThietBi"
+                [(ngModel)]="maThietBi"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="getThietBi()"
+              />
               <datalist id="maThietBi">
-                <option *ngFor="let item of listMaThietBi" value="{{item.maThietBi}}"></option>
-              </datalist> -->
+                <option *ngFor="let item of listMaThietBi" value="{{ item.maThietBi }}"></option>
+              </datalist>
 
-              <!-- <ng-multiselect-dropdown
+              <ng-multiselect-dropdown
                 [placeholder]="'Search'"
                 [settings]="dropdownSettings"
                 [data]="listMaThietBi"
@@ -48,8 +53,8 @@
                 (onSelect)="onItemSelect($event)"
                 (onSelectAll)="onSelectAll($event)"
               >
-              </ng-multiselect-dropdown> -->
-              <mat-form-field class="full-width">
+              </ng-multiselect-dropdown>
+              <!-- <mat-form-field class="full-width">
                 <mat-label>Tìm kiếm thiết bị</mat-label>
                 <input matInput [formControl]="searchCtrl" placeholder="Search..." />
               </mat-form-field>
@@ -58,10 +63,10 @@
                 <mat-select [formControl]="selectCtrl" multiple placeholder="Chọn thiết bị">
                   <mat-option *ngFor="let item of filteredList" [value]="item">
                     {{ item.maThietBi }}
-                    <!-- - {{ item.name }} -->
+                    - {{ item.name }}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
             </td>
 
             <td>

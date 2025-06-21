@@ -1,4 +1,4 @@
-// import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Component, OnInit } from '@angular/core';
 
 import { LoginService } from 'app/login/login.service';
@@ -14,10 +14,13 @@ import { Account } from 'app/core/auth/account.model';
 export class HomeComponent implements OnInit {
   dropdownList: { item_id: number; item_text: string }[] = [];
   selectedList: { item_id: number; item_text: string }[] = [];
-  // dropdownSetting?:IDropdownSettings
+  dropdownSetting?: IDropdownSettings;
   account: Account | null = null;
 
-  constructor(private accountService: AccountService, private loginService: LoginService) {}
+  constructor(
+    private accountService: AccountService,
+    private loginService: LoginService,
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.account = account));

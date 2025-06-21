@@ -79,7 +79,17 @@ import { RouterModule } from '@angular/router';
       {
         path: 'list-material',
         data: { pageTitle: 'Danh sách vật tư' },
-        loadChildren: () => import('./profile-check/profile-check.module').then(m => m.ProfileCheckModule),
+        loadChildren: () => import('./list-material/list-material.module').then(m => m.ListMaterialModule),
+      },
+      {
+        path: 'approve-material-update',
+        data: { pageTitle: 'Quản lí đề nghị câp nhật' },
+        loadChildren: () => import('./approve-material-update/approve-material-update.module').then(m => m.ApproveMaterialUpdateModule),
+      },
+      {
+        path: 'approve-material-history',
+        data: { pageTitle: 'Lịch sử đề nghị câp nhật' },
+        loadChildren: () => import('./approve-material-history/approve-material-history.module').then(m => m.ApproveMaterialHistoryModule),
       },
       // {
       //   path: 'scan-check',

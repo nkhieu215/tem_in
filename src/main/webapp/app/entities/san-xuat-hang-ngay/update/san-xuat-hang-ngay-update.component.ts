@@ -147,7 +147,7 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
     protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected accountService: AccountService
+    protected accountService: AccountService,
   ) {}
 
   ngOnInit(): void {
@@ -164,7 +164,6 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
       this.getNhomSanPham();
       this.http.get<any>(this.listNhomThietBiUrl).subscribe(res1 => {
         this.listNhomThietBi = res1;
-        this.filteredList = this.listMaThietBi;
         if (sanXuatHangNgay.id === undefined) {
           const today = dayjs().startOf('minute');
           sanXuatHangNgay.ngayTao = today;
@@ -192,8 +191,6 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
           this.getMaThietBi(sanXuatHangNgay.loaiThietBi, sanXuatHangNgay.maThietBi);
         }
         this.updateForm(sanXuatHangNgay);
-        // Build filteredList & onSelectItemRequest
-        this.initMultiSelectLogic();
       });
     });
     this.dropdownSettings = {
@@ -585,20 +582,5 @@ export class SanXuatHangNgayUpdateComponent implements OnInit {
     } else {
       this.listOfChiTietKichBan = this.listOfChiTietKichBan.filter(d => d.thongSo !== thongSo);
     }
-  }
-  private initMultiSelectLogic(): void {
-    // ban đầu show full list
-    this.filteredList = [...this.listMaThietBi];
-
-    // khi user gõ vào searchCtrl
-    this.searchCtrl.valueChanges.subscribe(text => {
-      const t = (text ?? '').toLowerCase();
-      this.filteredList = this.listMaThietBi.filter(x => x.maThietBi.toLowerCase().includes(t));
-    });
-
-    // khi user chọn / bỏ chọn, update onSelectItemRequest
-    this.selectCtrl.valueChanges.subscribe((arr: IQuanLyThongSo[] | null) => {
-      this.onSelectItemRequest = (arr ?? []).map((item: IThietBi) => item.maThietBi as string);
-    });
   }
 }

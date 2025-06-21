@@ -32,6 +32,8 @@ import { ErrorComponent } from './layouts/error/error.component';
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { GraphQLModule } from './graphql.module';
+import { Apollo } from 'apollo-angular';
 @NgModule({
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],
@@ -41,6 +43,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     HomeModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    GraphQLModule,
     EntityRoutingModule,
     Ng2GoogleChartsModule,
     NgApexchartsModule,

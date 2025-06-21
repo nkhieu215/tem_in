@@ -140,7 +140,7 @@ export class KichBanUpdateComponent implements OnInit {
     protected fb: UntypedFormBuilder,
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-    protected accountService: AccountService
+    protected accountService: AccountService,
   ) {
     this.form = this.fb.group({
       maKichBan: null,
@@ -195,23 +195,6 @@ export class KichBanUpdateComponent implements OnInit {
         }
       });
       this.updateForm(kichBan);
-
-      // **Khởi tạo multi-select listMaThietBi và filteredList**
-      this.http.get<IThietBi[]>(this.listThietBiUrl).subscribe((list: IThietBi[]) => {
-        this.listMaThietBi = list.filter(tb => tb.maThietBi != null).map(tb => ({ maThietBi: tb.maThietBi as string }));
-        this.filteredList = [];
-      });
-      // **Thiết lập searchCtrl để filter danh sách**
-      this.searchCtrl.valueChanges.subscribe(text => {
-        const t = (text ?? '').toLowerCase();
-        this.filteredList = []; // hoặc ánh xạ sang IQuanLyThongSo[] nếu cần
-      });
-      // **Theo dõi selectCtrl để cập nhật onSelectItemRequest**
-      this.selectCtrl.valueChanges.subscribe(arr => {
-        this.onSelectItemRequest = (arr ?? [])
-          .map(item => item.maThietBi)
-          .filter((maThietBi): maThietBi is string => typeof maThietBi === 'string');
-      });
     });
 
     this.dropdownSettings = {
