@@ -1,5 +1,5 @@
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { KichBanComponent } from './list/kich-ban.component';
@@ -12,7 +12,8 @@ import { KichBanRoutingModule } from './route/kich-ban-routing.module';
   imports: [
     SharedModule,
     KichBanRoutingModule,
-    // NgxPaginationModule, NgMultiSelectDropDownModule
+    NgxPaginationModule,
+    // NgMultiSelectDropDownModule
   ],
   declarations: [KichBanComponent, KichBanDetailComponent, KichBanUpdateComponent, KichBanDeleteDialogComponent],
 })

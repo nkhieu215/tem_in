@@ -134,12 +134,15 @@
             </tr>
           </thead>
 
-          <tr *ngFor="let data of chiTietLenhSanXuats | filter: reelID; let i = index; trackBy: trackId" class="editable-row">
-            <!-- <tr *ngFor="
+          <!-- <tr *ngFor="let data of chiTietLenhSanXuats | filter: reelID; let i = index; trackBy: trackId" class="editable-row"> -->
+          <tr
+            *ngFor="
               let data of chiTietLenhSanXuats | filter: reelID | paginate: { itemsPerPage: itemPerPage, currentPage: page };
               let i = index;
               trackBy: trackId
-            " class="editable-row"> -->
+            "
+            class="editable-row"
+          >
             <td>
               <span>{{ i + 1 }}</span>
             </td>
@@ -273,14 +276,7 @@
             <option value="15">15</option>
             <option value="20">20</option>
           </select>
-          <mat-paginator
-            [length]="totalItems"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="[5, 10, 25]"
-            (page)="onPageChange($event)"
-            style="float: right"
-          >
-          </mat-paginator>
+          <pagination-controls (pageChange)="page = $event" style="float: right"></pagination-controls>
         </div>
       </div>
 

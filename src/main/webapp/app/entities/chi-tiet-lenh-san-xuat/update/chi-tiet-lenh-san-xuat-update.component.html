@@ -197,7 +197,14 @@
               </tr>
             </thead>
 
-            <tr *ngFor="let data of chiTietLenhSanXuatActive | filter: reelID; let i = index; trackBy: trackId" class="editable-row">
+            <tr
+              *ngFor="
+                let data of chiTietLenhSanXuatActive | filter: reelID | paginate: { itemsPerPage: itemPerPage, currentPage: page };
+                let i = index;
+                trackBy: trackId
+              "
+              class="editable-row"
+            >
               <td>
                 <span>{{ i + 1 }}</span>
               </td>
@@ -333,14 +340,7 @@
               <option value="15">15</option>
               <option value="20">20</option>
             </select>
-            <mat-paginator
-              [length]="totalItems"
-              [pageSize]="pageSize"
-              [pageSizeOptions]="[5, 10, 25]"
-              (page)="onPageChange($event)"
-              style="float: right"
-            >
-            </mat-paginator>
+            <pagination-controls (pageChange)="page = $event" style="float: right"></pagination-controls>
           </div>
         </div>
 
@@ -389,7 +389,14 @@
               </tr>
             </thead>
 
-            <tr *ngFor="let data of chiTietLenhSanXuatNotList; let i = index; trackBy: trackId" class="editable-row">
+            <tr
+              *ngFor="
+                let data of chiTietLenhSanXuatNotList | paginate: { itemsPerPage: itemPerPage2, currentPage: page2 };
+                let i = index;
+                trackBy: trackId
+              "
+              class="editable-row"
+            >
               <td>
                 <span>{{ i + 1 }}</span>
               </td>
@@ -516,14 +523,7 @@
               <option value="15">15</option>
               <option value="20">20</option>
             </select>
-            <mat-paginator
-              [length]="totalItems"
-              [pageSize]="pageSize"
-              [pageSizeOptions]="[5, 10, 25]"
-              (page)="onPageChange($event)"
-              style="float: right"
-            >
-            </mat-paginator>
+            <pagination-controls (pageChange)="page2 = $event" style="float: right"></pagination-controls>
           </div>
         </div>
       </div>

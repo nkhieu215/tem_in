@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ProfileCheckComponent } from './profile-check.component';
 const profileCheckRoute: Routes = [
   {
@@ -11,11 +11,7 @@ const profileCheckRoute: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    RouterModule.forChild(profileCheckRoute),
-    // NgxPaginationModule
-  ],
+  imports: [SharedModule, RouterModule.forChild(profileCheckRoute), NgxPaginationModule],
   declarations: [ProfileCheckComponent],
   exports: [ProfileCheckComponent],
 })

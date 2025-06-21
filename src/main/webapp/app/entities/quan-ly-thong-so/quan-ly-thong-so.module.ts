@@ -1,5 +1,5 @@
 // import { NgSelectModule } from '@ng-select/ng-select';
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { QuanLyThongSoComponent } from './list/quan-ly-thong-so.component';
@@ -12,7 +12,8 @@ import { QuanLyThongSoRoutingModule } from './route/quan-ly-thong-so-routing.mod
   imports: [
     SharedModule,
     QuanLyThongSoRoutingModule,
-    // NgxPaginationModule, NgSelectModule
+    NgxPaginationModule,
+    //  NgSelectModule
   ],
   declarations: [QuanLyThongSoComponent, QuanLyThongSoDetailComponent, QuanLyThongSoUpdateComponent, QuanLyThongSoDeleteDialogComponent],
 })

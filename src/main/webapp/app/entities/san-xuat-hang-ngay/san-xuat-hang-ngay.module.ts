@@ -1,5 +1,5 @@
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { SanXuatHangNgayComponent } from './list/san-xuat-hang-ngay.component';
@@ -12,7 +12,8 @@ import { SanXuatHangNgayRoutingModule } from './route/san-xuat-hang-ngay-routing
   imports: [
     SharedModule,
     SanXuatHangNgayRoutingModule,
-    // NgxPaginationModule, NgMultiSelectDropDownModule
+    NgxPaginationModule,
+    // NgMultiSelectDropDownModule
   ],
   declarations: [
     SanXuatHangNgayComponent,

@@ -94,7 +94,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let quanLyThongSo of quanLyThongSos; let i = index; trackBy: trackId" data-cy="entityTable">
+          <tr
+            *ngFor="
+              let quanLyThongSo of quanLyThongSos | paginate: { itemsPerPage: itemPerPage, currentPage: page };
+              let i = index;
+              trackBy: trackId
+            "
+            data-cy="entityTable"
+          >
             <td>
               <a>{{ i + 1 }}</a>
             </td>
@@ -153,13 +160,7 @@
         <option value="all">All</option>
       </select>
 
-      <mat-paginator
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageIndex]="pageIndex"
-        [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPageChange($event)"
-      ></mat-paginator>
+      <pagination-controls (pageChange)="page = $event" style="float: right"></pagination-controls>
     </div>
   </div>
 </div>

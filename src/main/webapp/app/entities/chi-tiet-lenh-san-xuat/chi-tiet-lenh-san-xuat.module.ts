@@ -1,4 +1,4 @@
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { ChiTietLenhSanXuatComponent } from './list/chi-tiet-lenh-san-xuat.component';
@@ -10,12 +10,7 @@ import { ChiTietLenhSanXuatRoutingModule } from './route/chi-tiet-lenh-san-xuat-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    ChiTietLenhSanXuatRoutingModule,
-    // NgxPaginationModule, Ng2SearchPipeModule,
-    FontAwesomeModule,
-  ],
+  imports: [SharedModule, ChiTietLenhSanXuatRoutingModule, NgxPaginationModule, FontAwesomeModule],
   declarations: [
     ChiTietLenhSanXuatComponent,
     ChiTietLenhSanXuatDetailComponent,

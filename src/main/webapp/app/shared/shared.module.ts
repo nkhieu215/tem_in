@@ -20,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { FilterPipe } from './filter/filter.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -35,7 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatPaginatorModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
   ],
   declarations: [
     AlertComponent,
@@ -71,7 +71,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatPaginatorModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
   ],
 })
 export class SharedModule {}

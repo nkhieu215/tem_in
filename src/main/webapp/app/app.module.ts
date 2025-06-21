@@ -1,4 +1,5 @@
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -7,6 +8,7 @@ import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { EntityRoutingModule } from './entities/entity-routing.module';
 // import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -28,8 +30,8 @@ import { ErrorComponent } from './layouts/error/error.component';
 // import { NgxPaginationModule } from 'ngx-pagination';
 // import { NgSelectModule } from '@ng-select/ng-select';
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
-// import { Ng2GoogleChartsModule } from 'ng2-google-charts';
-// import { NgApexchartsModule } from 'ng-apexcharts';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 @NgModule({
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],
@@ -40,15 +42,18 @@ import { ErrorComponent } from './layouts/error/error.component';
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     ReactiveFormsModule,
+    EntityRoutingModule,
     // NgxPaginationModule,
     // NgSelectModule,
     // NgMultiSelectDropDownModule,
     // Ng2SearchPipeModule,
-    // Ng2GoogleChartsModule,
-    // NgApexchartsModule,
+    Ng2GoogleChartsModule,
+    NgApexchartsModule,
     HttpClientModule,
+    NgMultiSelectDropDownModule,
+    NgxPaginationModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     // NgxWebstorageModule.forRoot(),
   ],
   providers: [

@@ -1,4 +1,4 @@
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { ThietBiComponent } from './list/thiet-bi.component';
@@ -13,7 +13,8 @@ import { HttpClient } from '@angular/common/http';
   imports: [
     SharedModule,
     ThietBiRoutingModule,
-    // NgxPaginationModule, NgMultiSelectDropDownModule
+    NgxPaginationModule,
+    // NgMultiSelectDropDownModule
   ],
   declarations: [ThietBiComponent, ThietBiDetailComponent, ThietBiUpdateComponent, ThietBiDeleteDialogComponent, EditComponent],
   providers: [HttpClient],
