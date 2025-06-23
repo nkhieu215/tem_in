@@ -40,7 +40,7 @@ th {
   font-size: 12px;
   font-weight: bold;
   line-height: 2;
-  min-width: 20px;
+  min-width: 30px;
   text-align: center;
 }
 
@@ -237,3 +237,10 @@ th {
 //   width: max-content;
 //   min-width: 100%;
 // }
+::ng-deep .mat-mdc-header-row,
+::ng-deep .mat-mdc-header-cell {
+  position: sticky !important;
+  top: 0;
+  z-index: 100;
+  background: #548ce8;
+}

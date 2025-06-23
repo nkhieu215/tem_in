@@ -1,1 +1,390 @@
-<h1>This is approve history page</h1>
+<div class="function-list" style="display: flex; justify-content: space-between; align-items: center">
+  <div class="left-group" style="display: flex; align-items: center; gap: 15px">
+    <div>
+      <h2>Lịch sử phê duyệt cập nhật vật tư</h2>
+    </div>
+    <div style="margin: 0 10px">
+      <h2>|</h2>
+    </div>
+  </div>
+
+  <div class="right-group" style="display: flex; align-items: center; gap: 15px; margin-right: 15px">
+    <div>
+      <button type="button" (click)="export()" class="btn btn-danger" mat-raised-button>
+        <mat-icon>file_download</mat-icon>Xuất Excel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="full-scroll-table-container">
+  <table mat-table [dataSource]="dataSource_update_manage" multiTemplateDataRows class="mat-elevation-z8 bordered-table" matSort>
+    <ng-container matColumnDef="detail">
+      <th mat-header-cell *matHeaderCellDef style="width: 25px; background-color: #548ce8">
+        <div style="color: white; display: flex; flex-direction: column; align-items: center; text-align: center">
+          <span>Chi tiết</span>
+        </div>
+      </th>
+      <td style="text-align: center" mat-cell *matCellDef="let element">
+        <div class="td-flex-center">
+          <button mat-icon-button (click)="toggleRowExpansion(element)" [attr.aria-label]="'Toggle details for ' + element.requestCode">
+            <mat-icon>{{ expandedElement === element ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="requestCode">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+        <div class="th-container">
+          <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <div class="column-title">Yêu cầu</div>
+              <div>
+                <mat-icon [matMenuTriggerFor]="filterRequestCode" style="color: white">filter_list</mat-icon>
+              </div>
+            </div>
+            <mat-menu #filterRequestCode="matMenu">
+              <button mat-menu-item (click)="setFilterMode('requestCode', 'contains')">Contains</button>
+              <button mat-menu-item (click)="setFilterMode('requestCode', 'not_contains')">Does not contain</button>
+              <button mat-menu-item (click)="setFilterMode('requestCode', 'equals')">Equals</button>
+              <button mat-menu-item (click)="setFilterMode('requestCode', 'not_equals')">Does not equal</button>
+            </mat-menu>
+            <div class="search-container">
+              <div class="custom-search-wrapper">
+                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                  <mat-label>Search</mat-label>
+                  <input
+                    (keyup)="applyFilter('requestCode', $event)"
+                    matInput
+                    [placeholder]="'Search (' + (filterModes['requestCode'] || 'contains') + ')'"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element['requestCode'] }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdTime">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+        <div class="th-container">
+          <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <div class="column-title">Ngày gửi đề nghị</div>
+              <div>
+                <mat-icon [matMenuTriggerFor]="filterCreatedTime" style="color: white">filter_list</mat-icon>
+              </div>
+            </div>
+            <mat-menu #filterCreatedTime="matMenu">
+              <button mat-menu-item (click)="setFilterMode('createdTime', 'contains')">Contains</button>
+              <button mat-menu-item (click)="setFilterMode('createdTime', 'not_contains')">Does not contain</button>
+              <button mat-menu-item (click)="setFilterMode('createdTime', 'equals')">Equals</button>
+              <button mat-menu-item (click)="setFilterMode('createdTime', 'not_equals')">Does not equal</button>
+            </mat-menu>
+            <div class="search-container">
+              <div class="custom-search-wrapper">
+                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                  <mat-label>Search Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [placeholder]="'Search (' + (filterModes['createdTime'] || 'contains') + ')'"
+                    (dateChange)="applyDateFilter('createdTime', $event)"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element['createdTime'] | timestampToDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedTime">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+        <div class="th-container">
+          <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <div class="column-title">Thời gian update</div>
+              <div>
+                <mat-icon [matMenuTriggerFor]="filterUpdatedTime" style="color: white">filter_list</mat-icon>
+              </div>
+            </div>
+            <mat-menu #filterUpdatedTime="matMenu">
+              <button mat-menu-item (click)="setFilterMode('updatedTime', 'contains')">Contains</button>
+              <button mat-menu-item (click)="setFilterMode('updatedTime', 'not_contains')">Does not contain</button>
+              <button mat-menu-item (click)="setFilterMode('updatedTime', 'equals')">Equals</button>
+              <button mat-menu-item (click)="setFilterMode('updatedTime', 'not_equals')">Does not equal</button>
+            </mat-menu>
+            <div class="search-container">
+              <div class="custom-search-wrapper">
+                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                  <mat-label>Search Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [placeholder]="'Search (' + (filterModes['updatedTime'] || 'contains') + ')'"
+                    (dateChange)="applyDateFilter('updatedTime', $event)"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element['updatedTime'] | timestampToDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedBy">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+        <div class="th-container">
+          <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <div class="column-title">Người gửi đề nghị</div>
+              <div>
+                <mat-icon [matMenuTriggerFor]="filterUpdatedBy" style="color: white">filter_list</mat-icon>
+              </div>
+            </div>
+            <mat-menu #filterUpdatedBy="matMenu">
+              <button mat-menu-item (click)="setFilterMode('updatedBy', 'contains')">Contains</button>
+              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_contains')">Does not contain</button>
+              <button mat-menu-item (click)="setFilterMode('updatedBy', 'equals')">Equals</button>
+              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_equals')">Does not equal</button>
+            </mat-menu>
+            <div class="search-container">
+              <div class="custom-search-wrapper">
+                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                  <mat-label>Search</mat-label>
+                  <input
+                    (keyup)="applyFilter('updatedBy', $event)"
+                    matInput
+                    [placeholder]="'Search (' + (filterModes['updatedBy'] || 'contains') + ')'"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element['updatedBy'] }}</td>
+    </ng-container>
+    <ng-container matColumnDef="approvedBy">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+        <div class="th-container">
+          <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <div class="column-title">Người duyệt</div>
+              <div>
+                <mat-icon [matMenuTriggerFor]="filterApprovedBy" style="color: white">filter_list</mat-icon>
+              </div>
+            </div>
+            <mat-menu #filterApprovedBy="matMenu">
+              <button mat-menu-item (click)="setFilterMode('approvedBy', 'contains')">Contains</button>
+              <button mat-menu-item (click)="setFilterMode('approvedBy', 'not_contains')">Does not contain</button>
+              <button mat-menu-item (click)="setFilterMode('approvedBy', 'equals')">Equals</button>
+              <button mat-menu-item (click)="setFilterMode('approvedBy', 'not_equals')">Does not equal</button>
+            </mat-menu>
+            <div class="search-container">
+              <div class="custom-search-wrapper">
+                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                  <mat-label>Search</mat-label>
+                  <input
+                    (keyup)="applyFilter('approvedBy', $event)"
+                    matInput
+                    [placeholder]="'Search (' + (filterModes['approvedBy'] || 'contains') + ')'"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element['approvedBy'] }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="search-header" style="background-color: #548ce8">
+        <div class="header-content">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div class="column-title">Trạng thái</div>
+            <div>
+              <mat-icon [matMenuTriggerFor]="filterStatus" style="color: white">filter_list</mat-icon>
+            </div>
+          </div>
+          <mat-menu #filterStatus="matMenu">
+            <button mat-menu-item (click)="setFilterMode('status', 'contains')">Contains</button>
+            <button mat-menu-item (click)="setFilterMode('status', 'not_contains')">Does not contain</button>
+            <button mat-menu-item (click)="setFilterMode('status', 'equals')">Equals</button>
+            <button mat-menu-item (click)="setFilterMode('status', 'not_equals')">Does not equal</button>
+          </mat-menu>
+          <div class="search-container">
+            <div class="custom-search-wrapper">
+              <mat-form-field appearance="fill" class="small-form-field small-form-field-select">
+                <mat-label>Status</mat-label>
+                <mat-select [ngModel]="searchTerms['status'] || ''" (ngModelChange)="applyFilter('status', $event)">
+                  <mat-option value="">--Tất cả--</mat-option>
+                  <mat-option value="pending">PENDING</mat-option>
+                  <mat-option value="approve">APPROVE</mat-option>
+                  <mat-option value="reject">REJECT</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngClass]="{
+          'status-pending': element.status === 'PENDING',
+          'status-approve': element.status === 'APPROVE',
+          'status-reject': element.status === 'REJECT'
+        }"
+      >
+        <span>
+          {{ element['status'] }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Bảng chi tiết -->
+    <ng-container matColumnDef="expandedDetail">
+      <td style="padding: 0px 20px 0px 10px" mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div
+          style="padding-right: 10px"
+          class="example-element-detail"
+          [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-top: 0px;
+              padding: 10px;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            "
+          >
+            <h2>Danh sách cập nhật chi tiết</h2>
+            <button mat-raised-button color="primary" (click)="exportExpandedDetails(element)">
+              <mat-icon>file_download</mat-icon>
+              Xuất Excel
+            </button>
+          </div>
+
+          <table style="margin-left: 10px" mat-table [dataSource]="dataSoure_update_detail" class="bordered-table">
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['id'] }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="materialId">
+              <th mat-header-cell *matHeaderCellDef>MaterialID</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['materialId'] }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="updatedBy">
+              <th mat-header-cell *matHeaderCellDef>UpdateBy</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['updatedBy'] }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdTime">
+              <th mat-header-cell *matHeaderCellDef>CreatedTime</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['createdTime'] | timestampToDate }}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="updatedTime">
+                            <th mat-header-cell *matHeaderCellDef> UpdatedTime </th>
+                            <td mat-cell *matCellDef="let innerElement"> {{innerElement['updatedTime'] | timestampToDate
+                                }} </td>
+                        </ng-container> -->
+
+            <ng-container matColumnDef="productCode">
+              <th mat-header-cell *matHeaderCellDef>ProductCode</th>
+              <td mat-cell *matCellDef="let innerElement">
+                {{ innerElement['productCode'] }}
+              </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="productName">
+                            <th mat-header-cell *matHeaderCellDef> ProductName </th>
+                            <td mat-cell *matCellDef="let innerElement"> {{innerElement['productName']}} </td>
+                        </ng-container> -->
+
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef>Quantity</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['quantity'] }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Loại yêu cầu</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['type'] }}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="locationId">
+                            <th mat-header-cell *matHeaderCellDef> LocationID </th>
+                            <td mat-cell *matCellDef="let innerElement"> {{innerElement['locationId']}} </td>
+                        </ng-container> -->
+
+            <ng-container matColumnDef="locationName">
+              <th mat-header-cell *matHeaderCellDef>LocationName</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['locationName'] }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let innerElement">{{ innerElement['status'] }}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="requestId">
+                            <th mat-header-cell *matHeaderCellDef> RequestID </th>
+                            <td mat-cell *matCellDef="let innerElement"> {{innerElement['requestId']}} </td>
+                        </ng-container> -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsDetails"></tr>
+            <tr mat-row *matRowDef="let innerRow; columns: displayedColumnsDetails"></tr>
+          </table>
+          <mat-paginator
+            #detailPaginator
+            [pageSizeOptions]="pageSizeOptions"
+            [pageSize]="pageSize"
+            [length]="dataSoure_update_detail.data.length"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+      [class.expanded-row]="row === expandedElement"
+    ></tr>
+  </table>
+</div>
+<div>
+  <mat-paginator
+    #paginator
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize"
+    [length]="dataSource_update_manage.data.length"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

@@ -20,6 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { FilterPipe } from './filter/filter.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TimestampToDatePipe } from './pipes/timestamp-to-date';
+import { StatusLabelPipe } from './pipes/status-label.pipe';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -35,6 +37,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatPaginatorModule,
+    TimestampToDatePipe,
+    StatusLabelPipe,
     // BrowserAnimationsModule,
   ],
   declarations: [
@@ -58,6 +62,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     SortByDirective,
+    TimestampToDatePipe,
+    StatusLabelPipe,
     SortDirective,
     ItemCountComponent,
     FilterPipe,

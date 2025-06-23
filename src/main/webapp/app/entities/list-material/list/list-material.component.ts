@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as XLSX from 'xlsx';
 import { SelectionModel } from '@angular/cdk/collections';
 import { RawGraphQLMaterial, ListMaterialService } from '../services/list-material.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 interface sumary_mode {
   value: string;
@@ -272,6 +273,16 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
+  onLoad(): void {
+    const selectedMode: string = this.form.get('sumary_modeControl')?.value;
+    if (selectedMode) {
+      this.router.navigate(['/list-material/sumary'], {
+        queryParams: { mode: selectedMode },
+      });
+    } else {
+      console.warn('Chưa chọn chế độ tổng hợp.');
+    }
+  }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -326,7 +337,34 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
         return '';
     }
   }
+  public setFilterMode(colDef: string, mode: string): void {
+    this.filterModes[colDef] = mode;
+    console.log(`[setFilterMode] - Cột ${colDef} đã chọn mode: ${mode}`);
+  }
+  public applyDateFilter(colDef: string, event: MatDatepickerInputEvent<Date>): void {
+    const dateValue: Date | null = event.value;
+    if (dateValue) {
+      // Chuyển đổi ngày chọn từ picker thành chuỗi theo định dạng dd/MM/yyyy
+      const formattedDate = dateValue
+        .toLocaleDateString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        })
+        .toLowerCase();
 
+      console.log(`[applyDateFilter] Ngày được chọn từ DatePicker ở cột ${colDef}: ${formattedDate}`);
+
+      // Lưu vào searchTerms với mode "equals"
+      this.searchTerms[colDef] = {
+        mode: 'equals',
+        value: formattedDate,
+      };
+    } else {
+      this.searchTerms[colDef] = { mode: 'contains', value: '' };
+    }
+    this.applyCombinedFilters();
+  }
   applySelectFilter(col: string, value: string): void {
     const mode = this.filterModes[col] || 'equals';
     this.searchTerms[col] = { mode, value };

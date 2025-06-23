@@ -6,6 +6,7 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { EntityRoutingModule } from './entities/entity-routing.module';
@@ -33,22 +34,28 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { GraphQLModule } from './graphql.module';
-import { Apollo } from 'apollo-angular';
+// import { ApolloAngularModule} from 'apollo-angular';
+// import { HttpLinkModule } from 'apollo-angular/http';
+import { ListMaterialModule } from './entities/list-material/list-material.module';
 @NgModule({
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     SharedModule,
     HomeModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    GraphQLModule,
+    ListMaterialModule,
     EntityRoutingModule,
     Ng2GoogleChartsModule,
     NgApexchartsModule,
     HttpClientModule,
     NgMultiSelectDropDownModule,
+    // HttpLinkModule,
+    GraphQLModule,
+    // ApolloAngularModule,
     NgxPaginationModule,
     NgxWebstorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),

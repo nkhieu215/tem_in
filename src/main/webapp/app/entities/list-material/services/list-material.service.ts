@@ -5,6 +5,7 @@ import { environment } from 'app/environments/environment';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { Apollo, gql } from 'apollo-angular';
+import { MaterialItem } from '../dialog/list-material-update-dialog';
 // import { GraphQLModule } from 'app/graphql.module';
 
 // #region GraphQL Queries
@@ -335,6 +336,7 @@ export class ListMaterialService {
           this._materialsData.next(mappedData);
           this._totalCount.next(mappedData.length);
           this._materialsDataFetchedOnce = true;
+          console.log('typeof callback:', typeof apiData);
           console.log(`MaterialService (HTTP): Materials data ${forceRefresh ? 'refreshed' : 'loaded'}. Count:`, mappedData.length);
         } else {
           console.warn('MaterialService (HTTP): Materials API did not return an array. Received:', apiData);
@@ -505,53 +507,60 @@ export class ListMaterialService {
     }
   }
 
-  //   public postInventoryUpdateRequest(
-  //     dialogData: { updatedItems: MaterialItem[], selectedWarehouse?: RawGraphQLLocation | string | null, approvers: string[] },
-  //     currentUser: string
-  //   ): Observable<any> {
-  //     const requestCode = `REQ-${Date.now()}`;
-  //     const currentTime = new Date().toISOString();
-  //     const requestHeader: inventory_update_requests = {
-  //       id: null,
-  //       requestCode: requestCode,
-  //       createdTime: currentTime,
-  //       updatedTime: currentTime,
-  //       updatedBy: currentUser,
-  //       approvedBy: dialogData.approvers ? dialogData.approvers.join(', ') : '',
-  //       status: 'PENDING'
-  //     };
-  //     const requestDetails: inventory_update_requests_detail[] = dialogData.updatedItems.map(item => {
-  //       return {
-  //         id: null,
-  //         materialId: item.materialIdentifier,
-  //         updatedBy: currentUser,
-  //         createdTime: currentTime,
-  //         updatedTime: currentTime,
-  //         productCode: item.partNumber,
-  //         productName: item.partNumber,
-  //         quantity: String(item.quantity),
-  //         type: item.extendExpiration ? 'EXTEND' : 'MOVE',
-  //         locationId: item.locationId ?? '',
-  //         locationName: this.getLocationNameById(item.locationId) ?? '',
-  //         status: item.calculatedStatus,
-  //         requestId: null
-  //       };
-  //     });
-  //     const payload: UpdateRequestInfo = {
-  //       request: requestHeader,
-  //       detail: requestDetails
-  //     };
-  //     const headers = new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //     });
-  //     return this.http.post(this.apiUrl_post_request_update, payload, { headers }).pipe(
-  //       tap(() => {
-  //         console.log('MaterialService: Inventory update request successful. Refreshing materials data.');
-  //         this.fetchMaterialsData(0, this.defaultPageSize, undefined, undefined, undefined, true);
-  //         this.fetchAllInventoryUpdateRequests();
-  //       })
-  //     );
-  //   }
+  public postInventoryUpdateRequest(
+    dialogData: { updatedItems: MaterialItem[]; selectedWarehouse?: RawGraphQLLocation | string | null; approvers: string[] },
+    currentUser: string,
+  ): Observable<any> {
+    const requestCode = `REQ-${Date.now()}`;
+    const currentTime = new Date().toISOString();
+
+    const requestHeader: inventory_update_requests = {
+      id: null,
+      requestCode: requestCode,
+      createdTime: currentTime,
+      updatedTime: currentTime,
+      updatedBy: currentUser,
+      approvedBy: dialogData.approvers ? dialogData.approvers.join(', ') : '',
+      status: 'PENDING',
+    };
+
+    const requestDetails: inventory_update_requests_detail[] = dialogData.updatedItems.map(item => ({
+      id: null,
+      materialId: item.materialIdentifier,
+      updatedBy: currentUser,
+      createdTime: currentTime,
+      updatedTime: currentTime,
+      productCode: item.partNumber,
+      productName: item.partNumber,
+      quantity: String(item.quantity),
+      type: item.extendExpiration ? 'EXTEND' : 'MOVE',
+      locationId: item.locationId ?? '',
+      locationName: this.getLocationNameById(item.locationId) ?? '',
+      status: item.calculatedStatus,
+      requestId: null,
+    }));
+
+    const payload: UpdateRequestInfo = {
+      request: requestHeader,
+      detail: requestDetails,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .post(this.apiUrl_post_request_update, payload, { headers })
+      .pipe(
+        tap(
+          () => (
+            console.log('MaterialService: Inventory update request successful. Refreshing materials data.'),
+            this.fetchMaterialsData(0, this.defaultPageSize, undefined, undefined, undefined, true),
+            this.fetchAllInventoryUpdateRequests()
+          ),
+        ),
+      );
+  }
 
   public postApproveInventoryUpdate(
     parentRequestId: number | null,

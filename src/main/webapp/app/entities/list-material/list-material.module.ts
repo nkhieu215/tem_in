@@ -19,9 +19,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ListMaterialComponent } from './list/list-material.component';
 import { ListMaterialUpdateComponent } from './update/list-material-update.component';
 import { ListMaterialRoutingModule } from './route/list-material-routing.module';
+import { ListMaterialUpdateDialogComponent } from './dialog/list-material-update-dialog';
+import { MatDialogContent } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogActions } from '@angular/material/dialog';
+import { ListMaterialSumaryComponent } from './sumary/list-material-sumary.component';
 // import { ApolloModule } from 'apollo-angular';
-import { HttpClientModule } from '@angular/common/http';
-import { ListMaterialService } from './services/list-material.service';
+// import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -38,7 +42,7 @@ import { ListMaterialService } from './services/list-material.service';
     MatSelectModule,
     MatMenuModule,
     // ApolloModule,
-    HttpClientModule,
+    // HttpClientModule,
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -46,10 +50,13 @@ import { ListMaterialService } from './services/list-material.service';
     MatPaginatorModule,
     ListMaterialRoutingModule,
     SharedModule,
+    MatDialogContent,
+    MatAutocompleteModule,
+    MatDialogActions,
   ],
 
-  declarations: [ListMaterialComponent, ListMaterialUpdateComponent],
+  declarations: [ListMaterialComponent, ListMaterialUpdateComponent, ListMaterialUpdateDialogComponent, ListMaterialSumaryComponent],
 
-  exports: [ListMaterialComponent, ListMaterialUpdateComponent],
+  exports: [ListMaterialComponent, ListMaterialUpdateComponent, ListMaterialUpdateDialogComponent],
 })
 export class ListMaterialModule {}

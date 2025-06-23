@@ -7,20 +7,14 @@
       <h2>|</h2>
     </div>
     <div class="listupdate-with-badge">
-      <button mat-raised-button routerLink="/material/update-list"><mat-icon> list_alt</mat-icon>Danh sách cập nhật</button>
-      <div class="cart-badge">
-        {{ checkedCount() }}
-      </div>
+      <button mat-raised-button routerLink="update-list"><mat-icon> list_alt</mat-icon>Danh sách cập nhật</button>
+      <div class="cart-badge">{{ checkedCount() }}</div>
     </div>
     <div>
-      <button mat-raised-button><mat-icon>center_focus_weak</mat-icon>Scan</button>
-      <!-- <button mat-raised-button (click)="focusScanInput()"><mat-icon>center_focus_weak</mat-icon>Scan</button> -->
+      <button mat-raised-button (click)="focusScanInput()"><mat-icon>center_focus_weak</mat-icon>Scan</button>
     </div>
     <div *ngIf="isScanMode">
       <button mat-raised-button *ngIf="scanResult" (click)="refreshScan()"><mat-icon>refresh</mat-icon>Refresh</button>
-      <!-- <button mat-raised-button *ngIf="scanResult">
-                <mat-icon>refresh</mat-icon>Refresh
-            </button> -->
     </div>
   </div>
 
@@ -42,9 +36,7 @@
             </mat-selection-list>
           </div>
           <div style="display: flex; justify-content: flex-end; margin: 10px 0">
-            <button mat-button style="background-color: rgb(65, 235, 53); margin-right: 15px">Load</button>
-            <!-- <button mat-button style="background-color: rgb(65, 235, 53); margin-right: 15px;">Load</button> -->
-            <!-- <button mat-button style="background-color: rgb(65, 235, 53); margin-right: 15px;" (click)="onLoad()">Load</button> -->
+            <button mat-button style="background-color: rgb(65, 235, 53); margin-right: 15px" (click)="onLoad()">Load</button>
           </div>
         </form>
       </mat-menu>
@@ -67,14 +59,6 @@
             >
               {{ columnSelectionGroup().name }}
             </mat-checkbox>
-            <mat-checkbox
-              color="primary"
-              style="margin: 0; padding-left: 20px; padding-right: 30px; list-style: none"
-              class="example-margin"
-              [checked]="columnSelectionGroup().completed"
-            >
-              {{ columnSelectionGroup().name }}
-            </mat-checkbox>
           </span>
           <hr />
           <span class="example-list-section">
@@ -82,9 +66,6 @@
               @for (subtask of columnSelectionGroup().subtasks; track subtask; let i = $index) {
                 <li>
                   <mat-checkbox color="primary" [checked]="subtask.completed" (change)="update($event.checked, i)">
-                    {{ subtask.name }}
-                  </mat-checkbox>
-                  <mat-checkbox color="primary" [checked]="subtask.completed">
                     {{ subtask.name }}
                   </mat-checkbox>
                 </li>
@@ -96,7 +77,6 @@
     </div>
     <div>
       <button mat-raised-button (click)="export()"><mat-icon> file_download</mat-icon>Xuất Excel</button>
-      <!-- <button mat-raised-button><mat-icon> file_download</mat-icon>Xuất Excel</button> -->
     </div>
   </div>
 </div>
@@ -117,8 +97,7 @@
           <div style="display: flex; color: white; justify-content: space-between">
             <div>{{ getColumnDisplayName(colDef) }}</div>
             <div>
-              <!-- <mat-icon [matMenuTriggerFor]="filterMenuCol" style="color: white;">filter_list</mat-icon> -->
-              <mat-icon style="color: white">filter_list</mat-icon>
+              <mat-icon [matMenuTriggerFor]="filterMenuCol" style="color: white">filter_list</mat-icon>
             </div>
           </div>
 
@@ -126,20 +105,15 @@
           <div class="search-container">
             <div class="custom-search-wrapper">
               <!-- DATE PICKER -->
-              <!-- <ng-container *ngIf="isDateField(colDef); else textInputTemplate">
-                                <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
-                                    <mat-label>Search Date</mat-label>
-                                    <input matInput [matDatepicker]="picker"
-                                        [placeholder]="'Search (' + (filterModes[colDef] || 'contains') + ')'"
-                                        (dateChange)="applyDateFilter(colDef, $event)">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </ng-container> -->
               <ng-container *ngIf="isDateField(colDef); else textInputTemplate">
                 <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                   <mat-label>Search Date</mat-label>
-                  <input matInput [matDatepicker]="picker" [placeholder]="'Search (' + (filterModes[colDef] || 'contains') + ')'" />
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [placeholder]="'Search (' + (filterModes[colDef] || 'contains') + ')'"
+                    (dateChange)="applyDateFilter(colDef, $event)"
+                  />
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -192,12 +166,12 @@
           </div>
 
           <!-- Menu Filter của cột (mỗi cột dùng menu riêng) -->
-          <!-- <mat-menu #filterMenuCol="matMenu">
-                        <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Contains</button>
-                        <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Does not contain</button>
-                        <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Equals</button>
-                        <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Does not equal</button>
-                    </mat-menu> -->
+          <mat-menu #filterMenuCol="matMenu">
+            <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Contains</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Does not contain</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Equals</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Does not equal</button>
+          </mat-menu>
         </ng-template>
       </th>
 
@@ -218,13 +192,13 @@
 
           <!-- status -->
           <ng-container *ngSwitchCase="'status'">
-            <!-- {{ row.status | statusLabel }} -->
+            {{ row.status | statusLabel }}
           </ng-container>
 
           <!-- date -->
           <ng-container *ngSwitchDefault>
             <ng-container *ngIf="isDateField(colDef); else plainCell">
-              <!-- {{ row[colDef] | timestampToDate }} -->
+              {{ row[colDef] | timestampToDate }}
             </ng-container>
             <ng-template #plainCell>
               {{ row[colDef] }}
@@ -234,7 +208,7 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" sticky></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
