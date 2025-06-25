@@ -152,10 +152,10 @@
 
           <!-- Menu Filter của cột (mỗi cột dùng menu riêng) -->
           <mat-menu #filterMenuCol="matMenu">
-            <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Contains</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Does not contain</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Equals</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Does not equal</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Có chứa</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Không chứa</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Bằng</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Không bằng</button>
           </mat-menu>
         </ng-container>
       </th>

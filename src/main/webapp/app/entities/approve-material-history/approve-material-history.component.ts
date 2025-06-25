@@ -26,6 +26,11 @@ export interface ColumnConfig {
   matColumnDef: string;
   completed: boolean;
 }
+export const STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Đang chờ duyệt',
+  APPROVE: 'Đã phê duyệt',
+  REJECT: 'Từ chối duyệt',
+};
 export interface columnSelectionGroup {
   name: string;
   completed: boolean;
@@ -62,16 +67,19 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   // #region Public properties
   expandedElement: inventory_update_requests | null = null;
   selection = new SelectionModel<inventory_update_requests_detail>(true, []);
+  STATUS_LABELS = STATUS_LABELS;
   tableMaxWidth: string = '100%';
   displayedColumns: string[] = ['detail', 'requestCode', 'createdTime', 'updatedTime', 'updatedBy', 'approvedBy', 'status'];
   displayedColumnsDetails: string[] = [
     'materialId',
     'updatedBy',
     'createdTime',
+    'expiredTime',
     // 'updatedTime',
     'productCode',
     // 'productName',
     'quantity',
+    'quantityChange',
     'type',
     // 'locationId',
     'locationName',
@@ -477,6 +485,20 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
           }
 
           let cellValue = '';
+          if (colDef === 'status') {
+            // chuyển code sang label tiếng Việt
+            cellValue = STATUS_LABELS[rawValue] || rawValue.toLowerCase();
+            const codeValue = rawValue.toLowerCase();
+            if (
+              (searchMode === 'contains' && !cellValue.toLowerCase().includes(searchTerm) && !codeValue.includes(searchTerm)) ||
+              (searchMode === 'not_contains' && (cellValue.toLowerCase().includes(searchTerm) || codeValue.includes(searchTerm))) ||
+              (searchMode === 'equals' && cellValue.toLowerCase() !== searchTerm && codeValue !== searchTerm) ||
+              (searchMode === 'not_equals' && (cellValue.toLowerCase() === searchTerm || codeValue === searchTerm))
+            ) {
+              return false;
+            }
+            continue;
+          }
 
           if (['createdTime', 'updatedTime'].includes(colDef)) {
             let dateObj: Date;

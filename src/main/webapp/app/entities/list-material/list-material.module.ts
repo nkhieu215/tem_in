@@ -23,7 +23,9 @@ import { ListMaterialUpdateDialogComponent } from './dialog/list-material-update
 import { MatDialogContent } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogActions } from '@angular/material/dialog';
+import { MatSpinner } from '@angular/material/progress-spinner';
 import { ListMaterialSumaryComponent } from './sumary/list-material-sumary.component';
+import { MatRadioModule } from '@angular/material/radio';
 // import { ApolloModule } from 'apollo-angular';
 // import { HttpClientModule } from '@angular/common/http';
 
@@ -41,9 +43,11 @@ import { ListMaterialSumaryComponent } from './sumary/list-material-sumary.compo
     MatInputModule,
     MatSelectModule,
     MatMenuModule,
+    MatRadioModule,
     // ApolloModule,
     // HttpClientModule,
     MatListModule,
+    MatSpinner,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,

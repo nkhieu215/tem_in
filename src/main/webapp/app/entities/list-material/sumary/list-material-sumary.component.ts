@@ -77,8 +77,9 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
   // #region Public properties
   tableWidth: string = '100%';
   value = '';
+  groupingFields: string[] = ['partNumber', 'locationName']; // mặc định
   checkedCount = signal(0);
-  displayedColumns: string[] = ['expand', 'groupingKey', 'totalQuantity', 'totalAvailableQuantity', 'count'];
+  displayedColumns: string[] = ['expand', ...this.groupingFields, 'totalQuantity', 'totalAvailableQuantity', 'count'];
   dataSource = new MatTableDataSource<AggregatedPartData>();
   length = 0;
   pageSize = 15;
@@ -149,8 +150,10 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
       sessionStorage.removeItem('aggregatedPageReloaded');
     }
     this.route.queryParams.subscribe(params => {
-      this.groupingField = params['mode'] || 'partNumber' || 'locationName' || 'updatedBy' || 'materialTraceId';
-      console.log('AggregatedPartComponent - groupingField:', this.groupingField);
+      const mainField = params['mode'] || 'partNumber';
+      // Nếu đã là partNumber thì chỉ group theo 1 trường, ngược lại thì group theo 2 trường
+      this.groupingFields = mainField === 'partNumber' ? ['partNumber'] : [mainField, 'partNumber'];
+      this.displayedColumns = ['expand', ...this.groupingFields, 'totalQuantity', 'totalAvailableQuantity', 'count'];
       this.MaterialService.materialsData$.subscribe((data: RawGraphQLMaterial[]) => {
         console.log('[ngOnInit] Received materialsData:', data);
         this.groupData(data);
@@ -172,13 +175,16 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
 
   // #region Public methods
   onLoad(): void {
-    const selectedMode: string = this.form.get('sumary_modeControl')?.value;
+    const selectedMode = this.form.get('sumary_modeControl')?.value;
     if (selectedMode) {
-      this.router.navigate(['sumary'], {
-        queryParams: { mode: selectedMode },
-      });
-    } else {
-      console.warn('Chưa chọn chế độ tổng hợp.');
+      sessionStorage.setItem('aggregatedPageReloaded', 'true');
+      this.router
+        .navigate(['/list-material/sumary'], {
+          queryParams: { mode: selectedMode, groupBy: 'partNumber' },
+        })
+        .then(() => {
+          location.reload();
+        });
     }
   }
 
@@ -191,11 +197,17 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
       console.warn('Không có dữ liệu để nhóm.');
       return;
     }
+    const groupingFields = Array.isArray(this.groupingFields) ? this.groupingFields : [];
+    if (groupingFields.length === 0) {
+      console.warn('Không có trường group hợp lệ!');
+      return;
+    }
     const groups = new Map<string, AggregatedPartData>();
     data.forEach(item => {
-      const key = (item as any)[this.groupingField];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      const key = this.groupingFields.map(f => (item as any)[f]).join('|');
       if (!key) {
-        console.warn(`Item không có trường ${this.groupingField}:`, item);
+        console.warn(`Item không có đủ trường group:`, item);
         return;
       }
       if (!groups.has(key)) {
@@ -205,22 +217,22 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
           count: 0,
           details: [],
         };
-        group[this.groupingField] = key;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        this.groupingFields.forEach(f => (group[f] = (item as any)[f]));
         groups.set(key, group);
       }
       const group = groups.get(key)!;
-      group.totalQuantity += item.quantity;
-      group.totalAvailableQuantity += item.availableQuantity;
+      group.totalQuantity += Number(item.quantity) || 0;
+      group.totalAvailableQuantity += Number(item.availableQuantity) || 0;
       group.count++;
       group.details.push(item);
     });
-    this.groupedData = Array.from(groups.values());
+    this.groupedData = Array.from(groups.values()).filter(group => group.totalQuantity !== 0);
     this.groupedData.forEach(row => {
       row.detailDataSource = new MatTableDataSource(row.details);
     });
     this.dataSource.data = this.groupedData;
     this.length = this.groupedData.length;
-    console.log('Grouped Data:', this.groupedData);
   }
 
   toggleRow(element: AggregatedPartData): void {

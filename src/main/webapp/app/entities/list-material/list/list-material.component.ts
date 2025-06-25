@@ -132,14 +132,15 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     materialIdentifier: '',
   };
   isScanMode = false;
-  public scanResult: string = '';
+  scanResult = '';
+  scanError = '';
   // #endregion
 
   // #region ViewChild
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
-  @ViewChild('scanInput') scanInput!: ElementRef;
+  @ViewChild('scanInput') scanInput!: ElementRef<HTMLInputElement>;
   // #endregion
 
   // #region Private properties
@@ -464,58 +465,64 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  focusScanInput(): void {
+  startScan(): void {
+    this.scanError = '';
+    this.scanResult = '';
     this.isScanMode = true;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    setTimeout(() => this.scanInput?.nativeElement.focus(), 0);
+    setTimeout(() => {
+      this.scanInput.nativeElement.value = '';
+      this.scanInput.nativeElement.focus();
+    }, 0);
   }
 
   exitScanMode(): void {
     this.isScanMode = false;
   }
+  onScanEnter(rawValue: string): void {
+    this.scanError = '';
 
-  handleScanInput(scanString: string, event?: KeyboardEvent): void {
-    const parts = scanString.split('#');
-    const inventoryTerm = parts[0] || '';
+    const scanString = rawValue.trim();
+    if (!scanString) {
+      this.scanError = 'Không nhận diện được mã vật tư, vui lòng thử lại!';
+      this.isScanMode = false;
+      return;
+    }
+
+    const inventoryTerm = scanString.split('#')[0].trim().toLowerCase();
     if (!inventoryTerm) {
-      console.warn('[handleScanInput] - Chuỗi scan không hợp lệ hoặc rỗng');
+      this.scanError = 'Không nhận diện được mã vật tư, vui lòng thử lại!';
+      this.isScanMode = false;
       return;
     }
     this.scanResult = inventoryTerm.trim().toLowerCase();
     const mode = this.filterModes['materialIdentifier'] || 'contains';
     this.searchTerms['materialIdentifier'] = {
-      mode: mode,
-      value: inventoryTerm.trim().toLowerCase(),
+      mode: this.filterModes['materialIdentifier'] || 'equals',
+      value: inventoryTerm,
     };
-    const filterObject = {
+    this.dataSource.filter = JSON.stringify({
       textFilters: this.searchTerms,
       dialogFilters: {},
-    };
+    });
 
-    console.log('[handleScanInput] - filterObject:', filterObject);
-    this.dataSource.filter = JSON.stringify(filterObject);
-    if (event != null) {
-      event.stopPropagation();
-      event.preventDefault();
+    const matchCount = this.dataSource.filteredData.length;
+    if (matchCount === 0) {
+      this.scanError = `Không tìm thấy vật tư "${inventoryTerm}"`;
+      this.isScanMode = false;
+      return;
     }
   }
 
   refreshScan(): void {
+    this.scanError = '';
     this.scanResult = '';
-    if (Object.prototype.hasOwnProperty.call(this.searchTerms, 'materialIdentifier')) {
-      delete this.searchTerms['materialIdentifier'];
-    }
-    const filterObject = {
+    delete this.searchTerms['materialIdentifier'];
+    this.dataSource.filter = JSON.stringify({
       textFilters: this.searchTerms,
       dialogFilters: {},
-    };
-
-    console.log('[refreshScan] - Dữ liệu filter mới:', filterObject);
-    this.dataSource.filter = JSON.stringify(filterObject);
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    this.exitScanMode();
+    });
+    this.dataSource.paginator?.firstPage();
+    this.isScanMode = false;
   }
 
   updateDisplayedColumns(): void {

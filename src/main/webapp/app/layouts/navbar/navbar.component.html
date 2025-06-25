@@ -3,7 +3,84 @@
     <img src="../../../content/images/logo-rang-dong.webp" alt="Logo-RangDong" class="sidebar-img" />
   </a>
   <div [ngSwitch]="account !== null">
-    <nav>
+    <nav id="manu-bar" style="max-width: 400px">
+      <div class="sidebar-content" style="margin-right: 10px">
+        <div class="sidebar-menu">
+          <ul style="list-style-type: none; padding-left: 10px; margin-top: 2px">
+            <li
+              class="sidebar-menu-item"
+              style="marker: none"
+              *ngFor="let menu of menus"
+              [ngClass]="{ active: menu.active, 'sidebar-dropdown': menu.type === 'dropdown' }"
+            >
+              <div class="sidebar-menu-link" *ngIf="menu.type !== 'header'" (click)="toggle(menu)" style="height: 50px">
+                <div routerLink="/home" style="display: flex; align-items: center" *ngIf="menu.type === 'home'">
+                  <mat-icon class="sidebar-menu-icon">home</mat-icon>
+                  <a>
+                    <span class="sidebar-menu-title">{{ menu.title }}</span>
+                  </a>
+                </div>
+                <div style="display: flex; align-items: center" *ngIf="menu.type !== 'home'">
+                  <mat-icon class="sidebar-menu-icon">{{ menu.icon }}</mat-icon>
+                  <a>
+                    <span class="sidebar-menu-title">{{ menu.title }}</span>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="menu.type === 'dropdown'" class="sidebar-submenu" [@slide]="getState(menu)">
+                <ul>
+                  <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenus">
+                    <div class="sidebar-submenu-link">
+                      <a class="sidebar-submenu-title" [routerLink]="submenu.link" style="display: flex; align-items: center; height: 100%">
+                        {{ submenu.title }}
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="sidebar-menu-item" [ngClass]="{ active: isAccountOpen, 'sidebar-dropdown': true }">
+              <div class="sidebar-menu-link" (click)="toggleDropDown()" style="height: 50px; display: flex; align-items: center">
+                <mat-icon class="sidebar-menu-icon">account_box</mat-icon>
+                <a>
+                  <span class="sidebar-menu-title" *ngIf="!isNavbarCollapsed">
+                    {{ account?.login }}
+                  </span>
+                </a>
+              </div>
+              <div class="sidebar-submenu" [@slide]="getState(accountMenu)">
+                <ul>
+                  <li class="sidebar-submenu-item">
+                    <div class="sidebar-submenu-link">
+                      <a
+                        class="sidebar-submenu-title"
+                        routerLink="account/settings"
+                        routerLinkActive="active"
+                        style="display: flex; align-items: center; height: 100%"
+                        (click)="collapseNavbar()"
+                      >
+                        <mat-icon class="sidebar-menu-icon">wrench</mat-icon>
+                        <span>Cài đặt</span>
+                      </a>
+                    </div>
+                  </li>
+                  <li class="sidebar-submenu-item">
+                    <div class="sidebar-submenu-link">
+                      <a class="sidebar-submenu-title" (click)="logout()" style="display: flex; align-items: center; height: 100%">
+                        <mat-icon class="sidebar-menu-icon">exit_to_app</mat-icon>
+                        <span>Đăng xuất</span>
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- <nav>
       <ul class="navbar-nav">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()" title="Home">
@@ -90,7 +167,6 @@
           </ul>
         </li>
 
-        <!-- Menu dán tem -->
         <li
           ngbDropdown
           class="nav-item-stamp2 dropdown pointer"
@@ -131,7 +207,6 @@
           </ul>
         </li>
 
-        <!-- Menu dán tem -->
         <li
           ngbDropdown
           class="nav-item-material dropdown pointer"
@@ -218,7 +293,7 @@
           </ul>
         </li>
       </ul>
-    </nav>
+    </nav> -->
   </div>
   <button class="sidebar-collapse-btn" (click)="toggleSidebar()">
     <fa-icon icon="bars"></fa-icon>

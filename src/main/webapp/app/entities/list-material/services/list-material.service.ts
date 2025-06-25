@@ -69,9 +69,11 @@ const GET_UPDATE_REQUEST_DETAIL_QUERY = gql`
       updatedBy
       createdTime
       updatedTime
+      expiredTime
       productCode
       productName
       quantity
+      quantityChange
       type
       locationId
       locationName
@@ -158,9 +160,11 @@ export interface inventory_update_requests_detail {
   productCode: string;
   productName: string;
   quantity: string;
+  quantityChange: string;
   type: string;
   locationId: string;
   locationName: string;
+  expiredTime: string;
   status: string;
   requestId: string | null;
 }
@@ -533,11 +537,13 @@ export class ListMaterialService {
       productCode: item.partNumber,
       productName: item.partNumber,
       quantity: String(item.quantity),
+      quantityChange: String(item.quantityChange),
       type: item.extendExpiration ? 'EXTEND' : 'MOVE',
       locationId: item.locationId ?? '',
       locationName: this.getLocationNameById(item.locationId) ?? '',
       status: item.calculatedStatus,
       requestId: null,
+      expiredTime: item.expirationDate ? String(item.expirationDate) : '',
     }));
 
     const payload: UpdateRequestInfo = {
@@ -599,6 +605,8 @@ export class ListMaterialService {
       locationName: this.getLocationNameById(item.locationId) ?? '',
       status: item.status,
       requestId: null,
+      quantityChange: String(item.quantityChange),
+      expiredTime: item.expiredTime || '',
     }));
 
     const payload: UpdateInfo = {
@@ -655,6 +663,8 @@ export class ListMaterialService {
       locationName: this.getLocationNameById(item.locationId) ?? '',
       status: 'REJECT',
       requestId: null,
+      quantityChange: String(item.quantityChange),
+      expiredTime: item.expiredTime || '',
     }));
 
     const payload: UpdateInfo = {

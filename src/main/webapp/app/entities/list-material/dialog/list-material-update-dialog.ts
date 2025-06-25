@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MaterialUpdateService } from '../services/material-update.service';
 import { startWith, map } from 'rxjs/operators';
 import { DialogContentExampleDialogComponent, ConfirmDialogData } from '../confirm-dialog/confirm-dialog.component';
+import { MatRadioButton } from '@angular/material/radio';
 
 interface Warehouse {
   value: string;
@@ -30,6 +31,7 @@ export interface MaterialItem {
   trackingType?: string;
   materialTraceId?: string;
   quantity: number;
+  quantityChange: number;
   locationId: string | null;
   locationName?: string;
   expirationDate?: string;
@@ -39,6 +41,7 @@ export interface MaterialItem {
   checkinDate?: string;
   extendExpiration?: boolean;
   selectedWarehouse?: Warehouse;
+  _isChanged?: boolean;
 }
 
 export interface sub {
@@ -65,6 +68,7 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
   locations$: Observable<RawGraphQLLocation[]>;
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
   myControl = new FormControl('');
+  headerQuantityChange: number | null = null;
   filteredOptions!: string[];
   selectApprover: WritableSignal<SelectApproverpprover> = signal<SelectApproverpprover>({
     name: 'Select all',
@@ -85,10 +89,12 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
     'materialIdentifier',
     'partNumber',
     'calculatedStatus',
+    'expirationDate',
     'quantity',
+    'quantityChange',
     // 'status',
     'locationId',
-    'expirationDate',
+    'extendExpiration',
   ];
   statusOptions = [
     { value: '', view: '-- All --' },
@@ -145,10 +151,11 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
         materialIdentifier: rawItem.materialIdentifier,
         partNumber: rawItem.partNumber,
         calculatedStatus: this.getCalculatedStatus(rawItem.status),
+        expirationDate: rawItem.expirationDate,
         quantity: Number(rawItem.quantity),
+        quantityChange: 0,
         locationId: rawItem.locationId || null,
         locationName: rawItem.locationName,
-        expirationDate: rawItem.expirationDate ? formatDate(rawItem.expirationDate) : undefined,
         extendExpiration: false,
       };
     });
@@ -329,7 +336,14 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
         return 'N/A';
     }
   }
-
+  applyHeaderQuantityChange(): void {
+    if (this.headerQuantityChange !== null && this.headerQuantityChange !== undefined && this.itemsDataSource) {
+      this.itemsDataSource.data.forEach(item => {
+        item.quantityChange = this.headerQuantityChange as number;
+        item._isChanged = true;
+      });
+    }
+  }
   toggleAllRenewal(): void {
     this.itemsDataSource.data.forEach(row => (row.enable_input_expirated = this.headerEnableInputRenewal));
     if (this.headerEnableInputRenewal && this.headerInputRenewal) {
@@ -355,7 +369,24 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
       this.isSelectHeader = true;
     }
   }
-
+  onQuantityChange(element: MaterialItem): void {
+    if (element.quantityChange > element.quantity) {
+      this.snackBar.open('Không thể chuyển giá trị lớn hơn số lượng hiện tại', 'Đóng', {
+        duration: 3000,
+        panelClass: ['snackbar-error'],
+      });
+      element.quantityChange = element.quantity; // Reset lại về max
+    }
+    element._isChanged = true;
+  }
+  onSelectSubApprover(idx: number): void {
+    const current = this.selectApprover();
+    current.sub.forEach((sub, i) => (sub.completed = i === idx));
+    this.selectApprover.set({ ...current });
+  }
+  get selectedSubApproverIndex(): number {
+    return this.selectApprover().sub.findIndex(sub => sub.completed);
+  }
   applySelectFilter(col: string, value: string): void {
     const mode = this.filterModes[col] || 'equals';
     this.searchTerms[col] = { mode, value };

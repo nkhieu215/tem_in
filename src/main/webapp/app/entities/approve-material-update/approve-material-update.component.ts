@@ -26,6 +26,11 @@ export interface ColumnConfig {
   matColumnDef: string;
   completed: boolean;
 }
+export const STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Đang chờ duyệt',
+  APPROVE: 'Đã phê duyệt',
+  REJECT: 'Từ chối duyệt',
+};
 export interface columnSelectionGroup {
   name: string;
   completed: boolean;
@@ -62,6 +67,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
   // #region Public properties
   expandedElement: inventory_update_requests | null = null;
   selection = new SelectionModel<inventory_update_requests_detail>(true, []);
+  STATUS_LABELS = STATUS_LABELS;
   displayedColumns: string[] = [
     'detail',
     'requestCode',
@@ -77,10 +83,12 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     'materialId',
     'updatedBy',
     'createdTime',
+    'expiredTime',
     // 'updatedTime',
     'productCode',
     // 'productName',
     'quantity',
+    'quantityChange',
     'type',
     // 'locationId',
     'locationName',
@@ -170,7 +178,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     } else {
       rawValue = (eventOrValue.target as HTMLInputElement).value;
     }
-    const filterValue = rawValue.trim().toLowerCase();
+    const filterValue = rawValue.trim().toUpperCase();
 
     if (!this.searchTerms[colDef]) {
       this.searchTerms[colDef] = {
@@ -179,6 +187,9 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
       };
     } else {
       this.searchTerms[colDef].value = filterValue;
+      if (!this.searchTerms[colDef].mode) {
+        this.searchTerms[colDef].mode = 'contains';
+      }
     }
 
     console.log(`[applyFilter] - Cột ${colDef}:`, this.searchTerms[colDef]);
@@ -227,11 +238,16 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
   public exportExpandedDetails(request: inventory_update_requests): void {
     const ds = this.dataSoure_update_detail;
     if (this.expandedElement?.requestCode === request.requestCode && ds.filteredData.length) {
-      const toExport = ds.filteredData.map(d => ({
-        ...d,
-        createdTime: this.tsPipe.transform(d.createdTime),
-        updatedTime: this.tsPipe.transform(d.updatedTime),
-      }));
+      const toExport = ds.filteredData.map(d => {
+        const { id, locationId, requestId, ...rest } = d as any;
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return {
+          ...rest,
+          createdTime: this.tsPipe.transform(d.createdTime),
+          updatedTime: this.tsPipe.transform(d.updatedTime),
+        };
+      });
       this.MaterialService.exportExcel(toExport, `ChiTietYeuCau_${request.requestCode}`);
     }
   }
@@ -411,8 +427,8 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     }
 
     const dialogData: ConfirmDialogData = {
-      message: 'Bạn có chắc chắn muốn chấp thuận yêu cầu cập nhật này không?',
-      confirmText: 'Chấp thuận',
+      message: 'Bạn có chắc chắn muốn phê duyệt yêu cầu cập nhật này không?',
+      confirmText: 'Xác nhận',
       cancelText: 'Hủy',
     };
 
@@ -486,6 +502,20 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
           }
 
           let cellValue = '';
+          if (colDef === 'status') {
+            // chuyển code sang label tiếng Việt
+            cellValue = STATUS_LABELS[rawValue] || rawValue.toLowerCase();
+            const codeValue = rawValue.toLowerCase();
+            if (
+              (searchMode === 'contains' && !cellValue.toLowerCase().includes(searchTerm) && !codeValue.includes(searchTerm)) ||
+              (searchMode === 'not_contains' && (cellValue.toLowerCase().includes(searchTerm) || codeValue.includes(searchTerm))) ||
+              (searchMode === 'equals' && cellValue.toLowerCase() !== searchTerm && codeValue !== searchTerm) ||
+              (searchMode === 'not_equals' && (cellValue.toLowerCase() === searchTerm || codeValue === searchTerm))
+            ) {
+              return false;
+            }
+            continue;
+          }
 
           if (['createdTime', 'updatedTime'].includes(colDef)) {
             let dateObj: Date;
@@ -541,28 +571,6 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
             if (!cellValue.includes(searchTerm)) {
               return false;
             }
-          }
-        }
-      }
-
-      if (combinedFilters.dialogFilters) {
-        for (const colDef in combinedFilters.dialogFilters) {
-          if (!Object.prototype.hasOwnProperty.call(combinedFilters.dialogFilters, colDef)) {
-            continue;
-          }
-          const selectedValuesFromDialog = combinedFilters.dialogFilters[colDef];
-          if (!selectedValuesFromDialog || selectedValuesFromDialog.length === 0) {
-            continue;
-          }
-
-          const normalizedSelectedValues = selectedValuesFromDialog.map(val => String(val).trim().toLowerCase());
-          const cellValue = (data as any)[colDef]
-            ? String((data as any)[colDef])
-                .trim()
-                .toLowerCase()
-            : '';
-          if (!normalizedSelectedValues.includes(cellValue)) {
-            return false;
           }
         }
       }

@@ -28,6 +28,7 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
 // import { NgxPaginationModule } from 'ngx-pagination';
 // import { NgSelectModule } from '@ng-select/ng-select';
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
@@ -50,6 +51,7 @@ import { ListMaterialModule } from './entities/list-material/list-material.modul
     ListMaterialModule,
     EntityRoutingModule,
     Ng2GoogleChartsModule,
+    MatIconModule,
     NgApexchartsModule,
     HttpClientModule,
     NgMultiSelectDropDownModule,

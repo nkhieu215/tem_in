@@ -10,11 +10,16 @@
       <button mat-raised-button routerLink="update-list"><mat-icon> list_alt</mat-icon>Danh sách cập nhật</button>
       <div class="cart-badge">{{ checkedCount() }}</div>
     </div>
-    <div>
-      <button mat-raised-button (click)="focusScanInput()"><mat-icon>center_focus_weak</mat-icon>Scan</button>
+    <button mat-raised-button (click)="startScan()"><mat-icon>center_focus_weak</mat-icon> Scan</button>
+
+    <div *ngIf="scanError" class="scan-error" style="color: #f44336; margin-left: 8px">
+      {{ scanError }}
     </div>
-    <div *ngIf="isScanMode">
-      <button mat-raised-button *ngIf="scanResult" (click)="refreshScan()"><mat-icon>refresh</mat-icon>Refresh</button>
+    <div class="left-group" style="display: flex; align-items: center; gap: 15px">
+      <div *ngIf="isScanMode && !scanResult">
+        <mat-spinner diameter="20"></mat-spinner>
+      </div>
+      <button mat-raised-button (click)="refreshScan()"><mat-icon>refresh</mat-icon> Refresh</button>
     </div>
   </div>
 
@@ -80,7 +85,12 @@
     </div>
   </div>
 </div>
-
+<input
+  #scanInput
+  type="text"
+  style="opacity: 0; position: absolute; left: -9999px; width: 1px; height: 1px; border: 0"
+  (keyup.enter)="onScanEnter(scanInput.value)"
+/>
 <div class="full-scroll-table-container" [style.max-width]="tableMaxWidth" style="overflow-x: auto">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 bordered-table">
     <ng-container *ngFor="let colDef of displayedColumns" [matColumnDef]="colDef">
@@ -139,27 +149,14 @@
 
                 <!-- 2) Các cột text/scan bình thường -->
                 <ng-template #normalInput>
-                  <ng-container *ngIf="isScanMode; else simpleInput">
-                    <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
-                      <mat-label>Search</mat-label>
-                      <input
-                        #scanInput
-                        matInput
-                        (keyup)="handleScanInput(scanInput.value, $event)"
-                        [placeholder]="'Scan (' + (filterModes[colDef] || 'contains') + ')'"
-                      />
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #simpleInput>
-                    <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
-                      <mat-label>Search</mat-label>
-                      <input
-                        matInput
-                        (keyup)="applyFilter(colDef, $event)"
-                        [placeholder]="'Search (' + (filterModes[colDef] || 'contains') + ')'"
-                      />
-                    </mat-form-field>
-                  </ng-template>
+                  <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                    <mat-label>Search</mat-label>
+                    <input
+                      matInput
+                      (keyup)="applyFilter(colDef, $event)"
+                      [placeholder]="'Search (' + (filterModes[colDef] || 'contains') + ')'"
+                    />
+                  </mat-form-field>
                 </ng-template>
               </ng-template>
             </div>
@@ -167,10 +164,10 @@
 
           <!-- Menu Filter của cột (mỗi cột dùng menu riêng) -->
           <mat-menu #filterMenuCol="matMenu">
-            <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Contains</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Does not contain</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Equals</button>
-            <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Does not equal</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'contains')">Có chứa</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_contains')">Không chứa</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'equals')">Bằng</button>
+            <button mat-menu-item (click)="setFilterMode(colDef, 'not_equals')">Không bằng</button>
           </mat-menu>
         </ng-template>
       </th>

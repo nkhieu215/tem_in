@@ -55,32 +55,32 @@
         </button>
       </td>
     </ng-container>
-    <ng-container matColumnDef="groupingKey">
+    <ng-container *ngFor="let groupField of groupingFields" [matColumnDef]="groupField">
       <th mat-header-cell *matHeaderCellDef mat-sort-header style="background-color: #548ce8">
         <div class="th-container">
           <div class="header-content">
             <div style="display: flex; align-items: center; justify-content: space-between; color: white">
               <div class="column-title">
-                {{ groupingField ? (groupingField.toString() | titlecase) : 'Đang tải...' }}
+                {{ groupField ? (groupField.toString() | titlecase) : 'Đang tải...' }}
               </div>
               <div>
-                <mat-icon [matMenuTriggerFor]="filtergroupingKey" style="color: white">filter_list</mat-icon>
+                <mat-icon [matMenuTriggerFor]="filterMenu" style="color: white">filter_list</mat-icon>
               </div>
             </div>
-            <mat-menu #filtergroupingKey="matMenu">
-              <button mat-menu-item (click)="setFilterMode('groupingKey', 'contains')">Contains</button>
-              <button mat-menu-item (click)="setFilterMode('groupingKey', 'not_contains')">Does not contain</button>
-              <button mat-menu-item (click)="setFilterMode('groupingKey', 'equals')">Equals</button>
-              <button mat-menu-item (click)="setFilterMode('groupingKey', 'not_equals')">Does not equal</button>
+            <mat-menu #filterMenu="matMenu">
+              <button mat-menu-item (click)="setFilterMode(groupField, 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode(groupField, 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode(groupField, 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode(groupField, 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
                 <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                   <mat-label>Search</mat-label>
                   <input
-                    (keyup)="applyFilter('groupingKey', $event)"
+                    (keyup)="applyFilter(groupField, $event)"
                     matInput
-                    [placeholder]="'Search (' + (filterModes['groupingKey'] || 'contains') + ')'"
+                    [placeholder]="'Search (' + (filterModes[groupField] || 'contains') + ')'"
                   />
                 </mat-form-field>
               </div>
@@ -88,7 +88,7 @@
           </div>
         </div>
       </th>
-      <td mat-cell *matCellDef="let element">{{ element[groupingField] }}</td>
+      <td mat-cell *matCellDef="let element">{{ element[groupField] }}</td>
     </ng-container>
     <ng-container matColumnDef="totalQuantity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header style="background-color: #548ce8">
@@ -101,10 +101,10 @@
               </div>
             </div>
             <mat-menu #filterTotalQuantity="matMenu">
-              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'contains')">Contains</button>
-              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'not_contains')">Does not contain</button>
-              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'equals')">Equals</button>
-              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'not_equals')">Does not equal</button>
+              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode('totalQuantity', 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
@@ -128,16 +128,16 @@
         <div class="th-container">
           <div class="header-content">
             <div style="display: flex; align-items: center; justify-content: space-between; color: white">
-              <div class="column-title">Total Quantity</div>
+              <div class="column-title">Total Available Quantity</div>
               <div>
                 <mat-icon [matMenuTriggerFor]="filterTotalQuantity" style="color: white">filter_list</mat-icon>
               </div>
             </div>
             <mat-menu #filterTotalQuantity="matMenu">
-              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'contains')">Contains</button>
-              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'not_contains')">Does not contain</button>
-              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'equals')">Equals</button>
-              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'not_equals')">Does not equal</button>
+              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode('totalAvailableQuantity', 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
@@ -167,10 +167,10 @@
               </div>
             </div>
             <mat-menu #filtercount="matMenu">
-              <button mat-menu-item (click)="setFilterMode('count', 'contains')">Contains</button>
-              <button mat-menu-item (click)="setFilterMode('count', 'not_contains')">Does not contain</button>
-              <button mat-menu-item (click)="setFilterMode('count', 'equals')">Equals</button>
-              <button mat-menu-item (click)="setFilterMode('count', 'not_equals')">Does not equal</button>
+              <button mat-menu-item (click)="setFilterMode('count', 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode('count', 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode('count', 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode('count', 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
@@ -198,30 +198,30 @@
         </div>
         <div class="inner-table" style="padding: 16px">
           <table mat-table [dataSource]="row.detailDataSource" class="mat-elevation-z2" style="width: 100%">
-            <ng-container matColumnDef="locationName">
+            <ng-container matColumnDef="partNumber">
               <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
                 <div class="th-container">
                   <div class="header-content">
                     <div style="display: flex; align-items: center; justify-content: space-between; color: white">
-                      <div class="column-title">Location Name</div>
+                      <div class="column-title">Part Number</div>
                       <div>
                         <mat-icon [matMenuTriggerFor]="filterInventoryId" style="color: white">filter_list</mat-icon>
                       </div>
                     </div>
                     <mat-menu #filterInventoryId="matMenu">
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'locationName', 'contains')">Contains</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'locationName', 'not_contains')">Does not contain</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'locationName', 'equals')">Equals</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'locationName', 'not_equals')">Does not equal</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'partNumber', 'contains')">Contains</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'partNumber', 'not_contains')">Does not contain</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'partNumber', 'equals')">Equals</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'partNumber', 'not_equals')">Does not equal</button>
                     </mat-menu>
                     <div class="search-container">
                       <div class="custom-search-wrapper">
                         <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                           <mat-label>Search</mat-label>
                           <input
-                            (keyup)="applyDetailFilter(row, 'locationName', $event)"
+                            (keyup)="applyDetailFilter(row, 'partNumber', $event)"
                             matInput
-                            [placeholder]="'Search (' + (filterModesDetail['locationName'] || 'contains') + ')'"
+                            [placeholder]="'Search (' + (filterModesDetail['partNumber'] || 'contains') + ')'"
                           />
                         </mat-form-field>
                       </div>
@@ -230,7 +230,7 @@
                 </div>
               </th>
               <td mat-cell *matCellDef="let detail">
-                {{ detail.locationName }}
+                {{ detail.partNumber }}
               </td>
             </ng-container>
             <ng-container matColumnDef="availableQuantity">
@@ -240,16 +240,14 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; color: white">
                       <div class="column-title">Available Quantity</div>
                       <div>
-                        <mat-icon [matMenuTriggerFor]="filterPartId" style="color: white">filter_list</mat-icon>
+                        <mat-icon [matMenuTriggerFor]="filterAvailableQuantity" style="color: white">filter_list</mat-icon>
                       </div>
                     </div>
-                    <mat-menu #filterPartId="matMenu">
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'contains')">Contains</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'not_contains')">
-                        Does not contain
-                      </button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'equals')">Equals</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'not_equals')">Does not equal</button>
+                    <mat-menu #filterAvailableQuantity="matMenu">
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'contains')">Có chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'not_contains')">Không chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'equals')">Bằng</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'availableQuantity', 'not_equals')">Không bằng</button>
                     </mat-menu>
                     <div class="search-container">
                       <div class="custom-search-wrapper">
@@ -270,30 +268,30 @@
                 {{ detail.availableQuantity }}
               </td>
             </ng-container>
-            <ng-container matColumnDef="quantity">
+            <ng-container matColumnDef="lotNumber">
               <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
                 <div class="th-container">
                   <div class="header-content">
                     <div style="display: flex; align-items: center; justify-content: space-between; color: white">
-                      <div class="column-title">Quantity</div>
+                      <div class="column-title">Lot Number</div>
                       <div>
-                        <mat-icon [matMenuTriggerFor]="filterquantity" style="color: white">filter_list</mat-icon>
+                        <mat-icon [matMenuTriggerFor]="filterLotNumber" style="color: white">filter_list</mat-icon>
                       </div>
                     </div>
-                    <mat-menu #filterquantity="matMenu">
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'quantity', 'contains')">Contains</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'quantity', 'not_contains')">Does not contain</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'quantity', 'equals')">Equals</button>
-                      <button mat-menu-item (click)="setFilterModeDetail(row, 'quantity', 'not_equals')">Does not equal</button>
+                    <mat-menu #filterLotNumber="matMenu">
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'lotNumber', 'contains')">Có chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'lotNumber', 'not_contains')">Không chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'lotNumber', 'equals')">Bằng</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'lotNumber', 'not_equals')">Không bằng</button>
                     </mat-menu>
                     <div class="search-container">
                       <div class="custom-search-wrapper">
                         <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                           <mat-label>Search</mat-label>
                           <input
-                            (keyup)="applyDetailFilter(row, 'quantity', $event)"
+                            (keyup)="applyDetailFilter(row, 'lotNumber', $event)"
                             matInput
-                            [placeholder]="'Search (' + (filterModesDetail['quantity'] || 'contains') + ')'"
+                            [placeholder]="'Search (' + (filterModesDetail['lotNumber'] || 'contains') + ')'"
                           />
                         </mat-form-field>
                       </div>
@@ -302,7 +300,42 @@
                 </div>
               </th>
               <td mat-cell *matCellDef="let detail">
-                {{ detail.quantity }}
+                {{ detail.lotNumber }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="receivedDate">
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+                <div class="th-container">
+                  <div class="header-content">
+                    <div style="display: flex; align-items: center; justify-content: space-between; color: white">
+                      <div class="column-title">Lot Number</div>
+                      <div>
+                        <mat-icon [matMenuTriggerFor]="filterReceivedDate" style="color: white">filter_list</mat-icon>
+                      </div>
+                    </div>
+                    <mat-menu #filterReceivedDate="matMenu">
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'receivedDate', 'contains')">Có chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'receivedDate', 'not_contains')">Không chứa</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'receivedDate', 'equals')">Bằng</button>
+                      <button mat-menu-item (click)="setFilterModeDetail(row, 'receivedDate', 'not_equals')">Không bằng</button>
+                    </mat-menu>
+                    <div class="search-container">
+                      <div class="custom-search-wrapper">
+                        <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
+                          <mat-label>Search</mat-label>
+                          <input
+                            (keyup)="applyDetailFilter(row, 'receivedDate', $event)"
+                            matInput
+                            [placeholder]="'Search (' + (filterModesDetail['receivedDate'] || 'contains') + ')'"
+                          />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </th>
+              <td mat-cell *matCellDef="let detail">
+                {{ detail.receivedDate | timestampToDate }}
               </td>
             </ng-container>
             <ng-container matColumnDef="status">
@@ -312,10 +345,10 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; color: white">
                       <div class="column-title">Status</div>
                       <div>
-                        <mat-icon [matMenuTriggerFor]="filterquantity" style="color: white">filter_list</mat-icon>
+                        <mat-icon [matMenuTriggerFor]="filterStatus" style="color: white">filter_list</mat-icon>
                       </div>
                     </div>
-                    <mat-menu #filterquantity="matMenu">
+                    <mat-menu #filterStatus="matMenu">
                       <button mat-menu-item (click)="setFilterModeDetail(row, 'status', 'contains')">Contains</button>
                       <button mat-menu-item (click)="setFilterModeDetail(row, 'status', 'not_contains')">Does not contain</button>
                       <button mat-menu-item (click)="setFilterModeDetail(row, 'status', 'equals')">Equals</button>
@@ -382,8 +415,14 @@
                 {{ detail.expirationDate | timestampToDate }}
               </td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="['locationName', 'availableQuantity', 'quantity', 'expirationDate', 'status']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['locationName', 'availableQuantity', 'quantity', 'expirationDate', 'status']"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="['partNumber', 'lotNumber', 'receivedDate', 'availableQuantity', 'expirationDate', 'status']"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['partNumber', 'lotNumber', 'receivedDate', 'availableQuantity', 'expirationDate', 'status']"
+            ></tr>
           </table>
           <mat-paginator
             #detailPaginator
