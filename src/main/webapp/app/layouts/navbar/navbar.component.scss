@@ -49,6 +49,33 @@ Logo styles
 //   background-size: contain;
 //   margin-bottom: 4vh;
 // }
+.app-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  z-index: 1000;
+  margin-left: 60px;
+  position: fixed;
+  background: #333;
+  padding-right: 5rem;
+}
+
+.btn-collapse {
+  position: relative;
+  transition: transform 0.3s ease;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+}
+
+.app-header.collapsed .btn-collapse {
+  transform: translateX(190px);
+}
 
 .sidebar {
   position: fixed;
@@ -190,9 +217,11 @@ li::marker {
   cursor: pointer;
   border-radius: 5px;
 }
+
 .sidebar-menu-item {
   margin-right: 3px;
 }
+
 .sidebar-menu-link {
   padding: 10px 4px;
   transition:

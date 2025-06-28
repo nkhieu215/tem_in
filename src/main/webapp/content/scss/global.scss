@@ -18,7 +18,7 @@ h4 {
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
   color: #533f03;
-  font-weight: bold;
+  font-weight: 300;
 }
 
 a:hover {
@@ -108,10 +108,12 @@ Generic styles
 .container-fluid {
   position: absolute;
   margin-left: 250px;
+  margin-top: 50px;
   /* z-index: 1; */
   width: 87vw;
   // overflow: hidden;
   transition: margin-left 0.5s;
+  height: auto;
 }
 
 // .card .jh-card {

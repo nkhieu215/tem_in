@@ -27,6 +27,9 @@ interface sumary_mode {
   value: string;
   name: string;
 }
+interface ExportDetailRow {
+  [key: string]: string | number | null | undefined;
+}
 export interface ColumnConfig {
   name: string;
   matColumnDef: string;
@@ -269,28 +272,73 @@ export class ListMaterialSumaryComponent implements OnInit, AfterViewInit {
       const { details, detailDataSource, ...rest } = row;
       return rest;
     });
-    const fileName = 'báo_cáo_tổng_hợp_theo_' + (this.groupingField || 'default');
+    const fileName = 'báo_cáo_tổng_hợp_theo_' + this.groupingFields.join('_');
     this.MaterialService.exportExcel(formattedData, fileName);
   }
 
+  // exportDetailExcel(row: AggregatedPartData): void {
+  //   if (!row.detailDataSource) {
+  //     console.warn('Không có dữ liệu bảng con để export.');
+  //     return;
+  //   }
+  //   const detailColumns = ['partNumber', 'lotNumber', 'receivedDate', 'availableQuantity', 'expirationDate', 'status'];
+
+  //   const groupValues: { [key: string]: any } = {};
+  //   this.groupingFields.forEach(f => {
+  //     groupValues[f] = row[f];
+  //   });
+
+  //   const formattedDetails: ExportDetailRow[] = row.detailDataSource.filteredData.map((detail: RawGraphQLMaterial) => {
+  //     const result: ExportDetailRow = {};
+  //     this.groupingFields.forEach(f => {
+  //       result[f] = row[f];
+  //     });
+  //     detailColumns.forEach(col => {
+  //       result[col] = (detail as any)[col];
+  //     });
+  //     return result;
+  //   });
+
+  //   const groupName = this.groupingFields.map(f => `${f}_${row[f]}`).join('_');
+  //   const fileName = `báo_cáo_tổng_hợp_chi_tiet_theo_${groupName}`;
+  //   this.MaterialService.exportExcel(formattedDetails, fileName);
+  // }
   exportDetailExcel(row: AggregatedPartData): void {
     if (!row.detailDataSource) {
       console.warn('Không có dữ liệu bảng con để export.');
       return;
     }
-    const groupKey: string = this.groupingField;
-    const mainGroupValue = row[groupKey];
-    const formattedDetails = row.detailDataSource.filteredData.map((detail: RawGraphQLMaterial) => {
-      const { ...rest } = detail;
-      return {
-        ...rest,
-        [groupKey]: mainGroupValue,
-      };
+    const detailColumns = ['partNumber', 'lotNumber', 'receivedDate', 'availableQuantity', 'expirationDate', 'status'];
+    const dataSource = row.detailDataSource;
+    const pageIndex = dataSource.paginator?.pageIndex ?? 0;
+    const pageSize = dataSource.paginator?.pageSize ?? dataSource.filteredData.length;
+    const startIndex = pageIndex * pageSize;
+    const endIndex = startIndex + pageSize;
+    const currentPageData = dataSource.filteredData.slice(startIndex, endIndex);
+
+    const formattedDetails: ExportDetailRow[] = currentPageData.map((detail: RawGraphQLMaterial) => {
+      const result: ExportDetailRow = {};
+      this.groupingFields.forEach(f => {
+        result[f] = row[f];
+      });
+      detailColumns.forEach(col => {
+        if (col === 'receivedDate' || col === 'expirationDate') {
+          // Format ngày tháng
+          result[col] = this.convertTimestampToDate((detail as any)[col]);
+        } else if (col === 'status') {
+          // Format status
+          result[col] = this.getStatusLabel((detail as any)[col]);
+        } else {
+          result[col] = (detail as any)[col];
+        }
+      });
+      return result;
     });
-    const fileName = `báo_cáo_tổng_hợp_chi_tiet_theo_${groupKey}_${mainGroupValue}`;
+
+    const groupName = this.groupingFields.map(f => `${f}_${row[f]}`).join('_');
+    const fileName = `báo_cáo_tổng_hợp_chi_tiet_theo_${groupName}`;
     this.MaterialService.exportExcel(formattedDetails, fileName);
   }
-
   openMenuManually(): void {
     this.menuTrigger.openMenu();
   }

@@ -6,8 +6,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@angular-eslint/recommended",
-    "prettier",
-    "eslint-config-prettier"
+    "prettier"
   ],
   "env": {
     "browser": true,
@@ -41,17 +40,10 @@
       "error",
       {
         "extendDefaults": true,
-        "types": {
-          "{}": false
-        }
+        "types": { "{}": false }
       }
     ],
-    "@typescript-eslint/explicit-function-return-type": [
-      "error",
-      {
-        "allowExpressions": true
-      }
-    ],
+    "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/member-ordering": [
       "error",
@@ -77,43 +69,48 @@
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-parameter-properties": ["off"],
-    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/no-parameter-properties": "off",
+    "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/no-unnecessary-condition": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/prefer-optional-chain": "off",
     "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "arrow-body-style": "error",
     "curly": "error",
-    "eqeqeq": [
-      "error",
-      "always",
-      {
-        "null": "ignore"
-      }
-    ],
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
     "guard-for-in": "error",
     "no-bitwise": "off",
     "no-caller": "error",
     "no-console": "off",
     "no-eval": "error",
     "no-labels": "error",
-    "no-new": ["off"],
+    "no-new": "off",
     "no-new-wrappers": "error",
-    "object-shorthand": [
-      "off"
-      // "error",
-      // "always",
-      // {
-      //   "avoidExplicitReturnArrows": true
-      // }
-    ],
+    "object-shorthand": "off",
     "radix": "error",
     "spaced-comment": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/test/javascript/cypress/**/*.{js,ts}"],
+      "plugins": ["cypress", "@typescript-eslint"],
+      "globals": {
+        "cy": false,
+        "Cypress": false,
+        "expect": false,
+        "assert": false,
+        "chai": false
+      },
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-namespace": "off"
+      }
+    }
+  ]
 }

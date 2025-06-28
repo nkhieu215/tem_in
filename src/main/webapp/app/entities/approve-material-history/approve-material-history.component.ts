@@ -13,7 +13,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { SelectionModel } from '@angular/cdk/collections';
 import {
   inventory_update_requests,
-  inventory_update_requests_detail,
+  inventory_update_requests_history_detail,
   ListMaterialService,
 } from '../list-material/services/list-material.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -26,6 +26,7 @@ export interface ColumnConfig {
   matColumnDef: string;
   completed: boolean;
 }
+
 export const STATUS_LABELS: Record<string, string> = {
   PENDING: 'Đang chờ duyệt',
   APPROVE: 'Đã phê duyệt',
@@ -65,31 +66,30 @@ export interface FilterDialogData {
 })
 export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   // #region Public properties
+
   expandedElement: inventory_update_requests | null = null;
-  selection = new SelectionModel<inventory_update_requests_detail>(true, []);
+  selection = new SelectionModel<inventory_update_requests_history_detail>(true, []);
   STATUS_LABELS = STATUS_LABELS;
   tableMaxWidth: string = '100%';
   displayedColumns: string[] = ['detail', 'requestCode', 'createdTime', 'updatedTime', 'updatedBy', 'approvedBy', 'status'];
   displayedColumnsDetails: string[] = [
     'materialId',
-    'updatedBy',
-    'createdTime',
-    'expiredTime',
-    // 'updatedTime',
-    'productCode',
-    // 'productName',
+    'requestCode',
+    'requestedBy',
     'quantity',
     'quantityChange',
-    'type',
-    // 'locationId',
-    'locationName',
+    'expiredTime',
+    'requestType',
+    'oldLocation',
+    'newLocation',
+    'approvedTime',
+    'requestedTime',
     'status',
-    // 'requestId',
   ];
   tableWidth: string = '100%';
   value = '';
   dataSource_update_manage = new MatTableDataSource<inventory_update_requests>();
-  dataSoure_update_detail = new MatTableDataSource<inventory_update_requests_detail>();
+  dataSoure_history_detail = new MatTableDataSource<inventory_update_requests_history_detail>();
   columnFilters: { [key: string]: string } = {};
   pageEvent: PageEvent | undefined;
   length = 0;
@@ -110,6 +110,7 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @ViewChild('sort') sort!: MatSort;
   // #region Constructor
+  private tsPipe = new TimestampToDatePipe();
   private sidebarSubscription!: Subscription;
   constructor(
     private MaterialService: ListMaterialService,
@@ -140,15 +141,6 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
       APPROVE: 2,
       REJECT: 1,
     };
-    this.dataSource_update_manage.sortData = (data, sort) =>
-      data.slice().sort((a, b) => {
-        const sa = statusRank[a.status] || 0;
-        const sb = statusRank[b.status] || 0;
-        if (sa !== sb) {
-          return sb - sa;
-        }
-        return new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime();
-      });
     this.sort.active = 'status';
     this.sort.direction = 'desc';
     this.sort.sortChange.emit({ active: 'status', direction: 'desc' });
@@ -211,23 +203,32 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   public onLoad(): void {}
 
   public export(): void {
-    this.MaterialService.exportExcel(this.dataSource_update_manage.data, 'danhsachdenghicapnhatvattu');
+    const raw = this.dataSource_update_manage.filteredData;
+    const toExport = raw.map(r => ({
+      requestCode: r.requestCode,
+      updatedBy: r.requestedBy,
+      approvedBy: r.approvedBy,
+      status: r.status,
+      createdTime: this.tsPipe.transform(r.createdTime),
+      updatedTime: this.tsPipe.transform(r.updatedTime),
+    }));
+    this.MaterialService.exportExcel(toExport, 'Danh_Sach_Lich_Su_Cap_Nhat');
   }
 
   public exportExpandedDetails(requestElement: inventory_update_requests): void {
     if (
       this.expandedElement &&
       this.expandedElement.requestCode === requestElement.requestCode &&
-      this.dataSoure_update_detail.data &&
-      this.dataSoure_update_detail.data.length > 0
+      this.dataSoure_history_detail.data &&
+      this.dataSoure_history_detail.data.length > 0
     ) {
-      const fileName = `ChiTietYeuCau_${requestElement.requestCode || 'data'}`;
-      this.MaterialService.exportExcel(this.dataSoure_update_detail.data, fileName);
+      const fileName = `ChiTietYeuCau_${requestElement.requestCode ?? 'data'}`;
+      this.MaterialService.exportExcel(this.dataSoure_history_detail.data, fileName);
     } else {
       console.warn('Không thể xuất dữ liệu chi tiết', {
         currentExpandedId: this.expandedElement?.requestCode,
         targetElementId: requestElement.id,
-        detailDataCount: this.dataSoure_update_detail.data.length,
+        detailDataCount: this.dataSoure_history_detail.data.length,
       });
     }
   }
@@ -237,146 +238,146 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
     const isAlreadyExpanded = this.expandedElement === element;
     this.expandedElement = isAlreadyExpanded ? null : element;
 
-    this.selection = new SelectionModel<inventory_update_requests_detail>(true, []);
-    this.dataSoure_update_detail = new MatTableDataSource<inventory_update_requests_detail>([]);
+    this.selection = new SelectionModel<inventory_update_requests_history_detail>(true, []);
+    this.dataSoure_history_detail = new MatTableDataSource<inventory_update_requests_history_detail>([]);
 
     if (this.expandedElement) {
-      this.MaterialService.getRequestDetailsById(element.id!).subscribe(details => {
-        this.dataSoure_update_detail.data = details;
+      this.MaterialService.getRequestHistoryDetailsByRequestCode(element.requestCode).subscribe(details => {
+        this.dataSoure_history_detail.data = details;
         setTimeout(() => {
-          this.dataSoure_update_detail.paginator = this.detailPaginator;
+          this.dataSoure_history_detail.paginator = this.detailPaginator;
           this.cdr.detectChanges();
         });
       });
     }
   }
 
-  public fetchRequestDetails(requestId: number): void {
-    console.log(`[MaterialUpdateRequestComponent] fetchRequestDetails called with requestId: ${requestId}`);
-    this.MaterialService.getRequestDetailsById(requestId).subscribe({
-      next: (details: inventory_update_requests_detail[]) => {
-        console.log(`[MaterialUpdateRequestComponent] Details received for requestId ${requestId}:`, details);
-        if (details && details.length > 0) {
-          this.dataSoure_update_detail.data = details;
-        } else {
-          console.warn(`[MaterialUpdateRequestComponent] No details found for requestId ${requestId}. Displaying empty table.`);
-          this.dataSoure_update_detail.data = [];
-        }
-        this.cdr.markForCheck();
-      },
-      error: (error: any) => {
-        console.error(`[MaterialUpdateRequestComponent] Error fetching material changes for request ${requestId}:`, error);
-        this.dataSoure_update_detail.data = [];
-        this.cdr.markForCheck();
-      },
-      complete: () => {
-        console.log(`[MaterialUpdateRequestComponent] Fetching details completed for requestId ${requestId}.`);
-      },
-    });
-  }
+  // public fetchRequestDetails(requestId: number): void {
+  //   console.log(`[MaterialUpdateRequestComponent] fetchRequestDetails called with requestId: ${requestId}`);
+  //   this.MaterialService.getRequestHistoryDetailsById(requestId).subscribe({
+  //     next: (details: inventory_update_requests_history_detail[]) => {
+  //       console.log(`[MaterialUpdateRequestComponent] Details received for requestId ${requestId}:`, details);
+  //       if (details && details.length > 0) {
+  //         this.dataSoure_history_detail.data = details;
+  //       } else {
+  //         console.warn(`[MaterialUpdateRequestComponent] No details found for requestId ${requestId}. Displaying empty table.`);
+  //         this.dataSoure_history_detail.data = [];
+  //       }
+  //       this.cdr.markForCheck();
+  //     },
+  //     error: (error: any) => {
+  //       console.error(`[MaterialUpdateRequestComponent] Error fetching material changes for request ${requestId}:`, error);
+  //       this.dataSoure_history_detail.data = [];
+  //       this.cdr.markForCheck();
+  //     },
+  //     complete: () => {
+  //       console.log(`[MaterialUpdateRequestComponent] Fetching details completed for requestId ${requestId}.`);
+  //     },
+  //   });
+  // }
 
-  public refuseRequest(requestId: number): void {
-    const dialogData: ConfirmDialogData = {
-      message: 'Bạn có chắc chắn từ chối tất cả yêu cầu cập nhật này không?',
-      confirmText: 'Từ chối',
-      cancelText: 'Hủy',
-    };
+  // public refuseRequest(requestId: number): void {
+  //   const dialogData: ConfirmDialogData = {
+  //     message: 'Bạn có chắc chắn từ chối tất cả yêu cầu cập nhật này không?',
+  //     confirmText: 'Từ chối',
+  //     cancelText: 'Hủy',
+  //   };
 
-    const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
-      width: '500px',
-      data: dialogData,
-      disableClose: true,
-    });
+  //   const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
+  //     width: '500px',
+  //     data: dialogData,
+  //     disableClose: true,
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        console.log(`Yêu cầu ${requestId} đã bị từ chối.`);
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result === true) {
+  //       console.log(`Yêu cầu ${requestId} đã bị từ chối.`);
 
-        this.MaterialService.getRequestDetailsById(requestId).subscribe({
-          next: details => {
-            if (details && details.length > 0) {
-              const payload = {
-                updatedItems: details,
-                selectedWarehouse: null,
-                approvers: [],
-              };
-              const currentUser = 'USER';
+  //       this.MaterialService.getRequestHistoryDetailsById(requestId).subscribe({
+  //         next: details => {
+  //           if (details && details.length > 0) {
+  //             const payload = {
+  //               updatedItems: details,
+  //               selectedWarehouse: null,
+  //               approvers: [],
+  //             };
+  //             const currentUser = 'USER';
 
-              this.MaterialService.postRejectInventoryUpdate(requestId, payload, currentUser).subscribe({
-                next: response => {
-                  console.log(`Yêu cầu ${requestId} đã được từ chối thành công:`, response);
-                  this.loadData();
-                },
-                error: err => {
-                  console.error(`Lỗi khi từ chối yêu cầu ${requestId}:`, err);
-                },
-              });
-            } else {
-              console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để từ chối.`);
-            }
-          },
-          error: err => {
-            console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để từ chối:`, err);
-          },
-        });
-      } else {
-        console.log(`Hành động từ chối yêu cầu ${requestId} đã được hủy.`);
-      }
-    });
-  }
+  //             this.MaterialService.postRejectInventoryUpdate(requestId, payload, currentUser).subscribe({
+  //               next: response => {
+  //                 console.log(`Yêu cầu ${requestId} đã được từ chối thành công:`, response);
+  //                 this.loadData();
+  //               },
+  //               error: err => {
+  //                 console.error(`Lỗi khi từ chối yêu cầu ${requestId}:`, err);
+  //               },
+  //             });
+  //           } else {
+  //             console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để từ chối.`);
+  //           }
+  //         },
+  //         error: err => {
+  //           console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để từ chối:`, err);
+  //         },
+  //       });
+  //     } else {
+  //       console.log(`Hành động từ chối yêu cầu ${requestId} đã được hủy.`);
+  //     }
+  //   });
+  // }
 
-  public acceptRequest(requestId: number): void {
-    const dialogData: ConfirmDialogData = {
-      message: 'Bạn có chắc chắn muốn chấp thuận yêu cầu cập nhật này không?',
-      confirmText: 'Chấp thuận',
-      cancelText: 'Hủy',
-    };
+  // public acceptRequest(requestId: number): void {
+  //   const dialogData: ConfirmDialogData = {
+  //     message: 'Bạn có chắc chắn muốn chấp thuận yêu cầu cập nhật này không?',
+  //     confirmText: 'Chấp thuận',
+  //     cancelText: 'Hủy',
+  //   };
 
-    const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
-      width: '500px',
-      data: dialogData,
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        console.log(`Yêu cầu ${requestId} đã được chấp thuận.`);
-        this.MaterialService.getRequestDetailsById(requestId).subscribe({
-          next: details => {
-            if (details && details.length > 0) {
-              const payload = {
-                updatedItems: details,
-                selectedWarehouse: null,
-                approvers: [],
-              };
-              const currentUser = 'USER';
-              this.MaterialService.postApproveInventoryUpdate(requestId, payload, currentUser).subscribe({
-                next: response => {
-                  console.log(`Yêu cầu ${requestId} đã được chấp thuận thành công:`, response);
+  //   const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
+  //     width: '500px',
+  //     data: dialogData,
+  //     disableClose: true,
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result === true) {
+  //       console.log(`Yêu cầu ${requestId} đã được chấp thuận.`);
+  //       this.MaterialService.getRequestHistoryDetailsById(requestId).subscribe({
+  //         next: details => {
+  //           if (details && details.length > 0) {
+  //             const payload = {
+  //               updatedItems: details,
+  //               selectedWarehouse: null,
+  //               approvers: [],
+  //             };
+  //             const currentUser = 'USER';
+  //             this.MaterialService.postApproveInventoryUpdate(requestId, payload, currentUser).subscribe({
+  //               next: response => {
+  //                 console.log(`Yêu cầu ${requestId} đã được chấp thuận thành công:`, response);
 
-                  this.loadData();
-                },
-                error: err => {
-                  console.error(`Lỗi khi chấp thuận yêu cầu ${requestId}:`, err);
-                },
-              });
-            } else {
-              console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để chấp thuận.`);
-            }
-          },
-          error: err => {
-            console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để chấp thuận:`, err);
-          },
-        });
-      } else {
-        console.log(`Hành động chấp thuận yêu cầu ${requestId} đã được hủy.`);
-      }
-    });
-  }
+  //                 this.loadData();
+  //               },
+  //               error: err => {
+  //                 console.error(`Lỗi khi chấp thuận yêu cầu ${requestId}:`, err);
+  //               },
+  //             });
+  //           } else {
+  //             console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để chấp thuận.`);
+  //           }
+  //         },
+  //         error: err => {
+  //           console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để chấp thuận:`, err);
+  //         },
+  //       });
+  //     } else {
+  //       console.log(`Hành động chấp thuận yêu cầu ${requestId} đã được hủy.`);
+  //     }
+  //   });
+  // }
 
-  public handleDetailStatusChange(row: inventory_update_requests_detail, isChecked: boolean): void {
+  public handleDetailStatusChange(row: inventory_update_requests_history_detail, isChecked: boolean): void {
     const newStatus = isChecked ? 'APPROVE' : 'REJECT';
 
-    const currentData = this.dataSoure_update_detail.data;
+    const currentData = this.dataSoure_history_detail.data;
     const rowIndex = currentData.findIndex(item => item.id === row.id);
 
     if (rowIndex > -1) {
@@ -384,7 +385,7 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
       const updatedItem = { ...originalItemInDataSource, status: newStatus };
       const newDataSourceData = [...currentData];
       newDataSourceData[rowIndex] = updatedItem;
-      this.dataSoure_update_detail.data = newDataSourceData;
+      this.dataSoure_history_detail.data = newDataSourceData;
 
       const itemsInSelectionWithSameId = this.selection.selected.filter(selectedItem => selectedItem.id === row.id);
       if (itemsInSelectionWithSameId.length > 0) {
@@ -403,35 +404,35 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
 
   public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSoure_update_detail.data.length;
+    const numRows = this.dataSoure_history_detail.data.length;
     return numSelected === numRows;
   }
 
   public toggleAllRows(): void {
     const isCurrentlyAllSelected = this.isAllSelected();
-    let newDataSourceData: inventory_update_requests_detail[];
+    let newDataSourceData: inventory_update_requests_history_detail[];
 
     if (isCurrentlyAllSelected) {
-      newDataSourceData = this.dataSoure_update_detail.data.map(dRow => ({
+      newDataSourceData = this.dataSoure_history_detail.data.map(dRow => ({
         ...dRow,
         status: 'REJECT',
       }));
-      this.dataSoure_update_detail.data = newDataSourceData;
+      this.dataSoure_history_detail.data = newDataSourceData;
       this.selection.clear();
       console.log('Đã bỏ chọn tất cả và cập nhật status thành "Từ chối"');
     } else {
-      newDataSourceData = this.dataSoure_update_detail.data.map(dRow => ({
+      newDataSourceData = this.dataSoure_history_detail.data.map(dRow => ({
         ...dRow,
         status: 'APPROVE',
       }));
-      this.dataSoure_update_detail.data = newDataSourceData;
-      this.selection.select(...this.dataSoure_update_detail.data);
+      this.dataSoure_history_detail.data = newDataSourceData;
+      this.selection.select(...this.dataSoure_history_detail.data);
       console.log('Đã chọn tất cả và cập nhật status thành "Chấp thuận"');
     }
     this.cdr.markForCheck();
   }
 
-  public checkboxLabel(row?: inventory_update_requests_detail): string {
+  public checkboxLabel(row?: inventory_update_requests_history_detail): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
@@ -602,7 +603,21 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   private loadData(): void {
     this.MaterialService.getDataUpdateRequest().subscribe(items => {
       const filtered = items.filter(item => ['APPROVE', 'REJECT'].includes(item.status));
+      const statusRank: Record<string, number> = { PENDING: 3, APPROVE: 2, REJECT: 1 };
+      filtered.sort((a, b) => {
+        const sa = statusRank[a.status] || 0;
+        const sb = statusRank[b.status] || 0;
+        if (sa !== sb) {
+          return sb - sa;
+        }
+        return new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime();
+      });
       this.dataSource_update_manage.data = filtered;
+      setTimeout(() => {
+        this.sort.active = 'status';
+        this.sort.direction = 'desc';
+        this.sort.sortChange.emit({ active: 'status', direction: 'desc' });
+      });
     });
   }
 

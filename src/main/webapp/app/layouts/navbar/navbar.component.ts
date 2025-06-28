@@ -108,6 +108,7 @@ export class NavbarComponent implements OnInit {
   }
   toggleDropDown(): void {
     this.isAccountOpen = !this.isAccountOpen;
+    this.accountMenu.active = this.isAccountOpen;
   }
   toggleDropDownProfile(): void {
     const ul = document.querySelector('.nav-item-profile.dropdown ul') as HTMLElement;
@@ -166,6 +167,9 @@ export class NavbarComponent implements OnInit {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
+  }
+  closeAccountDropdown(): void {
+    this.isAccountOpen = false;
   }
 
   toggleSidebar(): void {

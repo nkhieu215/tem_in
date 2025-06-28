@@ -68,11 +68,13 @@ ul {
   list-style-type: none;
   margin-top: 4px;
 }
+
 table {
   width: 100%;
   table-layout: auto;
   border-collapse: collapse;
 }
+
 th,
 td {
   padding: 8px;
@@ -115,6 +117,7 @@ th {
   background-color: white;
   border-radius: 4px;
 }
+
 .mat-mdc-form-field-hint-wrapper,
 .mat-mdc-form-field-hint-spacer {
   display: none !important;
@@ -170,13 +173,16 @@ th {
   height: 30px;
   display: flex;
   align-items: center;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  width: 100%; /* Chiếm full width của th */
+  justify-content: center;
+  /* Căn giữa theo chiều ngang */
+  width: 100%;
+  /* Chiếm full width của th */
 }
 
 .custom-search-wrapper {
   height: 20px;
 }
+
 // .custom-search-wrapper {
 //   width: calc(100% - 16px); /* Trừ đi padding */
 //   max-width: 100%; /* Đảm bảo không vượt quá kích thước th */
@@ -201,7 +207,8 @@ th {
 // }
 
 .mat-column-vendor {
-  flex: 0 0 120px; /* Ví dụ: 120px */
+  flex: 0 0 120px;
+  /* Ví dụ: 120px */
   word-wrap: break-word;
   white-space: normal;
 }
@@ -223,6 +230,7 @@ th {
 .th {
   background-color: rgb(49, 110, 241);
 }
+
 .td-flex-center {
   display: flex;
   justify-content: center;
@@ -295,6 +303,7 @@ tr.example-element-row:not(.example-expanded-row):hover {
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
+
 .full-scroll-table-container {
   height: 750px;
   //  width: 1660px;
@@ -302,6 +311,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   max-width: 100%;
   overflow: auto;
 }
+
 .example-element-row td {
   border-bottom-width: 0;
 }
@@ -311,6 +321,16 @@ tr.example-element-row:not(.example-expanded-row):active {
   color: #fff;
   position: relative;
   display: block;
+}
+
+::ng-deep th.mat-column-status,
+td.mat-column-status {
+  width: 120px;
+  max-width: 120px;
+  flex: 0 0 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 td.mat-mdc-cell.status-pending,
@@ -324,6 +344,7 @@ td.mat-mdc-cell.status-reject {
   text-align: center;
   margin: 14px 10px;
 }
+
 td.mat-mdc-cell span {
   width: 100%;
 }
@@ -348,10 +369,12 @@ td.mat-mdc-cell.status-reject {
   @include mat.icon-button-density(-5);
   @include mat.datepicker-density(-5);
 }
+
 .small-form-field {
   width: 100%;
   font-size: 13px !important;
 }
+
 // .small-form-field-select {
 //   width: 130px !important;
 // }

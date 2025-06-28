@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DialogContentExampleDialogComponent, ConfirmDialogData } from '../list-material/confirm-dialog/confirm-dialog.component';
 import { TimestampToDatePipe } from 'app/shared/pipes/timestamp-to-date';
+import { AccountService } from 'app/core/auth/account.service';
 
 export interface ColumnConfig {
   name: string;
@@ -73,7 +74,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     'requestCode',
     'createdTime',
     // 'updatedTime',
-    'updatedBy',
+    'requestedBy',
     'approvedBy',
     'status',
     'action',
@@ -108,6 +109,8 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
   disabled = false;
   tableWidth: string = '100%';
   value = '';
+  canApprove = false;
+  canViewOnly = false;
   columnFilters: { [key: string]: string } = {};
   public searchTerms: { [columnDef: string]: { mode: string; value: string } } = {};
   public activeFilters: { [columnDef: string]: any[] } = {};
@@ -125,11 +128,16 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private snackBar: MatSnackBar,
+    private accountService: AccountService,
   ) {}
   // #endregion
 
   // #region Lifecycle hooks
   ngOnInit(): void {
+    this.accountService.identity().subscribe(() => {
+      this.canApprove = this.accountService.hasAnyAuthority(['ROLE_PANACIM_APPROVE', 'ROLE_PANACIM_ADMIN']);
+      this.canViewOnly = this.accountService.hasAnyAuthority('ROLE_PANACIM_VIEW') && !this.canApprove;
+    });
     this.loadData();
     this.ngOnInitFilterPredicate();
     this.searchTerms = {};
@@ -156,9 +164,11 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
         }
         return new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime();
       });
-    this.sort.active = 'status';
-    this.sort.direction = 'desc';
-    this.sort.sortChange.emit({ active: 'status', direction: 'desc' });
+    this.sort.sort({
+      id: 'status',
+      start: 'desc',
+      disableClear: true,
+    });
   }
   // #endregion
 
@@ -226,7 +236,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     const raw = this.dataSource_update_manage.filteredData;
     const toExport = raw.map(r => ({
       requestCode: r.requestCode,
-      updatedBy: r.updatedBy,
+      updatedBy: r.requestedBy,
       approvedBy: r.approvedBy,
       status: r.status,
       createdTime: this.tsPipe.transform(r.createdTime),
@@ -337,7 +347,9 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
 
     if (this.expandedElement) {
       this.MaterialService.getRequestDetailsById(element.id!).subscribe(details => {
-        this.dataSoure_update_detail.data = details;
+        const detailsWithReject = details.map(d => ({ ...d, status: 'REJECT' }));
+        this.dataSoure_update_detail.data = detailsWithReject;
+        this.selection.clear();
         setTimeout(() => {
           this.dataSoure_update_detail.paginator = this.detailPaginator;
           this.cdr.detectChanges();
@@ -442,12 +454,17 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
         console.log(`Yêu cầu ${requestId} đã được chấp thuận.`);
         this.MaterialService.getRequestDetailsById(requestId).subscribe({
           next: details => {
+            const updatedItems = this.selection.selected.map(item => ({
+              ...item,
+              status: 'APPROVE',
+            }));
             if (details && details.length > 0) {
               const payload = {
-                updatedItems: details,
+                updatedItems,
                 selectedWarehouse: null,
                 approvers: [],
               };
+              console.log(`du lieu approve`, payload);
               const currentUser = 'USER';
               this.MaterialService.postApproveInventoryUpdate(requestId, payload, currentUser).subscribe({
                 next: response => {
@@ -607,6 +624,11 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
   }
 
   private loadData(): void {
+    this.displayedColumns = this.canApprove ? [...this.displayedColumns] : this.displayedColumns.filter(c => c !== 'action');
+
+    this.displayedColumnsDetails = this.canApprove
+      ? [...this.displayedColumnsDetails]
+      : this.displayedColumnsDetails.filter(a => a !== 'select');
     this.MaterialService.getDataUpdateRequest().subscribe(items => {
       const pendingOnly = items.filter(item => item.status === 'PENDING');
       this.dataSource_update_manage.data = pendingOnly;

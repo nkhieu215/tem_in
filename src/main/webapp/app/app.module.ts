@@ -1,7 +1,7 @@
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -12,6 +12,7 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { EntityRoutingModule } from './entities/entity-routing.module';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -38,6 +39,11 @@ import { GraphQLModule } from './graphql.module';
 // import { ApolloAngularModule} from 'apollo-angular';
 // import { HttpLinkModule } from 'apollo-angular/http';
 import { ListMaterialModule } from './entities/list-material/list-material.module';
+import { IdleService } from './entities/list-material/services/idle.service';
+export function initIdle(idle: IdleService) {
+  return () => {};
+}
+
 @NgModule({
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],
@@ -55,6 +61,7 @@ import { ListMaterialModule } from './entities/list-material/list-material.modul
     NgApexchartsModule,
     HttpClientModule,
     NgMultiSelectDropDownModule,
+    MatMenuModule,
     // HttpLinkModule,
     GraphQLModule,
     // ApolloAngularModule,
@@ -73,6 +80,13 @@ import { ListMaterialModule } from './entities/list-material/list-material.modul
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+    IdleService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initIdle,
+      deps: [IdleService],
+      multi: true,
+    },
   ],
 })
 export class AppModule {

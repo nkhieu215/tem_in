@@ -11,12 +11,12 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
-    <div>
+    <!-- <div>
       <button mat-raised-button (click)="focusScanInput()"><mat-icon>center_focus_weak</mat-icon>Scan</button>
     </div>
     <div *ngIf="isScanMode">
       <button mat-raised-button *ngIf="scanResult" (click)="refreshScan()"><mat-icon>refresh</mat-icon>Refresh</button>
-    </div>
+    </div> -->
   </div>
 
   <div class="right-group" style="display: flex; align-items: center; gap: 15px; margin-right: 15px">
@@ -65,7 +65,7 @@
 <div class="table-container full-scroll-table-container" [style.max-width]="tableMaxWidth" style="overflow-x: auto">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 bordered-table">
     <ng-container *ngFor="let colDef of displayedColumns" [matColumnDef]="colDef">
-      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; width: 150px impotan !important">
         <ng-container *ngIf="colDef === 'select_update'">
           <div style="text-align: center; color: white">
             <div>{{ getColumnDisplayName(colDef) }}</div>

@@ -13,6 +13,7 @@ import { RawGraphQLMaterial, ListMaterialService } from '../services/list-materi
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MaterialUpdateService } from '../services/material-update.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 interface sumary_mode {
   value: string;
@@ -121,6 +122,7 @@ export class ListMaterialUpdateComponent implements OnInit, AfterViewInit, OnDes
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private materialUpdateService: MaterialUpdateService,
+    private accountService: AccountService,
   ) {}
   // #endregion
 
@@ -486,25 +488,27 @@ export class ListMaterialUpdateComponent implements OnInit, AfterViewInit, OnDes
         return;
       }
 
-      console.log('UpdateSelectedDialog closed with data:', result);
-      const currentUser = 'USER';
+      this.accountService.getAuthenticationState().subscribe(account => {
+        const currentUser = account?.login ?? 'unknown';
+        this.materialService.postInventoryUpdateRequest(result, currentUser).subscribe({
+          next: response => {
+            console.log('UpdateSelectedDialog closed with data:', result, currentUser);
+            console.log('Yêu cầu cập nhật thành công từ UpdateListComponent:', response);
+            this.snackBar.open('Cập nhật thành công', 'Đóng', {
+              duration: 3000,
+            });
+            this.materialService.clearAllSelections();
+          },
+          error: err => {
+            console.error('Lỗi khi gửi yêu cầu cập nhật từ UpdateListComponent:', err);
+            this.snackBar.open('Cập nhật thất bại', 'Đóng', {
+              duration: 3000,
+            });
+          },
+        });
+      });
 
       // Gọi API cập nhật
-      this.materialService.postInventoryUpdateRequest(result, currentUser).subscribe({
-        next: response => {
-          console.log('Yêu cầu cập nhật thành công từ UpdateListComponent:', response);
-          this.snackBar.open('Cập nhật thành công', 'Đóng', {
-            duration: 3000,
-          });
-          this.materialService.clearAllSelections();
-        },
-        error: err => {
-          console.error('Lỗi khi gửi yêu cầu cập nhật từ UpdateListComponent:', err);
-          this.snackBar.open('Cập nhật thất bại', 'Đóng', {
-            duration: 3000,
-          });
-        },
-      });
     });
   }
   toggleRowSelectedForUpdate(row: RawGraphQLMaterial, isChecked: boolean): void {
@@ -537,7 +541,44 @@ export class ListMaterialUpdateComponent implements OnInit, AfterViewInit, OnDes
   }
 
   export(): void {
-    this.materialService.exportExcel(this.dataSource.data, 'danh_sach_yeu_cau_cap_nhat_vat_tu');
+    const exportColumns = this.displayedColumns.filter(col => col !== 'select' && col !== 'checked');
+
+    const formattedData = this.dataSource.filteredData.map(row => {
+      const result: { [key: string]: string | number | null } = {};
+      for (const col of exportColumns) {
+        let value = (row as any)[col];
+        if (['expirationDate', 'receivedDate', 'updatedDate', 'checkinDate'].includes(col)) {
+          if (value) {
+            let dt: Date;
+            if (typeof value === 'number') {
+              dt = new Date(value * 1000);
+            } else if (typeof value === 'string' && /^\d+$/.test(value)) {
+              dt = new Date(Number(value) * 1000);
+            } else {
+              dt = new Date(value);
+            }
+            value = isNaN(dt.getTime())
+              ? ''
+              : dt.toLocaleDateString('vi-VN', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                });
+          } else {
+            value = '';
+          }
+        }
+        // Format status
+        else if (col === 'status') {
+          value = this.getStatusLabel(value);
+        }
+        result[col] = value;
+      }
+      return result;
+    });
+
+    const fileName = 'Danh_sach_vat_tu_cap_nhat_' + new Date().toISOString().slice(0, 10);
+    this.materialService.exportExcel(formattedData, fileName);
   }
 
   initializeColumnSelection(dataItems: RawGraphQLMaterial[]): void {

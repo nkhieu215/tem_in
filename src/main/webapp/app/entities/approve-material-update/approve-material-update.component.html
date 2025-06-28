@@ -18,7 +18,14 @@
 </div>
 
 <div class="full-scroll-table-container">
-  <table mat-table [dataSource]="dataSource_update_manage" multiTemplateDataRows class="mat-elevation-z8 bordered-table" matSort>
+  <table
+    *jhiHasAnyAuthority="'ROLE_PANACIM_VIEW'"
+    mat-table
+    [dataSource]="dataSource_update_manage"
+    multiTemplateDataRows
+    class="mat-elevation-z8 bordered-table"
+    matSort
+  >
     <ng-container matColumnDef="detail">
       <th mat-header-cell *matHeaderCellDef style="width: 25px; background-color: #548ce8">
         <div style="color: white; display: flex; flex-direction: column; align-items: center; text-align: center">
@@ -144,30 +151,30 @@
             <td mat-cell *matCellDef="let element"> {{element['updatedTime'] | timestampToDate}} </td>
         </ng-container> -->
 
-    <ng-container matColumnDef="updatedBy">
+    <ng-container matColumnDef="requestedBy">
       <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
         <div class="th-container">
           <div class="header-content">
             <div style="display: flex; align-items: center; justify-content: space-between">
               <div class="column-title">Người gửi đề nghị</div>
               <div>
-                <mat-icon [matMenuTriggerFor]="filterUpdatedBy" style="color: white">filter_list</mat-icon>
+                <mat-icon [matMenuTriggerFor]="filterRequestedBy" style="color: white">filter_list</mat-icon>
               </div>
             </div>
-            <mat-menu #filterUpdatedBy="matMenu">
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'contains')">Có chứa</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_contains')">Không chứa</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'equals')">Bằng</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_equals')">Không bằng</button>
+            <mat-menu #filterRequestedBy="matMenu">
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
                 <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                   <mat-label>Search</mat-label>
                   <input
-                    (keyup)="applyFilter('updatedBy', $event)"
+                    (keyup)="applyFilter('requestedBy', $event)"
                     matInput
-                    [placeholder]="'Search (' + (filterModes['updatedBy'] || 'contains') + ')'"
+                    [placeholder]="'Search (' + (filterModes['requestedBy'] || 'contains') + ')'"
                   />
                 </mat-form-field>
               </div>
@@ -175,7 +182,7 @@
           </div>
         </div>
       </th>
-      <td mat-cell *matCellDef="let element">{{ element['updatedBy'] }}</td>
+      <td mat-cell *matCellDef="let element">{{ element['requestedBy'] }}</td>
     </ng-container>
     <ng-container matColumnDef="approvedBy">
       <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
@@ -212,7 +219,7 @@
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef class="search-header" style="background-color: #548ce8">
+      <th mat-header-cell *matHeaderCellDef class="search-header col-status" style="background-color: #548ce8">
         <div class="header-content">
           <div style="display: flex; align-items: center; justify-content: space-between">
             <div class="column-title">Trạng thái</div>
@@ -231,10 +238,10 @@
               <mat-form-field appearance="fill" class="small-form-field small-form-field-select">
                 <mat-label>Status</mat-label>
                 <mat-select [ngModel]="searchTerms['status']?.value || ''" (ngModelChange)="applyFilter('status', $event)">
-                  <mat-option value="">-- Tất cả --</mat-option>
-                  <mat-option value="PENDING">Đang chờ duyệt</mat-option>
-                  <mat-option value="APPROVE">Đã phê duyệt</mat-option>
-                  <mat-option value="REJECT">Từ chối duyệt</mat-option>
+                  <mat-option value="">Tất cả</mat-option>
+                  <mat-option value="PENDING">Chờ duyệt</mat-option>
+                  <mat-option value="APPROVE">Phê duyệt</mat-option>
+                  <mat-option value="REJECT">Từ chối</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -242,6 +249,7 @@
         </div>
       </th>
       <td
+        class="col-status"
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
@@ -303,6 +311,7 @@
               align-items: center;
               margin-top: 0px;
               padding: 10px;
+              color: #000;
               border-bottom: 1px solid rgba(0, 0, 0, 0.12);
             "
           >
@@ -315,7 +324,7 @@
 
           <table mat-table [dataSource]="dataSoure_update_detail" class="mat-elevation-z8 bordered-table">
             <ng-container matColumnDef="select">
-              <th mat-header-cell *matHeaderCellDef style="text-align: center">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center; background-color: #548ce8; color: #fff">
                 <div style="display: flex; flex-direction: column; align-items: center">
                   <span>Select all</span>
                 </div>
@@ -342,26 +351,26 @@
             </ng-container>
 
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">ID</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['id'] }}</td>
             </ng-container>
 
             <ng-container matColumnDef="materialId">
-              <th mat-header-cell *matHeaderCellDef>MaterialID</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">ID vật tư</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['materialId'] }}</td>
             </ng-container>
 
             <ng-container matColumnDef="updatedBy">
-              <th mat-header-cell *matHeaderCellDef>UpdateBy</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Người đề nghị</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['updatedBy'] }}</td>
             </ng-container>
 
             <ng-container matColumnDef="createdTime">
-              <th mat-header-cell *matHeaderCellDef>CreatedTime</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Ngày đề nghị</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['createdTime'] | timestampToDate }}</td>
             </ng-container>
             <ng-container matColumnDef="expiredTime">
-              <th mat-header-cell *matHeaderCellDef>Expired Time</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Ngày hết hạn</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['expiredTime'] | timestampToDate }}</td>
             </ng-container>
 
@@ -372,7 +381,7 @@
                         </ng-container> -->
 
             <ng-container matColumnDef="productCode">
-              <th mat-header-cell *matHeaderCellDef>ProductCode</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Mã sản phẩm</th>
               <td mat-cell *matCellDef="let innerElement">
                 {{ innerElement['productCode'] }}
               </td>
@@ -384,16 +393,16 @@
                         </ng-container> -->
 
             <ng-container matColumnDef="quantity">
-              <th mat-header-cell *matHeaderCellDef>Quantity</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Số lượng ban đầu</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['quantity'] }}</td>
             </ng-container>
             <ng-container matColumnDef="quantityChange">
-              <th mat-header-cell *matHeaderCellDef>Quantity Change</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Số lượng luân chuyển</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['quantityChange'] }}</td>
             </ng-container>
 
             <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef>Loại yêu cầu</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Loại yêu cầu</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['type'] }}</td>
             </ng-container>
 
@@ -403,12 +412,12 @@
                         </ng-container> -->
 
             <ng-container matColumnDef="locationName">
-              <th mat-header-cell *matHeaderCellDef>LocationName</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Kho mới</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['locationName'] }}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8; color: #fff">Trạng thái</th>
               <td mat-cell *matCellDef="let innerElement">{{ innerElement['status'] }}</td>
             </ng-container>
 
@@ -421,7 +430,7 @@
             <tr
               mat-row
               *matRowDef="let innerRow; columns: displayedColumnsDetails"
-              [style.opacity]="selection.isSelected(innerRow) ? '1' : '0.5'"
+              [style.opacity]="canViewOnly ? '1' : selection.isSelected(innerRow) ? '1' : '0.5'"
             ></tr>
           </table>
           <div>

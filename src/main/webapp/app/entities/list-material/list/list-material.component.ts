@@ -13,6 +13,7 @@ import * as XLSX from 'xlsx';
 import { SelectionModel } from '@angular/cdk/collections';
 import { RawGraphQLMaterial, ListMaterialService } from '../services/list-material.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AccountService } from 'app/core/auth/account.service';
 
 interface sumary_mode {
   value: string;
@@ -154,6 +155,7 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private accountService: AccountService,
   ) {
     this.form = new FormGroup({
       sumary_modeControl: new FormControl(null),
@@ -164,6 +166,9 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
   // #region Lifecycle hooks
   ngOnInit(): void {
     this.updateDisplayedColumns();
+    const canUpdate = this.accountService.hasAnyAuthority(['ROLE_PANACIM_UPDATE', 'ROLE_PANACIM_ADMIN']);
+    this.displayedColumns = canUpdate ? [...this.displayedColumns] : this.displayedColumns.filter(c => c !== 'select');
+
     this.materialService.materialsData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
       this.dataSource.data = data;
       const newSelection = new SelectionModel<RawGraphQLMaterial>(true, []);
@@ -483,7 +488,7 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const scanString = rawValue.trim();
     if (!scanString) {
-      this.scanError = 'Không nhận diện được mã vật tư, vui lòng thử lại!';
+      // this.scanError = 'Không nhận diện được mã vật tư, vui lòng thử lại!';
       this.isScanMode = false;
       return;
     }
@@ -607,13 +612,44 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
 
   export(): void {
-    const formattedData = this.dataSource.filteredData.map(row => ({
-      ...row,
-      expirationDate: `'${row.expirationDate}`,
-      updatedDate: `'${row.updatedDate}`,
-    }));
+    const exportColumns = this.displayedColumns.filter(col => col !== 'select' && col !== 'checked');
 
-    this.materialService.exportExcel(formattedData, 'customers');
+    const formattedData = this.dataSource.filteredData.map(row => {
+      const result: { [key: string]: string | number | null } = {};
+      for (const col of exportColumns) {
+        let value = (row as any)[col];
+        if (['expirationDate', 'receivedDate', 'updatedDate', 'checkinDate'].includes(col)) {
+          if (value) {
+            let dt: Date;
+            if (typeof value === 'number') {
+              dt = new Date(value * 1000);
+            } else if (typeof value === 'string' && /^\d+$/.test(value)) {
+              dt = new Date(Number(value) * 1000);
+            } else {
+              dt = new Date(value);
+            }
+            value = isNaN(dt.getTime())
+              ? ''
+              : dt.toLocaleDateString('vi-VN', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                });
+          } else {
+            value = '';
+          }
+        }
+        // Format status
+        else if (col === 'status') {
+          value = this.getStatusLabel(value);
+        }
+        result[col] = value;
+      }
+      return result;
+    });
+
+    const fileName = 'Danh_sach_vat_tu_' + new Date().toISOString().slice(0, 10);
+    this.materialService.exportExcel(formattedData, fileName);
   }
   // #endregion
 

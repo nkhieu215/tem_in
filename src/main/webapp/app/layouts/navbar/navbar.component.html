@@ -1,3 +1,38 @@
+<header class="app-header col-md-3 col-12" [class.collapsed]="!isNavbarCollapsed">
+  <!-- Collapse sidebar -->
+  <button class="btn-collapse" (click)="toggleSidebar()">
+    <fa-icon icon="bars"></fa-icon>
+  </button>
+  <!-- Logout -->
+  <ng-container *ngIf="account; else loginBtn">
+    <button mat-button [matMenuTriggerFor]="accountMenu" style="color: white">
+      <mat-icon style="width: 40px; height: 30px; font-size: 30px">account_box</mat-icon>
+      <span *ngIf="!isNavbarCollapsed">{{ account.login }}</span>
+    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item routerLink="/account/settings" (click)="closeAccountDropdown()">
+        <mat-icon>settings_applications</mat-icon>
+        <span>Cài đặt</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Đăng xuất</span>
+      </button>
+    </mat-menu>
+  </ng-container>
+
+  <ng-template #loginBtn>
+    <button mat-button (click)="login()" style="color: white">
+      <mat-icon style="height: 30px; font-size: 30px; width: 30px">login</mat-icon>
+      <span>Đăng nhập</span>
+    </button>
+  </ng-template>
+
+  <!-- <button class="btn-logout" (click)="logout()">
+    <fa-icon icon="sign-out-alt"></fa-icon>
+    <span>Đăng xuất</span>
+  </button> -->
+</header>
 <div id="sidebar-id" class="sidebar col-md-3" style="width: 60px">
   <a class="sidebar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <img src="../../../content/images/logo-rang-dong.webp" alt="Logo-RangDong" class="sidebar-img" />
@@ -33,43 +68,6 @@
                     <div class="sidebar-submenu-link">
                       <a class="sidebar-submenu-title" [routerLink]="submenu.link" style="display: flex; align-items: center; height: 100%">
                         {{ submenu.title }}
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <li class="sidebar-menu-item" [ngClass]="{ active: isAccountOpen, 'sidebar-dropdown': true }">
-              <div class="sidebar-menu-link" (click)="toggleDropDown()" style="height: 50px; display: flex; align-items: center">
-                <mat-icon class="sidebar-menu-icon">account_box</mat-icon>
-                <a>
-                  <span class="sidebar-menu-title" *ngIf="!isNavbarCollapsed">
-                    {{ account?.login }}
-                  </span>
-                </a>
-              </div>
-              <div class="sidebar-submenu" [@slide]="getState(accountMenu)">
-                <ul>
-                  <li class="sidebar-submenu-item">
-                    <div class="sidebar-submenu-link">
-                      <a
-                        class="sidebar-submenu-title"
-                        routerLink="account/settings"
-                        routerLinkActive="active"
-                        style="display: flex; align-items: center; height: 100%"
-                        (click)="collapseNavbar()"
-                      >
-                        <mat-icon class="sidebar-menu-icon">wrench</mat-icon>
-                        <span>Cài đặt</span>
-                      </a>
-                    </div>
-                  </li>
-                  <li class="sidebar-submenu-item">
-                    <div class="sidebar-submenu-link">
-                      <a class="sidebar-submenu-title" (click)="logout()" style="display: flex; align-items: center; height: 100%">
-                        <mat-icon class="sidebar-menu-icon">exit_to_app</mat-icon>
-                        <span>Đăng xuất</span>
                       </a>
                     </div>
                   </li>
@@ -295,9 +293,9 @@
       </ul>
     </nav> -->
   </div>
-  <button class="sidebar-collapse-btn" (click)="toggleSidebar()">
+  <!-- <button class="sidebar-collapse-btn" (click)="toggleSidebar()">
     <fa-icon icon="bars"></fa-icon>
-  </button>
+  </button> -->
 </div>
 <!-- <nav *ngIf="account !== null">
   <div class="container-fluid">

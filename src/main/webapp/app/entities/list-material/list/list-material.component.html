@@ -7,8 +7,10 @@
       <h2>|</h2>
     </div>
     <div class="listupdate-with-badge">
-      <button mat-raised-button routerLink="update-list"><mat-icon> list_alt</mat-icon>Danh sách cập nhật</button>
-      <div class="cart-badge">{{ checkedCount() }}</div>
+      <button *jhiHasAnyAuthority="'ROLE_PANACIM_UPDATE'" mat-raised-button routerLink="update-list">
+        <mat-icon> list_alt</mat-icon>Danh sách cập nhật
+      </button>
+      <div *jhiHasAnyAuthority="'ROLE_PANACIM_UPDATE'" class="cart-badge">{{ checkedCount() }}</div>
     </div>
     <button mat-raised-button (click)="startScan()"><mat-icon>center_focus_weak</mat-icon> Scan</button>
 
@@ -92,9 +94,9 @@
   (keyup.enter)="onScanEnter(scanInput.value)"
 />
 <div class="full-scroll-table-container" [style.max-width]="tableMaxWidth" style="overflow-x: auto">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 bordered-table">
+  <table *jhiHasAnyAuthority="'ROLE_PANACIM_VIEW'" mat-table [dataSource]="dataSource" class="mat-elevation-z8 bordered-table">
     <ng-container *ngFor="let colDef of displayedColumns" [matColumnDef]="colDef">
-      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
+      <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8" [ngClass]="'col-' + colDef">
         <!-- Cột Select -->
         <ng-container *ngIf="colDef === 'select'; else headerContent">
           <div style="text-align: center; color: white">
@@ -172,7 +174,7 @@
         </ng-template>
       </th>
 
-      <td mat-cell *matCellDef="let row">
+      <td mat-cell *matCellDef="let row" [ngClass]="'col-' + colDef">
         <ng-container [ngSwitch]="colDef">
           <!-- select -->
           <ng-container *ngSwitchCase="'select'">

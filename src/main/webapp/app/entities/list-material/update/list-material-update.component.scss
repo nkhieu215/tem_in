@@ -214,13 +214,14 @@ th {
   // overflow-y: auto;
   overflow-x: auto;
 }
+
 ::ng-deep .small-form-field {
   @include mat.form-field-density(-5);
   @include mat.icon-button-density(-5);
   @include mat.datepicker-density(-5);
 }
 .small-form-field {
-  width: 170px !important;
+  width: 175px !important;
   font-size: 13px !important;
 }
 // ::ng-deep .mat-mdc-form-field-icon-suffix{
