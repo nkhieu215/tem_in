@@ -497,7 +497,10 @@ export class ListMaterialUpdateComponent implements OnInit, AfterViewInit, OnDes
             this.snackBar.open('Cập nhật thành công', 'Đóng', {
               duration: 3000,
             });
-            this.materialService.clearAllSelections();
+            const updatedIds = result.updatedItems.map((item: { inventoryId: string }) => item.inventoryId);
+            this.materialService.uncheckItemsAfterUpdate(updatedIds);
+            this.selection.clear();
+            this.cdr.detectChanges();
           },
           error: err => {
             console.error('Lỗi khi gửi yêu cầu cập nhật từ UpdateListComponent:', err);

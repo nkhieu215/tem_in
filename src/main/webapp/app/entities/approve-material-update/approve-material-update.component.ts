@@ -77,7 +77,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     'requestedBy',
     'approvedBy',
     'status',
-    'action',
+    // 'action',
   ];
   displayedColumnsDetails: string[] = [
     'select',
@@ -93,7 +93,7 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     'type',
     // 'locationId',
     'locationName',
-    'status',
+    // 'status',
     // 'requestId',
   ];
   dataSource_update_manage = new MatTableDataSource<inventory_update_requests>();
@@ -263,13 +263,14 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
   }
 
   public handleDetailStatusChange(row: inventory_update_requests_detail, isChecked: boolean): void {
-    const newStatus = isChecked ? 'APPROVE' : 'REJECT';
     const currentData = this.dataSoure_update_detail.data;
     const rowIndex = currentData.findIndex(item => item.id === row.id);
 
     if (rowIndex > -1) {
       const originalItemInDataSource = currentData[rowIndex];
-      const updatedItem = { ...originalItemInDataSource, status: newStatus };
+
+      // Không thay đổi status ở đây nữa
+      const updatedItem = { ...originalItemInDataSource };
       const newDataSourceData = [...currentData];
       newDataSourceData[rowIndex] = updatedItem;
       this.dataSoure_update_detail.data = newDataSourceData;
@@ -282,9 +283,10 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
       if (isChecked) {
         this.selection.select(updatedItem);
       }
-      console.log(`Đã cập nhật status cho item ID ${updatedItem.id}: ${updatedItem.status}`);
+      // Log chỉ để debug
+      console.log(`Đã ${isChecked ? 'chọn' : 'bỏ chọn'} item ID ${updatedItem.id}`);
     } else {
-      console.warn('Không tìm thấy dòng trong dataSource để cập nhật status:', row);
+      console.warn('Không tìm thấy dòng trong dataSource để cập nhật selection:', row);
     }
     this.cdr.markForCheck();
   }
@@ -397,37 +399,31 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        console.log(`Yêu cầu ${requestId} đã bị từ chối.`);
+        const updatedItems = this.dataSoure_update_detail.data.map(item => ({
+          ...item,
+          status: 'REJECT',
+        }));
+        this.selection.select(...this.dataSoure_update_detail.data);
 
-        this.MaterialService.getRequestDetailsById(requestId).subscribe({
-          next: details => {
-            if (details && details.length > 0) {
-              const payload = {
-                updatedItems: details,
-                selectedWarehouse: null,
-                approvers: [],
-              };
-              const currentUser = 'USER';
+        const approvers = this.expandedElement?.approvedBy ? [this.expandedElement.approvedBy] : [];
 
-              this.MaterialService.postRejectInventoryUpdate(requestId, payload, currentUser).subscribe({
-                next: response => {
-                  console.log(`Yêu cầu ${requestId} đã được từ chối thành công:`, response);
-                  this.loadData();
-                },
-                error: err => {
-                  console.error(`Lỗi khi từ chối yêu cầu ${requestId}:`, err);
-                },
-              });
-            } else {
-              console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để từ chối.`);
-            }
-          },
-          error: err => {
-            console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để từ chối:`, err);
-          },
+        const payload = {
+          updatedItems,
+          selectedWarehouse: null,
+          approvers,
+        };
+        this.accountService.getAuthenticationState().subscribe(account => {
+          const currentUser = account?.login ?? 'unknown';
+          console.log('du lieu tu choi', payload, currentUser);
+          this.MaterialService.postRejectInventoryUpdate(requestId, payload, currentUser).subscribe({
+            next: response => {
+              this.loadData();
+            },
+            error: err => {
+              console.error(`Lỗi khi từ chối yêu cầu ${requestId}:`, err);
+            },
+          });
         });
-      } else {
-        console.log(`Hành động từ chối yêu cầu ${requestId} đã được hủy.`);
       }
     });
   }
@@ -451,43 +447,27 @@ export class ApproveMaterialUpdateComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        console.log(`Yêu cầu ${requestId} đã được chấp thuận.`);
-        this.MaterialService.getRequestDetailsById(requestId).subscribe({
-          next: details => {
-            const updatedItems = this.selection.selected.map(item => ({
-              ...item,
-              status: 'APPROVE',
-            }));
-            if (details && details.length > 0) {
-              const payload = {
-                updatedItems,
-                selectedWarehouse: null,
-                approvers: [],
-              };
-              console.log(`du lieu approve`, payload);
-              const currentUser = 'USER';
-              this.MaterialService.postApproveInventoryUpdate(requestId, payload, currentUser).subscribe({
-                next: response => {
-                  this.snackBar.open(`Yêu cầu ${requestId} đã được chấp thuận.`, 'Đóng', { duration: 3000 });
-                  console.log(`Yêu cầu ${requestId} đã được chấp thuận thành công:`, response);
-
-                  this.loadData();
-                },
-                error: err => {
-                  this.snackBar.open(`Lỗi khi chấp thuận yêu cầu ${requestId}`, 'Đóng', { duration: 3000 });
-                  console.error(`Lỗi khi chấp thuận yêu cầu ${requestId}:`, err);
-                },
-              });
-            } else {
-              console.warn(`Không tìm thấy chi tiết cho yêu cầu ${requestId} để chấp thuận.`);
-            }
+        const selectedIds = new Set(this.selection.selected.map(item => item.id));
+        const updatedItems = this.dataSoure_update_detail.data.map(item => ({
+          ...item,
+          status: selectedIds.has(item.id) ? 'APPROVE' : 'REJECT',
+        }));
+        const approvers = this.expandedElement?.approvedBy ? [this.expandedElement.approvedBy] : [];
+        const payload = {
+          updatedItems,
+          selectedWarehouse: null,
+          approvers,
+        };
+        const currentUser = 'USER';
+        this.MaterialService.postApproveInventoryUpdate(requestId, payload, currentUser).subscribe({
+          next: response => {
+            this.snackBar.open(`Yêu cầu ${requestId} đã được chấp thuận.`, 'Đóng', { duration: 3000 });
+            this.loadData();
           },
           error: err => {
-            console.error(`Lỗi khi lấy chi tiết yêu cầu ${requestId} để chấp thuận:`, err);
+            this.snackBar.open(`Lỗi khi chấp thuận yêu cầu ${requestId}`, 'Đóng', { duration: 3000 });
           },
         });
-      } else {
-        console.log(`Hành động chấp thuận yêu cầu ${requestId} đã được hủy.`);
       }
     });
   }

@@ -40,9 +40,9 @@ export class NavbarService {
       icon: 'calendar_view_day',
       type: 'dropdown',
       submenus: [
-        { title: 'Danh mục máy - Thiết bị check', link: '/quan-ly-thiet-bi' },
-        { title: 'Kịch bản trạm kiểm tra đối chiếu', link: '/profile-check' },
-        { title: 'Kiếm soát đối chiếu lệnh sản xuất', link: '/doi-chieu-lenh-san-xuat' },
+        { title: ' Danh sách thiết bị', link: '/quan-ly-thiet-bi' },
+        { title: ' Quy trình đối chiếu', link: '/profile-check' },
+        { title: ' Đối chiếu lệnh SX', link: '/doi-chieu-lenh-san-xuat' },
       ],
     },
     {
@@ -83,11 +83,11 @@ export class NavbarService {
     //   active: false,
     //   icon: 'calendar_view_day',
     //   type: 'dropdown',
-    //   submenus: [
-    //     { title: ' Danh sách thiết bị', link: '/quan-ly-thiet-bi' },
-    //     { title: ' Quy trình đối chiếu', link: '/profile-check' },
-    //     { title: ' Đối chiếu lệnh SX', link: '/doi-chieu-lenh-san-xuat' },
-    //   ],
+    // submenus: [
+    //   { title: ' Danh sách thiết bị', link: '/quan-ly-thiet-bi' },
+    //   { title: ' Quy trình đối chiếu', link: '/profile-check' },
+    //   { title: ' Đối chiếu lệnh SX', link: '/doi-chieu-lenh-san-xuat' },
+    // ],
     // },
     // {
     //   title: 'Quản lý vật tư',

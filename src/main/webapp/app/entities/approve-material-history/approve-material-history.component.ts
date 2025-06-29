@@ -71,7 +71,7 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<inventory_update_requests_history_detail>(true, []);
   STATUS_LABELS = STATUS_LABELS;
   tableMaxWidth: string = '100%';
-  displayedColumns: string[] = ['detail', 'requestCode', 'createdTime', 'updatedTime', 'updatedBy', 'approvedBy', 'status'];
+  displayedColumns: string[] = ['detail', 'requestCode', 'createdTime', 'updatedTime', 'requestedBy', 'approvedBy', 'status'];
   displayedColumnsDetails: string[] = [
     'materialId',
     'requestCode',
@@ -222,8 +222,30 @@ export class ApproveMaterialHistoryComponent implements OnInit, AfterViewInit {
       this.dataSoure_history_detail.data &&
       this.dataSoure_history_detail.data.length > 0
     ) {
+      const dataSource = this.dataSoure_history_detail;
+      const pageIndex = dataSource.paginator?.pageIndex ?? 0;
+      const pageSize = dataSource.paginator?.pageSize ?? dataSource.data.length;
+      const startIndex = pageIndex * pageSize;
+      const endIndex = startIndex + pageSize;
+      const currentPageData = dataSource.data.slice(startIndex, endIndex);
+
+      const toExport = currentPageData.map(row => ({
+        materialId: row.materialId,
+        requestCode: row.requestCode,
+        requestedBy: row.requestedBy,
+        quantity: row.quantity,
+        quantityChange: row.quantityChange,
+        expiredTime: row.expiredTime,
+        requestType: row.requestType,
+        oldLocation: row.oldLocation,
+        newLocation: row.newLocation,
+        approvedTime: this.tsPipe.transform(row.approvedTime),
+        requestedTime: this.tsPipe.transform(row.requestedTime),
+        status: this.STATUS_LABELS[row.status] || row.status,
+      }));
+
       const fileName = `ChiTietYeuCau_${requestElement.requestCode ?? 'data'}`;
-      this.MaterialService.exportExcel(this.dataSoure_history_detail.data, fileName);
+      this.MaterialService.exportExcel(toExport, fileName);
     } else {
       console.warn('Không thể xuất dữ liệu chi tiết', {
         currentExpandedId: this.expandedElement?.requestCode,

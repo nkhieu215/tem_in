@@ -142,30 +142,30 @@
       <td mat-cell *matCellDef="let element">{{ element['updatedTime'] | timestampToDate }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="updatedBy">
+    <ng-container matColumnDef="requestedBy">
       <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">
         <div class="th-container">
           <div class="header-content">
             <div style="display: flex; align-items: center; justify-content: space-between">
               <div class="column-title">Người gửi đề nghị</div>
               <div>
-                <mat-icon [matMenuTriggerFor]="filterUpdatedBy" style="color: white">filter_list</mat-icon>
+                <mat-icon [matMenuTriggerFor]="filterRequestedBy" style="color: white">filter_list</mat-icon>
               </div>
             </div>
-            <mat-menu #filterUpdatedBy="matMenu">
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'contains')">Có chứa</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_contains')">Không chứa</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'equals')">Bằng</button>
-              <button mat-menu-item (click)="setFilterMode('updatedBy', 'not_equals')">Không bằng</button>
+            <mat-menu #filterRequestedBy="matMenu">
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'contains')">Có chứa</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'not_contains')">Không chứa</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'equals')">Bằng</button>
+              <button mat-menu-item (click)="setFilterMode('requestedBy', 'not_equals')">Không bằng</button>
             </mat-menu>
             <div class="search-container">
               <div class="custom-search-wrapper">
                 <mat-form-field class="small-form-field" appearance="fill" floatLabel="always">
                   <mat-label>Search</mat-label>
                   <input
-                    (keyup)="applyFilter('updatedBy', $event)"
+                    (keyup)="applyFilter('requestedBy', $event)"
                     matInput
-                    [placeholder]="'Search (' + (filterModes['updatedBy'] || 'contains') + ')'"
+                    [placeholder]="'Search (' + (filterModes['requestedBy'] || 'contains') + ')'"
                   />
                 </mat-form-field>
               </div>
@@ -173,7 +173,7 @@
           </div>
         </div>
       </th>
-      <td mat-cell *matCellDef="let element">{{ element['updatedBy'] }}</td>
+      <td mat-cell *matCellDef="let element">{{ element['requestedBy'] }}</td>
     </ng-container>
     <ng-container matColumnDef="approvedBy">
       <th mat-header-cell *matHeaderCellDef style="background-color: #548ce8">

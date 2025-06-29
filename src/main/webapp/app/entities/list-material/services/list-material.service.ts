@@ -258,6 +258,7 @@ export class ListMaterialService {
 
   private _materialsDataFetchedOnce = false;
   private readonly defaultPageSize = 15;
+  private _updatedInventoryIds = new Set<string>();
   // #endregion
 
   // #region Constructor
@@ -358,11 +359,13 @@ export class ListMaterialService {
       next: apiData => {
         if (Array.isArray(apiData)) {
           const selectedIds = this._selectedIds.value;
-          const mappedData = apiData.map(rawItem => this.mapRawToMaterial(rawItem, selectedIds));
+          const filteredData = apiData.filter(item => !this._updatedInventoryIds.has(item.inventoryId));
+          const mappedData = filteredData.map(rawItem => this.mapRawToMaterial(rawItem, selectedIds));
           this._materialsData.next(mappedData);
           this._totalCount.next(mappedData.length);
           this._materialsDataFetchedOnce = true;
           console.log('typeof callback:', typeof apiData);
+          console.log('bo hang da cap nhat', filteredData);
           console.log(`MaterialService (HTTP): Materials data ${forceRefresh ? 'refreshed' : 'loaded'}. Count:`, mappedData.length);
         } else {
           console.warn('MaterialService (HTTP): Materials API did not return an array. Received:', apiData);
@@ -507,6 +510,16 @@ export class ListMaterialService {
   public getItemsForUpdate(): Observable<RawGraphQLMaterial[]> {
     return this.materialsData$.pipe(map(materials => materials.filter(material => material.checked === true)));
   }
+  public uncheckItemsAfterUpdate(ids: string[]): void {
+    const updatedData = this._materialsData.value.map(item =>
+      ids.includes(item.inventoryId) ? { ...item, checked: false, select_update: false } : item,
+    );
+    this._materialsData.next(updatedData);
+    // Cập nhật selectedIds luôn nếu cần
+    const newSelectedIds = this._selectedIds.value.filter(id => !ids.includes(id));
+    this._selectedIds.next(newSelectedIds);
+    sessionStorage.setItem('selectedMaterialIds', JSON.stringify(newSelectedIds));
+  }
 
   public getData(): Observable<RawGraphQLMaterial[]> {
     return this.materialsData$;
@@ -576,17 +589,15 @@ export class ListMaterialService {
       'Content-Type': 'application/json',
     });
 
-    return this.http
-      .post(this.apiUrl_post_request_update, payload, { headers })
-      .pipe(
-        tap(
-          () => (
-            console.log('MaterialService: Inventory update request successful. Refreshing materials data.'),
-            this.fetchMaterialsData(0, this.defaultPageSize, undefined, undefined, undefined, true),
-            this.fetchAllInventoryUpdateRequests()
-          ),
+    return this.http.post(this.apiUrl_post_request_update, payload, { headers }).pipe(
+      tap(
+        () => (
+          console.log('MaterialService: Inventory update request successful. Refreshing materials data.'),
+          this.fetchMaterialsData(0, this.defaultPageSize, undefined, undefined, undefined, true)
+          // this.fetchAllInventoryUpdateRequests()
         ),
-      );
+      ),
+    );
   }
 
   public postApproveInventoryUpdate(

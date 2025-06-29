@@ -67,6 +67,7 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
   dialogForm: FormGroup = new FormGroup({});
   locations$: Observable<RawGraphQLLocation[]>;
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+  @ViewChild('scanInput') scanInput!: ElementRef<HTMLInputElement>;
   myControl = new FormControl('');
   headerQuantityChange: number | null = null;
   filteredOptions!: string[];
@@ -95,6 +96,7 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
     // 'status',
     'locationId',
     'extendExpiration',
+    'scanLocation',
   ];
   statusOptions = [
     { value: '', view: '-- All --' },
@@ -110,6 +112,11 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
   applyHeaderSelectNewlocation: string = '';
   filteredlocations: string[] = [];
   optionslocation: string[] = [];
+  scanLoadingRow: { [materialIdentifier: string]: boolean } = {};
+  scanLoadingAll = false;
+  currentScanRow: MaterialItem | null = null;
+  isScanAll = false;
+  selectedSubApproverIndex: number = -1;
   public searchTerms: { [columnDef: string]: { mode: string; value: string } } = {};
   public activeFilters: { [columnDef: string]: any[] } = {};
   public filterModes: { [columnDef: string]: string } = {};
@@ -360,6 +367,72 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
       });
     }
   }
+  scanLocationForRow(item: MaterialItem): void {
+    this.scanLoadingRow[item.materialIdentifier] = true;
+    this.currentScanRow = item;
+    setTimeout(() => this.scanInput.nativeElement.focus(), 0);
+  }
+  scanLocationForAll(): void {
+    this.scanLoadingAll = true;
+    this.isScanAll = true;
+    setTimeout(() => this.scanInput.nativeElement.focus(), 0);
+  }
+  refreshForRow(item: MaterialItem): void {
+    this.scanLoadingRow[item.materialIdentifier] = true;
+    setTimeout(() => {
+      item.locationId = '';
+      // Không động vào item.locationName để giữ placeholder
+      const formGroup = this.getFormGroupForItem(item);
+      formGroup.get('selectedWarehouseItem')?.setValue(null, { emitEvent: true });
+      this.scanLoadingRow[item.materialIdentifier] = false;
+      this.cdr.markForCheck();
+    }, 300);
+  }
+  refreshForAll(): void {
+    this.scanLoadingAll = true;
+    setTimeout(() => {
+      this.itemsDataSource.data.forEach(item => {
+        item.locationId = '';
+        const formGroup = this.getFormGroupForItem(item);
+        formGroup.get('selectedWarehouseItem')?.setValue(null, { emitEvent: true });
+        this.scanLoadingRow[item.materialIdentifier] = false;
+      });
+      this.scanLoadingAll = false;
+      this.cdr.markForCheck();
+    }, 300);
+  }
+
+  onScanInputEnter(event: Event): void {
+    const rawValue = (event.target as HTMLInputElement).value;
+    const processed = this.processScanInput(rawValue);
+
+    const matchedWarehouse = this.warehouseSelection.find(w => w.name.trim().toLowerCase() === processed.trim().toLowerCase());
+
+    if (this.isScanAll) {
+      if (matchedWarehouse) {
+        this.globalWarehouseChanged(matchedWarehouse);
+      }
+      this.itemsDataSource.data.forEach(item => {
+        this.scanLoadingRow[item.materialIdentifier] = false;
+      });
+      this.isScanAll = false;
+      this.scanLoadingAll = false;
+    } else if (this.currentScanRow) {
+      if (matchedWarehouse) {
+        this.rowWarehouseChanged(matchedWarehouse, this.currentScanRow);
+      } else {
+        this.currentScanRow.locationId = '';
+        this.currentScanRow.locationName = processed;
+        const formGroup = this.getFormGroupForItem(this.currentScanRow);
+        formGroup.get('selectedWarehouseItem')?.setValue(null, { emitEvent: true });
+      }
+      this.scanLoadingRow[this.currentScanRow.materialIdentifier] = false;
+      this.currentScanRow = null;
+    }
+
+    (event.target as HTMLInputElement).value = '';
+    this.cdr.markForCheck();
+  }
 
   filterlocations(value: string): void {
     const filterValue = value ? value.toLowerCase() : '';
@@ -380,13 +453,14 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
     element._isChanged = true;
   }
   onSelectSubApprover(idx: number): void {
+    this.selectedSubApproverIndex = idx;
     const current = this.selectApprover();
     current.sub.forEach((sub, i) => (sub.completed = i === idx));
     this.selectApprover.set({ ...current });
   }
-  get selectedSubApproverIndex(): number {
-    return this.selectApprover().sub.findIndex(sub => sub.completed);
-  }
+  // get selectedSubApproverIndex(): number {
+  //   return this.selectApprover().sub.findIndex(sub => sub.completed);
+  // }
   applySelectFilter(col: string, value: string): void {
     const mode = this.filterModes[col] || 'equals';
     this.searchTerms[col] = { mode, value };
@@ -418,8 +492,14 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
       .sub.filter(s => s.completed)
       .map(s => s.name);
 
-    console.log('onSave() called');
-    console.log('Items to be sent to server:', JSON.parse(JSON.stringify(this.itemsDataSource.data)));
+    if (!selectedApprovers.length) {
+      this.snackBar.open('Yêu cầu chọn người duyệt!', 'Đóng', { duration: 3000, panelClass: ['snackbar-error'] });
+      return;
+    }
+    const hasSelectedWarehouse =
+      (!!selectedWarehouseValue && selectedWarehouseValue.value) || this.itemsDataSource.data.some(item => !!item.locationId);
+
+    const hasAnyExtend = this.itemsDataSource.data.some(item => item.extendExpiration);
 
     const dialogData: ConfirmDialogData = {
       message: 'Bạn có muốn gửi đề nghị cập nhật cho các vật tư này không?',
@@ -512,6 +592,19 @@ export class ListMaterialUpdateDialogComponent implements OnInit {
   // #endregion
 
   // #region Private methods
+  private processScanInput(scanValue: string): string {
+    let result = scanValue;
+    if (result.startsWith('LO')) {
+      result = result.slice(2);
+    }
+    const slIndex = result.search(/-SL/i);
+    if (slIndex > -1) {
+      result = result.substring(0, slIndex);
+    }
+    result = result.replace(/[^A-Za-z0-9-]+$/g, '');
+
+    return result.trim();
+  }
   private _filterWarehouses(name: string): Array<{ value: string; name: string }> {
     const filterValue = name.toLowerCase();
     return this.warehouseSelection.filter(warehouse => warehouse.name.toLowerCase().includes(filterValue));

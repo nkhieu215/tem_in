@@ -41,7 +41,7 @@ export class MaterialUpdateService {
         { updatedItems: MaterialItem[]; selectedWarehouse: any; approvers: string[] }
       >(ListMaterialUpdateDialogComponent, {
         width: '80%',
-        maxWidth: '70vw',
+        maxWidth: '75vw',
         maxHeight: '90vh',
         data: { items: itemsToUpdate },
         autoFocus: false, // Thêm autoFocus: false vào đây
