@@ -22,6 +22,8 @@ import { FilterPipe } from './filter/filter.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TimestampToDatePipe } from './pipes/timestamp-to-date';
 import { StatusLabelPipe } from './pipes/status-label.pipe';
+import { LayoutModule } from '@angular/cdk/layout';
+
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -39,6 +41,7 @@ import { StatusLabelPipe } from './pipes/status-label.pipe';
     MatPaginatorModule,
     TimestampToDatePipe,
     StatusLabelPipe,
+    LayoutModule,
     // BrowserAnimationsModule,
   ],
   declarations: [
@@ -77,6 +80,7 @@ import { StatusLabelPipe } from './pipes/status-label.pipe';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatPaginatorModule,
+    LayoutModule,
     // BrowserAnimationsModule,
   ],
 })

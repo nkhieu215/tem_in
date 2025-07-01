@@ -7,13 +7,14 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSort } from '@angular/material/sort';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subscription, Subject, combineLatest } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 import * as XLSX from 'xlsx';
 import { SelectionModel } from '@angular/cdk/collections';
 import { RawGraphQLMaterial, ListMaterialService } from '../services/list-material.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AccountService } from 'app/core/auth/account.service';
+import { ResponsiveService } from 'app/shared/responsive/responsive.service';
 
 interface sumary_mode {
   value: string;
@@ -156,6 +157,7 @@ export class ListMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private accountService: AccountService,
+    public resp: ResponsiveService,
   ) {
     this.form = new FormGroup({
       sumary_modeControl: new FormControl(null),
